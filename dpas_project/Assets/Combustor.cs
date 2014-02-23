@@ -19,6 +19,7 @@ public class Combustor : MonoBehaviour {
 	Vector3 rShotOrigin;
 	Vector3 rootOld;
 	public float tolerance = .02f;
+	public float fireballSpeed = 1f;
 	bool lfiring = false;
 	bool rfiring = false;
 	Projectile lShot;
@@ -32,6 +33,7 @@ public class Combustor : MonoBehaviour {
 		rHandOld = rHand.position;
 		rootOld = root.position;
 		lShot = ((GameObject)Instantiate (projectile, lHand.position, Quaternion.identity)).GetComponent<Projectile>();
+		//lShot.renderer.enabled = false;
 		rShot = ((GameObject)Instantiate (projectile, rHand.position, Quaternion.identity)).GetComponent<Projectile>();
 
 	
@@ -42,12 +44,10 @@ public class Combustor : MonoBehaviour {
 		Vector3 move;
 		float yaw;
 		if (General.kinectControl){
-			//move = controller.getDiff();
-			//move.Scale (new Vector3(1,0,1));
-			//yaw = controller.getYaw ();
-
-			move =controller.getDiff();
+			move = controller.getDiff();
 			move.Scale (new Vector3(1,0,1));
+			yaw = controller.getYaw ();
+
 			if(move.magnitude<deadzone){
 				move = Vector3.zero;
 			}
@@ -66,7 +66,7 @@ public class Combustor : MonoBehaviour {
 		transform.Rotate (rotSpeed*new Vector3(0, yaw, 0));
 		transform.Translate (speed*Time.deltaTime*move);
 
-		if(Mathf.Abs (Vector3.Distance (lHandOld, rootOld) - Vector3.Distance (lHand.position, root.position)) > tolerance*Time.deltaTime){
+		/*if(Mathf.Abs (Vector3.Distance (lHandOld, rootOld) - Vector3.Distance (lHand.position, root.position)) > tolerance*Time.deltaTime){
 			//Debug.Log ((lHand.position-lHandOld).ToString());
 			if(Vector3.Distance (lHandOld, rootOld) > Vector3.Distance (lHand.position, root.position)) {
 				//Debug.Log ("lHandold = "lhandOld.ToString ()+" root = "+root.position.ToString ()
@@ -147,29 +147,38 @@ public class Combustor : MonoBehaviour {
 				rShot.lifespan = 1;
 				
 			}
+		}*/
+
+
+		if(Vector3.Distance (rHandOld, rootOld) < Vector3.Distance (rHand.position, root.position)){
+			if(Vector3.Distance (rHandOld, rHand.position)> tolerance*Time.deltaTime){
+				AudSrc.PlayOneShot (launch);
+				Projectile temp = (Projectile)Instantiate (rShot);
+				temp.velocity = fireballSpeed*(rHand.position-rHandOld+(transform.rotation*move));
+				temp.mortal = true;
+				temp.lifespan = 3;
+			}
+		}
+		if(Vector3.Distance (lHandOld, rootOld) < Vector3.Distance (lHand.position, root.position)){
+			if(Vector3.Distance (lHandOld, lHand.position)> tolerance*Time.deltaTime){
+				AudSrc.PlayOneShot (launch);
+				Projectile temp = (Projectile)Instantiate (lShot);
+				temp.velocity = fireballSpeed*(lHand.position-lHandOld+(transform.rotation*move));
+				temp.mortal = true;
+				temp.lifespan = 3;
+			}
 		}
 		rHandOld = rHand.position;
 		lHandOld = lHand.position;
 		rootOld = root.position;
-		//lShot.transform.position = lHand.position;
-	}
-
-	public void fireball(Vector3 direction, float magnitude){
-		GameObject temp = (GameObject)Instantiate (projectile, lHand.position+transform.position, Quaternion.identity);
-		Projectile t = temp.GetComponent<Projectile>();
-		t.velocity = 15*direction;
-		temp.transform.localScale = new Vector3(.1f,magnitude,.1f);
-
+		lShot.transform.position = lHand.position;
+		rShot.transform.position = rHand.position;
 
 	}
+
+
 
 	void OnGUI(){
-		if(rfiring){
-			GUI.Box (new Rect(Screen.width-100, 0, 100, Screen.height), "firing right");
-		}
-		if(lfiring){
-			GUI.Box (new Rect(0, 0, 100, Screen.height), "firing left");
 
-		}
 	}
 }
