@@ -17,7 +17,12 @@ public class basicControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (mode == 0){
+		if(!General.kinectControl){
+			transform.Translate (sensetivity * Time.deltaTime * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis ("Flight"), Input.GetAxis ("Vertical")));
+			transform.Rotate (0, Input.GetAxis ("Mouse X")*yawSensetivity, 0);
+		}
+
+		else if (mode == 0){
 			//pitch, yaw, roll
 			transform.Translate (inPut.getDiff()*Time.deltaTime*sensetivity);
 			transform.Rotate (inPut.getPitch()*Time.deltaTime,inPut.getYaw()*Time.deltaTime, inPut.getRoll()*Time.deltaTime);

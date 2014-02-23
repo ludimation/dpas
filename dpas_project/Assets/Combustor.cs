@@ -63,8 +63,8 @@ public class Combustor : MonoBehaviour {
 			move = new Vector3(Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
 			yaw = Input.GetAxis ("Mouse X");
 		}
-		transform.Rotate (rotSpeed*new Vector3(0, yaw, 0));
-		transform.Translate (speed*Time.deltaTime*move);
+		//transform.Rotate (rotSpeed*new Vector3(0, yaw, 0));
+		//transform.Translate (speed*Time.deltaTime*move);
 
 		/*if(Mathf.Abs (Vector3.Distance (lHandOld, rootOld) - Vector3.Distance (lHand.position, root.position)) > tolerance*Time.deltaTime){
 			//Debug.Log ((lHand.position-lHandOld).ToString());
@@ -154,7 +154,8 @@ public class Combustor : MonoBehaviour {
 			if(Vector3.Distance (rHandOld, rHand.position)> tolerance*Time.deltaTime){
 				AudSrc.PlayOneShot (launch);
 				Projectile temp = (Projectile)Instantiate (rShot);
-				temp.velocity = fireballSpeed*(rHand.position-rHandOld+(transform.rotation*move));
+				//temp.velocity = fireballSpeed*(rHand.position-rHandOld+(transform.rotation*move));
+				temp.velocity = fireballSpeed*(rHand.position-root.position);
 				temp.mortal = true;
 				temp.lifespan = 3;
 			}
@@ -163,10 +164,30 @@ public class Combustor : MonoBehaviour {
 			if(Vector3.Distance (lHandOld, lHand.position)> tolerance*Time.deltaTime){
 				AudSrc.PlayOneShot (launch);
 				Projectile temp = (Projectile)Instantiate (lShot);
-				temp.velocity = fireballSpeed*(lHand.position-lHandOld+(transform.rotation*move));
+				//temp.velocity = fireballSpeed*(lHand.position-lHandOld+(transform.rotation*move));
+				temp.velocity = fireballSpeed*(lHand.position-root.position);
 				temp.mortal = true;
 				temp.lifespan = 3;
 			}
+		}
+		if(!General.kinectControl){
+			if (Input.GetKeyDown (KeyCode.Q)){
+				AudSrc.PlayOneShot (launch);
+				Projectile temp = (Projectile)Instantiate (lShot);
+				//temp.velocity = fireballSpeed*(lHand.position-lHandOld+(transform.rotation*move));
+				temp.velocity = fireballSpeed*(lHand.position-root.position);
+				temp.mortal = true;
+				temp.lifespan = 3;
+			}
+			if(Input.GetKeyDown (KeyCode.E)){
+				AudSrc.PlayOneShot (launch);
+				Projectile temp = (Projectile)Instantiate (rShot);
+				//temp.velocity = fireballSpeed*(rHand.position-rHandOld+(transform.rotation*move));
+				temp.velocity = fireballSpeed*(rHand.position-root.position);
+				temp.mortal = true;
+				temp.lifespan = 3;
+			}
+
 		}
 		rHandOld = rHand.position;
 		lHandOld = lHand.position;

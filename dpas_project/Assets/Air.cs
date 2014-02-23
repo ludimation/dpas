@@ -39,8 +39,8 @@ public class Air : MonoBehaviour {
 			move = new Vector3(Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
 			yaw = Input.GetAxis ("Mouse X");
 		}
-		transform.Rotate (rotSpeed*new Vector3(0, yaw, 0));
-		transform.Translate (speed*Time.deltaTime*move);
+		//transform.Rotate (rotSpeed*new Vector3(0, yaw, 0));
+		//transform.Translate (speed*Time.deltaTime*move);
 		
 
 	}
