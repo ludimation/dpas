@@ -30,6 +30,7 @@ public class Kinectalogue : MonoBehaviour {
 	float roll = 0;
 	//float posMagnitude;
 	Vector3 diff;
+	//Vector3 rot;
 	// Use this for initialization
 	void Start () {
 		reference = new Vector3(0,0,0);
@@ -140,6 +141,9 @@ public class Kinectalogue : MonoBehaviour {
 	}
 	public Vector3 getDiff(){
 		return diff;
+	}
+	public Vector3 getRot(){
+		return new Vector3(pitch, yaw, roll);
 	}
 	public float getYaw(){
 		return yaw;

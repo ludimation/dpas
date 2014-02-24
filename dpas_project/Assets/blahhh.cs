@@ -2,11 +2,11 @@
 using System.Collections;
 
 public class blahhh : MonoBehaviour {
-
+	public Transform startPos;
 	// Use this for initialization
 	void Start () {
-		transform.position = new Vector3(0, 1.75f, -1);
-		transform.rotation = Quaternion.identity;
+		transform.position = startPos.position;
+		transform.rotation = startPos.rotation;
 	
 	}
 	
