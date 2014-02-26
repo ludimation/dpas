@@ -14,11 +14,13 @@ public class General : MonoBehaviour {
 	public Transform rElbow;
 	public Transform rShoulder;
 
-	bool paused = false;
+	public bool paused = true;
+	public static bool isPaused = true;
 	bool menu = false;
-
+	public Texture2D image;
 	// Use this for initialization
 	void Start () {
+		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
 	}
 	
@@ -26,6 +28,12 @@ public class General : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyUp (KeyCode.J)){
 			General.printJointPos (avatarRoot);
+		}
+		if(Input.GetKeyUp (KeyCode.F)){
+			Application.LoadLevel("s-fire1");
+		}
+		if(Input.GetKeyUp (KeyCode.E)){
+			Application.LoadLevel("s-earth2");
 		}
 
 		if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
@@ -37,11 +45,17 @@ public class General : MonoBehaviour {
 		if (menu && Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45){
 			if (Vector3.Angle (rHand.position-rElbow.position, Vector3.up) < 45){
 				paused = true;
+				isPaused = paused;
 			}
 			else if (Vector3.Angle (rHand.position-rElbow.position, Vector3.right) < 45){
 				paused = false;
+				isPaused = paused;
 			}
 
+		}
+		if (Input.GetKeyUp (KeyCode.P)){
+			paused = !paused;
+			isPaused = paused;
 		}
 	
 	}
@@ -60,7 +74,12 @@ public class General : MonoBehaviour {
 			GUI.Box (new Rect(50, 0, Screen.width - 100, 50), "menu");
 		}
 		if (paused){
-			GUI.Box (new Rect(50, 50, Screen.width - 100, 100), "paused");
+			if (image == null){
+				GUI.Box (new Rect(50, 50, Screen.width - 100, 100), "paused");
+			}
+			else{
+				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), image);
+			}
 
 		}
 	}

@@ -17,6 +17,7 @@ public class Earth : MonoBehaviour {
 	public Transform lowerIndicator;
 	// Use this for initialization
 	void Start () {
+
 	
 	}
 	
