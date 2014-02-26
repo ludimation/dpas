@@ -128,7 +128,7 @@ public class Kinectalogue : MonoBehaviour {
 			float tempAngle = Vector3.Angle (lHand.transform.position-lElbow.transform.position, lShoulder.transform.position-lElbow.transform.position);
 			tempAngle += Vector3.Angle (rHand.transform.position-rElbow.transform.position, rShoulder.transform.position-rElbow.transform.position);
 			float tA = tempAngle;
-			if(tempAngle<=90&&tempAngle>=-90){
+			if(tempAngle<=120&&tempAngle>=-120){
 				diff = Vector3.zero;
 			}
 			tempAngle -= 90;

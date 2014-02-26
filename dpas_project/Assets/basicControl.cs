@@ -10,8 +10,9 @@ public class basicControl : MonoBehaviour {
 	//public float yawSensetivity = 1;
 	//public float rollSensetivity = 1;
 	//public float floor = 0;
-	public int mode = 0;
-	public float deadzone = 0;
+	//public int mode = 0;
+	public float deadzone = .01f;
+	public Vector3 rotDeadzone = 5*Vector3.one;
 	public CharacterController cha;
 	public CharacterMotor motor; 
 	// Use this for initialization
@@ -29,7 +30,7 @@ public class basicControl : MonoBehaviour {
 			//transform.Translate (sensetivity * Time.deltaTime * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis ("Flight"), Input.GetAxis ("Vertical")));
 			//transform.Rotate (0, Input.GetAxis ("Mouse X")*yawSensetivity, 0);
 			move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis ("Flight"), Input.GetAxis ("Vertical"));
-			rot = new Vector3(0, Input.GetAxis ("Mouse X"), 0);
+			rot = 45*new Vector3(0, Input.GetAxis ("Mouse X"), 0);
 		}
 
 		else{
@@ -38,45 +39,43 @@ public class basicControl : MonoBehaviour {
 			//transform.Rotate (inPut.getPitch()*Time.deltaTime,inPut.getYaw()*Time.deltaTime, inPut.getRoll()*Time.deltaTime);
 			move = (inPut.getDiff());
 			rot = inPut.getRot ();
+			//deadzone stuff
+			if (move.magnitude < deadzone){
+				move = Vector3.zero;
+			}
+			else{
+				move -= (deadzone * move.normalized);
+			}
+
+			//temp = rot - rotDeadzone;
+			//Vector3 temp2 = Vector3.Scale (rot, temp);
+			//temp.Scale (rot);
+			if(rot.x < rotDeadzone.x){
+				rot.x = 0;
+			}
+			else{
+				rot.x -= Mathf.Sign(rot.x) * rotDeadzone.x;
+			}
+			if(rot.x < rotDeadzone.y){
+				rot.y = 0;
+			}
+			else{
+				rot.y -= Mathf.Sign (rot.y)*rotDeadzone.y;
+			}
+			if(rot.z < rotDeadzone.z){
+				rot.z = 0;
+			}
+			else{
+				rot.z -= Mathf.Sign (rot.z)*rotDeadzone.z;
+			}
 		}
-		move.Scale (sensetivity);
+
+		move.Scale (Time.deltaTime*sensetivity);
 		rot.Scale (Time.deltaTime*rotSensetivity);
 		motor.inputMoveDirection = transform.rotation*move;
+		//transform.Translate(move);
 		transform.Rotate (rot);
 
-		/*else if(mode == 1){
-			//pitch, yaw,
-			transform.Translate (inPut.getDiff()*Time.deltaTime*sensetivity);
-			transform.Rotate (inPut.getPitch()*Time.deltaTime,inPut.getYaw()*Time.deltaTime, 0);
-		}
-		else if(mode == 2){
-			//pitch only
-			transform.Translate (inPut.getDiff()*Time.deltaTime*sensetivity);
-			transform.Rotate (inPut.getPitch()*Time.deltaTime,0, 0);
-		}
-		
-		else if(mode == 3){
-			//pitch, roll
-			transform.Translate (inPut.getDiff()*Time.deltaTime*sensetivity);
-			transform.Rotate (inPut.getPitch()*Time.deltaTime,0, inPut.getRoll ()*Time.deltaTime);
-		}
-		else if(mode == 4){
-			//yaw only
-			Vector3 temp =(inPut.getDiff()*Time.deltaTime*sensetivity);
-			if(temp.magnitude<deadzone){
-				temp = Vector3.zero;
-			}
-			transform.Translate (temp);
-			transform.Rotate (0,inPut.getYaw()*Time.deltaTime, 0);
-		}
-		else if (mode == 5){
-			//no rotation
-			transform.Translate (inPut.getDiff()*Time.deltaTime*sensetivity);
 
-		}*/
-
-		/*if (transform.position.y < floor){
-			transform.Translate (new Vector3(0, - transform.position.y, 0));
-		}*/
 	}
 }

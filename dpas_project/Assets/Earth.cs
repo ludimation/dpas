@@ -28,8 +28,8 @@ public class Earth : MonoBehaviour {
 				audSrc.PlayOneShot (rise);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
-				temp.initialTime = 3;
-				temp.time = 3;
+				temp.initialTime = 1;
+				temp.time = 1;
 				//temp.start = transform.position + new  Vector3(0,-2, 0)
 			}
 		}
@@ -38,8 +38,8 @@ public class Earth : MonoBehaviour {
 				audSrc.PlayOneShot (rise);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
-				temp.initialTime = 3;
-				temp.time = 3;
+				temp.initialTime = 1;
+				temp.time = 31;
 				highEnergy-=.5f;
 			}
 			lowEnergy += Time.deltaTime;
