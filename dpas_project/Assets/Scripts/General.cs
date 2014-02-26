@@ -18,8 +18,13 @@ public class General : MonoBehaviour {
 	public static bool isPaused = true;
 	bool menu = false;
 	public Texture2D image;
+	//public bool destroyOnLoad = false;
+	public bool destroyOnReload = true;
 	// Use this for initialization
 	void Start () {
+		if(!destroyOnReload){
+			DontDestroyOnLoad(gameObject);
+		}
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
 	}
