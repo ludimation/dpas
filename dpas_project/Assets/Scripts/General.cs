@@ -20,6 +20,7 @@ public class General : MonoBehaviour {
 	public Texture2D image;
 	//public bool destroyOnLoad = false;
 	public bool destroyOnReload = true;
+	KinectManager kMngr;
 	// Use this for initialization
 	void Start () {
 		if(!destroyOnReload){
@@ -27,10 +28,17 @@ public class General : MonoBehaviour {
 		}
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
+		kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		/*if(kMngr.Player1Avatars[0] == null){
+			kMngr.Player1Avatars[0] = (GameObject)GameObject.Find ("kAvatar");
+		}
+		if(kMngr.Player1Avatars[1] == null){
+			kMngr.Player1Avatars[1] = (GameObject)GameObject.Find ("kController");
+		}*/
 		if (Input.GetKeyUp (KeyCode.J)){
 			General.printJointPos (avatarRoot);
 		}
@@ -39,6 +47,12 @@ public class General : MonoBehaviour {
 		}
 		if(Input.GetKeyUp (KeyCode.E)){
 			Application.LoadLevel("s-earth2");
+		}
+		if(Input.GetKeyUp (KeyCode.T)){
+			Application.LoadLevel ("testFire");
+		}
+		if(Input.GetKeyUp (KeyCode.Y)){
+			Application.LoadLevel("testEarth");
 		}
 
 		if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
@@ -61,6 +75,10 @@ public class General : MonoBehaviour {
 		if (Input.GetKeyUp (KeyCode.P)){
 			paused = !paused;
 			isPaused = paused;
+		}
+		if(Input.GetKey(KeyCode.Q)){
+			paused = false;
+			isPaused = false;
 		}
 	
 	}
