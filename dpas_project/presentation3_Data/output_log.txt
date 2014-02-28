@@ -1,0 +1,497 @@
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 8.16.11.8955]
+    Renderer: NVIDIA NVS 3100M
+    Vendor:   NVIDIA
+    VRAM:     1334 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+- Completed reload, in  0.140 seconds
+desktop: 1440x900 60Hz; virtual: 1440x900 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 8.16.11.8955]
+    Renderer: NVIDIA NVS 3100M
+    Vendor:   NVIDIA
+    VRAM:     1334 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+- Completed reload, in  0.157 seconds
+desktop: 1440x900 60Hz; virtual: 1440x900 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Boo.Lang.dll (this message is harmless)
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] User lost
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 1.920316 ms
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+The character you would like to control doesn't have animations. Moving her might look weird.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No idle animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No walk animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No run animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No jump animation found and the character has canJump enabled. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 612.
+Total: 2.374563 ms (FindLiveObjects: 0.074964 ms CreateObjectMapping: 0.033632 ms MarkObjects: 0.411699 ms  DeleteObjects: 0.371582 ms)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 1.810908 ms
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+The character you would like to control doesn't have animations. Moving her might look weird.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No idle animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No walk animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No run animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No jump animation found and the character has canJump enabled. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 618.
+Total: 2.622555 ms (FindLiveObjects: 0.063618 ms CreateObjectMapping: 0.032417 ms MarkObjects: 0.522322 ms  DeleteObjects: 0.154387 ms)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 2.671586 ms
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 613.
+Total: 2.335257 ms (FindLiveObjects: 0.093199 ms CreateObjectMapping: 0.058756 ms MarkObjects: 0.478964 ms  DeleteObjects: 0.463566 ms)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 8.16.11.8955]
+    Renderer: NVIDIA NVS 3100M
+    Vendor:   NVIDIA
+    VRAM:     1334 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+- Completed reload, in  0.265 seconds
+desktop: 1024x768 60Hz; virtual: 1024x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Boo.Lang.dll (this message is harmless)
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 8.16.11.8955]
+    Renderer: NVIDIA NVS 3100M
+    Vendor:   NVIDIA
+    VRAM:     1334 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+- Completed reload, in  0.151 seconds
+desktop: 1024x768 60Hz; virtual: 1024x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Managed\Boo.Lang.dll (this message is harmless)
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration success
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+All players calibrated.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 1.850214 ms
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+The character you would like to control doesn't have animations. Moving her might look weird.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No idle animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No walk animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No run animation found. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+No jump animation found and the character has canJump enabled. Turning off animations.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 611.
+Total: 2.612019 ms (FindLiveObjects: 0.065644 ms CreateObjectMapping: 0.034038 ms MarkObjects: 0.449789 ms  DeleteObjects: 0.379687 ms)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration success
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+All players calibrated.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 2.599863 ms
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 614.
+Total: 1.985556 ms (FindLiveObjects: 0.055919 ms CreateObjectMapping: 0.031606 ms MarkObjects: 0.450599 ms  DeleteObjects: 0.318904 ms)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+UnloadTime: 1.451482 ms
+sNiTEPath = C:\Program Files (x86)\PrimeSense\NiTE2\Redist\
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 613.
+Total: 2.003385 ms (FindLiveObjects: 0.057945 ms CreateObjectMapping: 0.037685 ms MarkObjects: 0.393464 ms  DeleteObjects: 0.156413 ms)
+
+Waiting for users to calibrate
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration success
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+All players calibrated.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] User lost
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Starting looking for users
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration success
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+All players calibrated.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+HandleD3DDeviceLost
+  HandleD3DDeviceLost: needs reset, doing it
+FullResetD3DDevice
+ResetD3DDevice
+dev->Reset
+D3Dwindow device not lost anymore
+Crash!!!
+SymInit: Symbol-SearchPath: '.;C:\Users\palon\Documents\GitHub\dpas\dpas_project;C:\Users\palon\Documents\GitHub\dpas\dpas_project;C:\Windows;C:\Windows\system32;SRV*C:\websymbols*http://msdl.microsoft.com/download/symbols;', symOptions: 530, UserName: 'palon'
+OS-Version: 6.1.7601 (Service Pack 1) 0x100-0x1
+C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3.exe:presentation3.exe (01330000), size: 11948032 (result: 0), SymType: '-exported-', PDB: 'C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3.exe', fileVersion: 4.3.4.31067
+C:\Windows\SysWOW64\ntdll.dll:ntdll.dll (77000000), size: 1572864 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\SysWOW64\ntdll.dll', fileVersion: 6.1.7601.18247
+C:\Windows\syswow64\kernel32.dll:kernel32.dll (74EB0000), size: 1114112 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\kernel32.dll', fileVersion: 6.1.7601.18229
+C:\Windows\syswow64\KERNELBASE.dll:KERNELBASE.dll (76810000), size: 290816 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\KERNELBASE.dll', fileVersion: 6.1.7601.18229
+C:\Windows\syswow64\USER32.dll:USER32.dll (74A80000), size: 1048576 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\USER32.dll', fileVersion: 6.1.7601.17514
+C:\Windows\syswow64\GDI32.dll:GDI32.dll (76460000), size: 589824 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\GDI32.dll', fileVersion: 6.1.7601.18275
+C:\Windows\syswow64\LPK.dll:LPK.dll (74EA0000), size: 40960 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\LPK.dll', fileVersion: 6.1.7601.18177
+C:\Windows\syswow64\USP10.dll:USP10.dll (75FB0000), size: 643072 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\USP10.dll', fileVersion: 1.626.7601.18009
+C:\Windows\syswow64\msvcrt.dll:msvcrt.dll (76160000), size: 704512 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\msvcrt.dll', fileVersion: 7.0.7601.17744
+C:\Windows\syswow64\ADVAPI32.dll:ADVAPI32.dll (76210000), size: 655360 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\ADVAPI32.dll', fileVersion: 6.1.7601.18247
+C:\Windows\SysWOW64\sechost.dll:sechost.dll (765F0000), size: 102400 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\SysWOW64\sechost.dll', fileVersion: 6.1.7600.16385
+C:\Windows\syswow64\RPCRT4.dll:RPCRT4.dll (762C0000), size: 983040 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\RPCRT4.dll', fileVersion: 6.1.7601.18205
+C:\Windows\syswow64\SspiCli.dll:SspiCli.dll (74A20000), size: 393216 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\SspiCli.dll', fileVersion: 6.1.7601.18270
+C:\Windows\syswow64\CRYPTBASE.dll:CRYPTBASE.dll (74A10000), size: 49152 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\CRYPTBASE.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\VERSION.dll:VERSION.dll (72F60000), size: 36864 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\VERSION.dll', fileVersion: 6.1.7600.16385
+C:\Windows\syswow64\ole32.dll:ole32.dll (74D40000), size: 1425408 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\ole32.dll', fileVersion: 6.1.7601.17514
+C:\Windows\syswow64\SHLWAPI.dll:SHLWAPI.dll (76100000), size: 356352 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\SHLWAPI.dll', fileVersion: 6.1.7601.17514
+C:\Windows\syswow64\SHELL32.dll:SHELL32.dll (750E0000), size: 12886016 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\SHELL32.dll', fileVersion: 6.1.7601.18222
+C:\Windows\system32\OPENGL32.dll:OPENGL32.dll (72210000), size: 819200 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\OPENGL32.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\GLU32.dll:GLU32.dll (748D0000), size: 139264 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\GLU32.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\DDRAW.dll:DDRAW.dll (74020000), size: 946176 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\DDRAW.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\DCIMAN32.dll:DCIMAN32.dll (741F0000), size: 24576 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\DCIMAN32.dll', fileVersion: 6.1.7601.18177
+C:\Windows\syswow64\SETUPAPI.dll:SETUPAPI.dll (76A60000), size: 1691648 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\SETUPAPI.dll', fileVersion: 6.1.7601.17514
+C:\Windows\syswow64\CFGMGR32.dll:CFGMGR32.dll (767E0000), size: 159744 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\CFGMGR32.dll', fileVersion: 6.1.7601.17621
+C:\Windows\syswow64\OLEAUT32.dll:OLEAUT32.dll (76050000), size: 585728 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\OLEAUT32.dll', fileVersion: 6.1.7601.17676
+C:\Windows\syswow64\DEVOBJ.dll:DEVOBJ.dll (764F0000), size: 73728 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\DEVOBJ.dll', fileVersion: 6.1.7601.17621
+C:\Windows\system32\dwmapi.dll:dwmapi.dll (6FA50000), size: 77824 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\dwmapi.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\WINMM.dll:WINMM.dll (722E0000), size: 204800 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\WINMM.dll', fileVersion: 6.1.7601.17514
+C:\Windows\syswow64\WS2_32.dll:WS2_32.dll (74BD0000), size: 217088 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\WS2_32.dll', fileVersion: 6.1.7601.17514
+C:\Windows\syswow64\NSI.dll:NSI.dll (763C0000), size: 24576 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\NSI.dll', fileVersion: 6.1.7600.16385
+C:\Windows\syswow64\IMM32.dll:IMM32.dll (74FF0000), size: 393216 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\IMM32.dll', fileVersion: 6.1.7601.17514
+C:\Windows\syswow64\MSCTF.dll:MSCTF.dll (76510000), size: 835584 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\MSCTF.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\DNSAPI.dll:DNSAPI.dll (6F470000), size: 278528 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\DNSAPI.dll', fileVersion: 6.1.7601.17570
+C:\Windows\system32\IPHLPAPI.DLL:IPHLPAPI.DLL (70AB0000), size: 114688 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\IPHLPAPI.DLL', fileVersion: 6.1.7601.17514
+C:\Windows\system32\WINNSI.DLL:WINNSI.DLL (70AA0000), size: 28672 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\WINNSI.DLL', fileVersion: 6.1.7600.16385
+C:\Windows\system32\WINHTTP.dll:WINHTTP.dll (73CA0000), size: 360448 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\WINHTTP.dll', fileVersion: 6.1.7601.17514
+C:\Windows\system32\webio.dll:webio.dll (73C50000), size: 323584 (result: 0), SymType: '-nosymbols-', PDB: 'C:\Windows\system32\webio.dll', fileVersion: 6.1.7601.17725
+C:\Windows\system32\HID.DLL:HID.DLL (74770000), size: 36864 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\HID.DLL', fileVersion: 6.1.7600.16385
+C:\Windows\system32\MSACM32.dll:MSACM32.dll (73C00000), size: 81920 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\MSACM32.dll', fileVersion: 6.1.7600.16385
+C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Mono\mono.dll:mono.dll (10000000), size: 2285568 (result: 0), SymType: '-exported-', PDB: 'C:\Users\palon\Documents\GitHub\dpas\dpas_project\presentation3_Data\Mono\mono.dll'
+C:\Windows\syswow64\PSAPI.DLL:PSAPI.DLL (74B80000), size: 20480 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\PSAPI.DLL', fileVersion: 6.1.7600.16385
+C:\Windows\system32\MSWSOCK.dll:MSWSOCK.dll (72A00000), size: 245760 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\MSWSOCK.dll', fileVersion: 6.1.7601.18254
+C:\Windows\system32\uxtheme.dll:uxtheme.dll (726B0000), size: 524288 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\uxtheme.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\d3d9.dll:d3d9.dll (64740000), size: 1847296 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\d3d9.dll', fileVersion: 6.1.7601.17514
+C:\Windows\system32\d3d8thk.dll:d3d8thk.dll (70090000), size: 24576 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\d3d8thk.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\nvd3dum.dll:nvd3dum.dll (63FC0000), size: 7847936 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\nvd3dum.dll', fileVersion: 8.16.11.8955
+C:\Windows\syswow64\WINTRUST.dll:WINTRUST.dll (74BA0000), size: 188416 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\WINTRUST.dll', fileVersion: 6.1.7601.18205
+C:\Windows\syswow64\CRYPT32.dll:CRYPT32.dll (74C20000), size: 1179648 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\CRYPT32.dll', fileVersion: 6.1.7601.18277
+C:\Windows\syswow64\MSASN1.dll:MSASN1.dll (763B0000), size: 49152 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\MSASN1.dll', fileVersion: 6.1.7601.17514
+C:\Windows\system32\powrprof.dll:powrprof.dll (73650000), size: 151552 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\powrprof.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\MMDevAPI.DLL:MMDevAPI.DLL (6FE50000), size: 233472 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\MMDevAPI.DLL', fileVersion: 6.1.7601.17514
+C:\Windows\system32\PROPSYS.dll:PROPSYS.dll (6FD50000), size: 1003520 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\PROPSYS.dll', fileVersion: 7.0.7601.17514
+C:\Windows\system32\wdmaud.drv:wdmaud.drv (73D10000), size: 196608 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\wdmaud.drv', fileVersion: 6.1.7601.17514
+C:\Windows\system32\ksuser.dll:ksuser.dll (748A0000), size: 16384 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\ksuser.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\AVRT.dll:AVRT.dll (6FB00000), size: 28672 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\AVRT.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\AUDIOSES.DLL:AUDIOSES.DLL (6FCD0000), size: 221184 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\AUDIOSES.DLL', fileVersion: 6.1.7601.17514
+C:\Windows\system32\msacm32.drv:msacm32.drv (74860000), size: 32768 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\msacm32.drv', fileVersion: 6.1.7600.16385
+C:\Windows\system32\midimap.dll:midimap.dll (74780000), size: 28672 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\midimap.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\dsound.dll:dsound.dll (6F920000), size: 466944 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\dsound.dll', fileVersion: 6.1.7600.16385
+C:\Windows\syswow64\CLBCatQ.DLL:CLBCatQ.DLL (763D0000), size: 536576 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\CLBCatQ.DLL', fileVersion: 2001.12.8530.16385
+C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2\comctl32.dll:comctl32.dll (727E0000), size: 1695744 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_41e6975e2bd6f2b2\comctl32.dll', fileVersion: 6.10.7601.17514
+C:\Windows\system32\xinput1_3.dll:xinput1_3.dll (077C0000), size: 90112 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\xinput1_3.dll', fileVersion: 9.18.944.0
+C:\Program Files\Lenovo\HOTKEY\hkvolkey.DLL:hkvolkey.DLL (07820000), size: 73728 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files\Lenovo\HOTKEY\hkvolkey.DLL', fileVersion: 1.0.1.0
+C:\PROGRA~1\Lenovo\HOTKEY\tpnumlkd.dll:tpnumlkd.dll (05790000), size: 28672 (result: 0), SymType: '-exported-', PDB: 'C:\PROGRA~1\Lenovo\HOTKEY\tpnumlkd.dll', fileVersion: 1.0.0.0
+C:\Users\palon\Documents\GitHub\dpas\dpas_project\UnityInterface2.dll:UnityInterface2.dll (6B820000), size: 139264 (result: 0), SymType: '-exported-', PDB: 'C:\Users\palon\Documents\GitHub\dpas\dpas_project\UnityInterface2.dll'
+C:\Users\palon\Documents\GitHub\dpas\dpas_project\OpenNI2.dll:OpenNI2.dll (6B7C0000), size: 372736 (result: 0), SymType: '-exported-', PDB: 'C:\Users\palon\Documents\GitHub\dpas\dpas_project\OpenNI2.dll', fileVersion: 2.2.0.30
+C:\Windows\system32\MSVCR100.dll:MSVCR100.dll (725B0000), size: 782336 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\MSVCR100.dll', fileVersion: 10.0.40219.325
+C:\Users\palon\Documents\GitHub\dpas\dpas_project\NiTE2.dll:NiTE2.dll (0FE10000), size: 1851392 (result: 0), SymType: '-exported-', PDB: 'C:\Users\palon\Documents\GitHub\dpas\dpas_project\NiTE2.dll', fileVersion: 2.2.0.10
+C:\Windows\system32\MSVCP100.dll:MSVCP100.dll (739D0000), size: 430080 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\MSVCP100.dll', fileVersion: 10.0.40219.325
+C:\Windows\WinSxS\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_50934f2ebcb7eb57\MSVCR90.dll:MSVCR90.dll (72730000), size: 667648 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\WinSxS\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_50934f2ebcb7eb57\MSVCR90.dll', fileVersion: 9.0.30729.6161
+C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\Kinect.dll:Kinect.dll (6B850000), size: 172032 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\Kinect.dll', fileVersion: 2.2.0.30
+C:\Windows\SYSTEM32\MSCOREE.DLL:MSCOREE.DLL (70460000), size: 303104 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\SYSTEM32\MSCOREE.DLL', fileVersion: 4.0.40305.0
+C:\Windows\system32\Kinect10.dll:Kinect10.dll (0DBE0000), size: 14962688 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\Kinect10.dll', fileVersion: 1.8.0.595
+C:\Windows\system32\WINUSB.DLL:WINUSB.DLL (6F4D0000), size: 28672 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\WINUSB.DLL', fileVersion: 6.1.7600.16385
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscoreei.dll:mscoreei.dll (6A280000), size: 503808 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscoreei.dll', fileVersion: 4.0.30319.18408
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\clr.dll:clr.dll (50170000), size: 6926336 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\Microsoft.NET\Framework\v4.0.30319\clr.dll', fileVersion: 4.0.30319.18444
+C:\Windows\system32\MSVCR110_CLR0400.dll:MSVCR110_CLR0400.dll (70B20000), size: 864256 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\MSVCR110_CLR0400.dll', fileVersion: 11.0.50938.18408
+C:\Windows\assembly\NativeImages_v4.0.30319_32\mscorlib\ce5f61c5754789df97be8dc991c47d07\mscorlib.ni.dll:mscorlib.ni.dll (787D0000), size: 16965632 (result: 0), SymType: '-nosymbols-', PDB: 'C:\Windows\assembly\NativeImages_v4.0.30319_32\mscorlib\ce5f61c5754789df97be8dc991c47d07\mscorlib.ni.dll', fileVersion: 4.0.30319.18444
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\clrjit.dll:clrjit.dll (73930000), size: 512000 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\Microsoft.NET\Framework\v4.0.30319\clrjit.dll', fileVersion: 4.0.30319.18444
+C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\OniFile.dll:OniFile.dll (5EB40000), size: 331776 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\OniFile.dll', fileVersion: 2.2.0.30
+C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\PS1080.dll:PS1080.dll (6B750000), size: 413696 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\PS1080.dll', fileVersion: 2.2.0.30
+C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\PSLink.dll:PSLink.dll (6B710000), size: 225280 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\OpenNI2\Redist\OpenNI2\Drivers\PSLink.dll'
+C:\Windows\system32\CRYPTSP.dll:CRYPTSP.dll (730A0000), size: 90112 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\CRYPTSP.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\rsaenh.dll:rsaenh.dll (73060000), size: 241664 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\rsaenh.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\USERENV.dll:USERENV.dll (72E90000), size: 94208 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\USERENV.dll', fileVersion: 6.1.7601.17514
+C:\Windows\system32\profapi.dll:profapi.dll (72E80000), size: 45056 (result: 0), SymType: '-nosymbols-', PDB: 'C:\Windows\system32\profapi.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\GPAPI.dll:GPAPI.dll (72E60000), size: 90112 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\GPAPI.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\ncrypt.dll:ncrypt.dll (72F10000), size: 229376 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\ncrypt.dll', fileVersion: 6.1.7601.18270
+C:\Windows\system32\bcrypt.dll:bcrypt.dll (72EF0000), size: 94208 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\bcrypt.dll', fileVersion: 6.1.7600.16385
+C:\Windows\SysWOW64\bcryptprimitives.dll:bcryptprimitives.dll (72EB0000), size: 249856 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\SysWOW64\bcryptprimitives.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\cryptnet.dll:cryptnet.dll (74190000), size: 114688 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\cryptnet.dll', fileVersion: 6.1.7601.18205
+C:\Windows\syswow64\WLDAP32.dll:WLDAP32.dll (76990000), size: 282624 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\syswow64\WLDAP32.dll', fileVersion: 6.1.7601.17514
+C:\Windows\system32\SensApi.dll:SensApi.dll (74180000), size: 24576 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\SensApi.dll', fileVersion: 6.1.7600.16385
+C:\Windows\system32\dbghelp.dll:dbghelp.dll (72F70000), size: 962560 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\system32\dbghelp.dll', fileVersion: 6.1.7601.17514
+
+========== OUTPUTING STACK TRACE ==================
+
+(0xFFFFFA40) ((module-name not available)): (filename not available): (function-name not available) + 0x0
+(0x07E21A2B) ((module-name not available)): (filename not available): (function-name not available) + 0x0
+(0x6B7D9596) (OpenNI2): (filename not available): (function-name not available) + 0x0
+(0x6B7E4A61) (OpenNI2): (filename not available): oniWaitForAnyStream + 0x31
+(0x6B8336F6) (UnityInterface2): (filename not available): StopLookingForUsers + 0x22ff
+(0x04437ED1) (Mono JIT code): (filename not available):  (wrapper managed-to-native) KinectWrapper:Update () + 0x21 (04437EB0 04437EF3) [012D4E70 - Unity Root Domain] + 0x0
+(0x04437C80) (Mono JIT code): (filename not available):  KinectManager:Update () + 0x58 (04437C28 04437E57) [012D4E70 - Unity Root Domain] + 0x0
+(0x0441E629) (Mono JIT code): (filename not available):  (wrapper runtime-invoke) object:runtime_invoke_void__this__ (object,intptr,intptr,intptr) + 0x41 (0441E5E8 0441E67D) [012D4E70 - Unity Root Domain] + 0x0
+(0x100EFEDE) (mono): (filename not available): mono_set_defaults + 0x22bf
+(0x1005D680) (mono): (filename not available): mono_runtime_invoke + 0x51
+(0x014549A8) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0x391d8
+(0x014CE496) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0xb2cc6
+(0x014CE075) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0xb28a5
+(0x01448B8B) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0x2d3bb
+(0x01448C01) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0x2d431
+(0x01448C17) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0x2d447
+(0x014B8704) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0x9cf34
+(0x015106EB) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0xf4f1b
+(0x01511EFB) (presentation3): (filename not available): Behaviour::Transfer<StreamedBinaryWrite<0> > + 0xf672b
+(0x0175EB28) (presentation3): (filename not available): AnimationEvent::Transfer<SafeBinaryRead> + 0x1b6398
+(0x01790490) (presentation3): (filename not available): AnimationEvent::Transfer<SafeBinaryRead> + 0x1e7d00
+(0x74EC336A) (kernel32): (filename not available): BaseThreadInitThunk + 0x12
+(0x77039F72) (ntdll): (filename not available): RtlInitializeExceptionChain + 0x63
+(0x77039F45) (ntdll): (filename not available): RtlInitializeExceptionChain + 0x36
+
+========== END OF STACKTRACE ===========
+
+**** Crash! ****

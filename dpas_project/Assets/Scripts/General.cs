@@ -16,11 +16,13 @@ public class General : MonoBehaviour {
 
 	public bool paused = true;
 	public static bool isPaused = true;
+	bool quitting = false;
 	bool menu = false;
 	public Texture2D image;
 	//public bool destroyOnLoad = false;
 	public bool destroyOnReload = true;
 	KinectManager kMngr;
+
 	// Use this for initialization
 	void Start () {
 		if(!destroyOnReload){
@@ -33,6 +35,7 @@ public class General : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
 		/*if(kMngr.Player1Avatars[0] == null){
 			kMngr.Player1Avatars[0] = (GameObject)GameObject.Find ("kAvatar");
 		}
@@ -70,17 +73,22 @@ public class General : MonoBehaviour {
 				paused = false;
 				isPaused = paused;
 			}
-
 		}
 		if (Input.GetKeyUp (KeyCode.P)){
 			paused = !paused;
 			isPaused = paused;
 		}
-		if(Input.GetKey(KeyCode.Q)){
-			paused = false;
-			isPaused = false;
+		if (paused){
+			if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up) < 60 && Vector3.Angle (rHand.position-rElbow.position, Vector3.left) < 45){
+				quitting = true;
+				if(Vector3.Angle (lElbow.position-lShoulder.position, Vector3.left) <45 && Vector3.Angle (lHand.position-lElbow.position, Vector3.left)<45){
+					Application.Quit();
+				}
+			}
+			else{
+				quitting = false;
+			}
 		}
-	
 	}
 
 	public static void printJointPos(Transform root){
@@ -104,6 +112,9 @@ public class General : MonoBehaviour {
 				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), image);
 			}
 
+		}
+		if (quitting){
+			GUI.Box (new Rect((Screen.width/2)-50, (Screen.height/2)-25, 100, 50), "Are you sure you would like to exit?");
 		}
 	}
 }
