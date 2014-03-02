@@ -698,9 +698,13 @@ public class KinectManager : MonoBehaviour
 	private Quaternion ConvertMatrixToQuat(KinectWrapper.SkeletonJointOrientation ori, int joint, bool flip)
 	{
 		Matrix4x4 mat = Matrix4x4.identity;
-		
-		Quaternion quat = new Quaternion(ori.x, ori.y, ori.z, ori.w);
-		mat.SetTRS(Vector3.zero, quat, Vector3.one);
+
+		/*fix attempt:*/Vector4 oriVec = new Vector4(ori.x, ori.y, ori.z, ori.w);
+		oriVec.Normalize();
+		Quaternion q = new Quaternion(oriVec.x, oriVec.y, oriVec.z, oriVec.w);
+		mat.SetTRS(Vector3.zero, q, Vector3.one);/*end fix attempt*/
+		//Quaternion quat = new Quaternion(ori.x, ori.y, ori.z, ori.w);
+		//mat.SetTRS(Vector3.zero, quat, Vector3.one);/*error FLAG*/
 
 		Vector3 vZ = mat.GetColumn(2);
 		Vector3 vY = mat.GetColumn(1);

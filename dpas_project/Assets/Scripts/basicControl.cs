@@ -50,26 +50,28 @@ public class basicControl : MonoBehaviour {
 			//temp = rot - rotDeadzone;
 			//Vector3 temp2 = Vector3.Scale (rot, temp);
 			//temp.Scale (rot);
-			if(rot.x < rotDeadzone.x){
+			if(Mathf.Abs (rot.x) < rotDeadzone.x){
 				rot.x = 0;
 			}
 			else{
 				rot.x -= Mathf.Sign(rot.x) * rotDeadzone.x;
 			}
-			if(rot.x < rotDeadzone.y){
+			if(Mathf.Abs (rot.y) < rotDeadzone.y){
 				rot.y = 0;
 			}
 			else{
 				rot.y -= Mathf.Sign (rot.y)*rotDeadzone.y;
 			}
-			if(rot.z < rotDeadzone.z){
+			if(Mathf.Abs (rot.z) < rotDeadzone.z){
 				rot.z = 0;
 			}
 			else{
 				rot.z -= Mathf.Sign (rot.z)*rotDeadzone.z;
 			}
 		}
-
+		//rot.Scale (new Vector3(Mathf.Abs (rot.x)/rotSensetivity.x, Mathf.Abs (rot.y)/rotSensetivity.y, Mathf.Abs (rot.z)/rotSensetivity.z));
+		rot.Scale (new Vector3(Mathf.Abs (rot.x), Mathf.Abs (rot.y), Mathf.Abs (rot.z)));
+		rot.Scale ((1f/90f)*Vector3.one);
 		move.Scale (Time.deltaTime*sensetivity);
 		rot.Scale (Time.deltaTime*rotSensetivity);
 		motor.inputMoveDirection = transform.rotation*move;
