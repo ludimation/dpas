@@ -6,7 +6,7 @@ public class Waterfall : MonoBehaviour {
 	// Use this for initialization
 	public ParticleSystem p;
 	public Transform target;
-	public bool useGravity;
+	public bool useGravity = true;
 	float g = 0;
 	void Start () {
 		g = p.gravityModifier;
@@ -18,6 +18,10 @@ public class Waterfall : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		g = p.gravityModifier;
+		if(g == 0){
+			g = .1f;
+		}
 		if (target.position.y>transform.position.y){
 			p.enableEmission = false;
 		}
@@ -33,6 +37,7 @@ public class Waterfall : MonoBehaviour {
 			p.startLifetime = 1.25f*timeExpected;
 
 		}
+
 		else{
 			transform.LookAt (target.position);
 		}

@@ -15,18 +15,25 @@ public class Earth : MonoBehaviour {
 	public AudioClip rise;
 	public Transform upperIndicator;
 	public Transform lowerIndicator;
+
+	public Terrain terr;
+	public Terrain terrOrig;
 	// Use this for initialization
 	void Start () {
-
+		terr.terrainData = terrOrig.terrainData;
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(!General.kinectControl){
-			lowEnergy += Time.deltaTime;
-			highEnergy += Time.deltaTime;
+			/*lowEnergy += Time.deltaTime;
+			highEnergy += Time.deltaTime;*/
+			if(Input.GetKey(KeyCode.R)){
+				highEnergy = lowEnergy = 1;
+			}
 			if(Input.GetKeyDown (KeyCode.Q)){
+				deform();
 				audSrc.PlayOneShot (smash);
 				highEnergy -= .75f;
 			}
@@ -40,11 +47,11 @@ public class Earth : MonoBehaviour {
 				//temp.start = transform.position + new  Vector3(0,-2, 0)
 			}
 		}
-		else if((.5f*(lHand.position + rHand.position)).y<lowerBound.position.y){
+		if((.5f*(lHand.position + rHand.position)).y<lowerBound.position.y){
 			if(highEnergy>.75f){
 				
 				audSrc.PlayOneShot (smash);
-				lowEnergy -= .5f;
+				highEnergy -= .5f;
 			}
 			lowEnergy += Time.deltaTime;
 		}
@@ -55,11 +62,11 @@ public class Earth : MonoBehaviour {
 				temp.target = transform.position;
 				temp.initialTime = 1;
 				temp.time = 31;
-				highEnergy-=.5f;
+				lowEnergy-=.5f;
 			}
 			highEnergy += Time.deltaTime;
 		}
-		else{
+		else {
 			highEnergy -= Time.deltaTime;
 			lowEnergy -= Time.deltaTime;
 
@@ -72,6 +79,18 @@ public class Earth : MonoBehaviour {
 		lowerIndicator.localScale = (1+lowEnergy)*Vector3.one;
 		upperIndicator.localScale = (1+highEnergy)*Vector3.one;
 	}
+	void deform (){
+		float[,] heights = terr.terrainData.GetHeights(0,0,300,300);
+		int width = heights.GetUpperBound (0);
+		int height = heights.GetUpperBound(1);
+		for(int i = 0; i<width; ++i){
+			for(int j = 0; j<height; ++j){
+				heights[i,j] -= 15;
+			}
+		}
+		terr.terrainData.SetHeights (0,0, heights);
+	}
+
 	void OnGUI(){
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
 		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
