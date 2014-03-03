@@ -29,10 +29,13 @@ public class General : MonoBehaviour {
 	public Texture2D fireInstructions;
 	public Texture2D waterInstructions;
 	public Texture2D instructionIndicator;
-	Texture2D image;
+	Texture2D currentInstructions;
+	Texture2D currentMenu;
 	Texture2D activeImage;
 	public bool destroyOnReload = true;
-	//KinectManager kMngr;
+	//float magnitude = 0;
+	//public float controlCuttoff = 1;
+	KinectManager kMngr;
 
 	Air airControl;
 	Earth earthControl;
@@ -58,10 +61,10 @@ public class General : MonoBehaviour {
 		if(!destroyOnReload){
 			DontDestroyOnLoad(gameObject);
 		}
-		Time.timeScale = 0;
+		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
-		//kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
+		kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
 		airObjects = GameObject.FindGameObjectsWithTag("Air");
 		earthObjects = GameObject.FindGameObjectsWithTag("Earth");
 		fireObjects = GameObject.FindGameObjectsWithTag("Fire");
@@ -71,15 +74,18 @@ public class General : MonoBehaviour {
 		earthControl = GameObject.FindObjectOfType<Earth>();
 		fireControl = GameObject.FindObjectOfType<Fire>();
 		waterControl = GameObject.FindObjectOfType<Water>();
-
-		changeElement(element);
-		image = menuScreen;
-		activeImage = image;
+		
+		currentInstructions = airInstructions;
+		General.element = startingElement;
+		changeElement(startingElement);
+		currentMenu = startScreen;
+		activeImage = currentMenu;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		manageMenu();
+
 
 
 	}
@@ -106,22 +112,27 @@ public class General : MonoBehaviour {
 			if (Input.GetKeyUp (KeyCode.P)){
 				pause(!paused);
 			}
+			if(Input.GetKeyUp (KeyCode.Equals)){
+				pause(true);
+				currentMenu = endScreen;
+				activeImage = currentMenu;
+			}
+			if(Input.GetKeyUp (KeyCode.Backspace)){
+				pause(true);
+				currentMenu = startScreen;
+				activeImage = currentMenu;
+			}
 		}
 
-			/*if (Input.GetKeyUp (KeyCode.P)){
-				paused = !paused;
-				isPaused = paused;
-				if(paused){
-					Time.timeScale = 0;
-				}
-				else{
-					Time.timeScale = 1;
-				}
-			}*/
-		//}
+
 		if(Input.GetKeyUp (KeyCode.Escape)){
 			Application.Quit ();
 		}
+		/*if(Input.GetKeyUp (KeyCode.Tab)){
+			kMngr.RecalibratePlayer1();
+			pause(true);
+
+		}*/
 		
 		
 		if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
@@ -135,6 +146,7 @@ public class General : MonoBehaviour {
 			if (Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45){
 				if (Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45){
 					pause(true);
+					currentMenu = menuScreen;
 				}
 				else if (Vector3.Angle (rHand.position-rElbow.position, Vector3.right)<45){
 					pause(false);
@@ -147,7 +159,9 @@ public class General : MonoBehaviour {
 			if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up) < 60 && Vector3.Angle (rHand.position-rElbow.position, Vector3.left) < 45){
 				quitting = true;
 				if(Vector3.Angle (lElbow.position-lShoulder.position, Vector3.left) <45 && Vector3.Angle (lHand.position-lElbow.position, Vector3.left)<45){
-					Application.Quit();
+					//Application.Quit();
+					currentMenu = endScreen;
+					activeImage = currentMenu;
 				}
 			}
 			else{
@@ -156,20 +170,20 @@ public class General : MonoBehaviour {
 			if(Vector3.Angle (lElbow.position - lShoulder.position, Vector3.left)<45 && Vector3.Angle(lHand.position - lElbow.position, Vector3.up)<45){
 				instructions = true;
 				if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.right)<45){
-					activeImage = image;
+					activeImage = currentInstructions;
 				}
 				if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up)<45){
-					activeImage = menuScreen;
+					activeImage = currentMenu;
 				}
 			}
 			else{
 				instructions = false;
 			}
 			if(Input.GetKeyUp (KeyCode.T)){
-				activeImage = image;
+				activeImage = currentInstructions;
 			}
 			if(Input.GetKeyUp(KeyCode.Y)){
-				activeImage = menuScreen;
+				activeImage = currentMenu;
 			}
 
 
@@ -180,12 +194,12 @@ public class General : MonoBehaviour {
 		if (p){
 			paused = true;
 			isPaused = paused;
-			Time.timeScale = 0;
+			//Time.timeScale = 0;
 		}
 		else{
 			paused = false;
 			isPaused = paused;
-			Time.timeScale = 1;
+			//Time.timeScale = 1;
 		}
 	}
 	public void changeElement(Element e){
@@ -209,28 +223,28 @@ public class General : MonoBehaviour {
 		}
 		if (element == Element.Air){
 			airControl.enabled = true;
-			image = airInstructions;
+			currentInstructions = airInstructions;
 			foreach (GameObject g in airObjects){
 				g.SetActive (true);
 			}
 		}
 		else if (element == Element.Earth){
 			earthControl.enabled = true;;
-			image = earthInstructions;
+			currentInstructions = earthInstructions;
 			foreach (GameObject g in earthObjects){
 				g.SetActive (true);
 			}
 		}
 		else if (element == Element.Fire){
 			fireControl.enabled = true;;
-			image = fireInstructions;
+			currentInstructions = fireInstructions;
 			foreach (GameObject g in fireObjects){
 				g.SetActive (true);
 			}
 		}
 		else if (element == Element.Water){
 			waterControl.enabled = true;;
-			image = waterInstructions;
+			currentInstructions = waterInstructions;
 			foreach (GameObject g in waterObjects){
 				g.SetActive (true);
 			}

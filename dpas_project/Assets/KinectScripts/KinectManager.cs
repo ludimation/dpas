@@ -9,6 +9,9 @@ using System.Text;
 
 public class KinectManager : MonoBehaviour
 {
+	//for general stuff manager
+	//public General gen;
+
 	// Public Bool to determine how many players there are. Default of one user.
 	public bool TwoUsers = false;
 	
@@ -540,10 +543,10 @@ public class KinectManager : MonoBehaviour
 //	}
 	
 //	// Functions that let you recalibrate either player 1 or player 2.
-//	void RecalibratePlayer1()
-//	{
-//		OnUserLost(Player1ID);
-//	}
+	public void RecalibratePlayer1()
+	{
+		OnUserLost(Player1ID);
+	}
 //	
 //	void RecalibratePlayer2()
 //	{
@@ -656,7 +659,7 @@ public class KinectManager : MonoBehaviour
 			{
 				controller.RotateToCalibrationPose(UserId, IsCalibrationNeeded());
 			}
-			
+			//gen.pause (true);
 			// Try to replace that user!
 			Debug.Log("Starting looking for users");
 			KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);

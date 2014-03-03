@@ -42,19 +42,20 @@ public class Earth : MonoBehaviour {
 		}
 		else if((.5f*(lHand.position + rHand.position)).y<lowerBound.position.y){
 			if(highEnergy>.75f){
+				
+				audSrc.PlayOneShot (smash);
+				lowEnergy -= .5f;
+			}
+			lowEnergy += Time.deltaTime;
+		}
+		else if((.5f*(lHand.position + rHand.position)).y>upperBound.position.y){
+			if(lowEnergy>.75f){
 				audSrc.PlayOneShot (rise);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
 				temp.initialTime = 1;
 				temp.time = 31;
 				highEnergy-=.5f;
-			}
-			lowEnergy += Time.deltaTime;
-		}
-		else if((.5f*(lHand.position + rHand.position)).y>upperBound.position.y){
-			if(lowEnergy>.75f){
-				audSrc.PlayOneShot (smash);
-				lowEnergy -= .5f;
 			}
 			highEnergy += Time.deltaTime;
 		}
