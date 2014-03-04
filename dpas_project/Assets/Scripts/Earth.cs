@@ -15,12 +15,20 @@ public class Earth : MonoBehaviour {
 	public AudioClip rise;
 	public Transform upperIndicator;
 	public Transform lowerIndicator;
+	int terrXBound;
+	int terrYBound;
+	int terrRes;
+	//int terrYRes;
 
 	public Terrain terr;
 	public Terrain terrOrig;
 	// Use this for initialization
 	void Start () {
-		terr.terrainData = terrOrig.terrainData;
+		terrXBound = terr.terrainData.heightmapWidth;
+		terrYBound = terr.terrainData.heightmapHeight;
+		terrRes = terr.terrainData.detailResolution;
+		float[,] temp = terrOrig.terrainData.GetHeights (0,0, terrOrig.terrainData.heightmapWidth, terrOrig.terrainData.heightmapHeight);
+		terr.terrainData.SetHeights (0,0, temp);
 	
 	}
 	
@@ -79,16 +87,47 @@ public class Earth : MonoBehaviour {
 		lowerIndicator.localScale = (1+lowEnergy)*Vector3.one;
 		upperIndicator.localScale = (1+highEnergy)*Vector3.one;
 	}
-	void deform (){
-		float[,] heights = terr.terrainData.GetHeights(0,0,300,300);
+	void deform (float radius = 50){
+		float x = transform.position.x-terr.transform.position.x;
+		float y = transform.position.z-terr.transform.position.z;
+		x /= terr.terrainData.size.x;
+		y /= terr.terrainData.size.z;
+		radius /= terr.terrainData.size.magnitude;
+		//Debug.Log (x.ToString() +", "+ y.ToString ());
+		x *= terr.terrainData.heightmapWidth;
+		y *= terr.terrainData.heightmapHeight;
+		radius *= Mathf.Sqrt ((terr.terrainData.heightmapWidth*terr.terrainData.heightmapWidth) + (terr.terrainData.heightmapHeight*terr.terrainData.heightmapHeight));
+		//Debug.Log (x.ToString() +", "+ y.ToString ());
+
+		int tX = (int)x;
+		//tX = Mathf.Max (tX, 0);
+		//tX = Mathf.Min (tX, terr.terrainData.heightmapWidth);
+		int tY = (int)y;
+		int tR = (int)radius;
+		//tY = Mathf.Max (tY, 0);
+		//tY = Mathf.Min (tY, terr.terrainData.heightmapHeight);
+
+		//Debug.Log (tX.ToString() +", "+ tY.ToString ());
+		float[,] heights = terr.terrainData.GetHeights(tX-tR,tY-tR,tR*2,tR*2);
 		int width = heights.GetUpperBound (0);
 		int height = heights.GetUpperBound(1);
+		Vector2 temp = Vector2.zero;
+		Vector2 p =  tR*Vector2.one;
 		for(int i = 0; i<width; ++i){
 			for(int j = 0; j<height; ++j){
-				heights[i,j] -= 15;
+				temp.x = i;
+				temp.y = j;
+				if(i == tR && j == tR){
+					heights[i,j] =.2f;
+				}
+				else{
+				heights[i,j] =.1f;
+				}
+
+				Debug.Log (temp.ToString ()+", "+p.ToString ()+": "+Vector2.Distance (temp,p).ToString());
 			}
 		}
-		terr.terrainData.SetHeights (0,0, heights);
+		terr.terrainData.SetHeights (tX-5,tY-5, heights);
 	}
 
 	void OnGUI(){
