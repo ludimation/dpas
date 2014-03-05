@@ -42,6 +42,7 @@ public class Fire : MonoBehaviour {
 				size -= Time.deltaTime;
 			}
 			size = Mathf.Max (.1f, size);
+			size = Mathf.Min (10f, size);
 		}
 		part.emissionRate = size*50;
 		part.startSpeed = size*.1f;
