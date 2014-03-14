@@ -28,6 +28,7 @@ public class Kinectalogue : MonoBehaviour {
 	float yaw = 0;
 	float pitch = 0;
 	float roll = 0;
+	float posMagnitude = 0;
 	//float posMagnitude;
 	Vector3 diff;
 	//Vector3 rot;
@@ -54,11 +55,14 @@ public class Kinectalogue : MonoBehaviour {
 			
 			diff = target.transform.position-reference;
 			diff.Scale (new Vector3(1,0,1));
-			
+
+			posMagnitude = diff.magnitude;
 			if(diff.magnitude > posMax){
 				diff.Normalize();
 				diff *= posMax;
+
 			}
+
 			diff.x *= -1;
 			
 			Vector3 shoulders = rShoulder.transform.position + lShoulder.transform.position;
@@ -157,6 +161,10 @@ public class Kinectalogue : MonoBehaviour {
 	public void calibratePosition(){
 		reference = target.transform.position;
 	}
+	public float getMagnitudeRaw(){
+		return posMagnitude;
+	}
+
 	
 	void OnGUI(){
 		if (debugGUI){

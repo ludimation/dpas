@@ -9,6 +9,9 @@ using System.Text;
 
 public class KinectManager : MonoBehaviour
 {
+	//for general stuff manager
+	//public General gen;
+
 	// Public Bool to determine how many players there are. Default of one user.
 	public bool TwoUsers = false;
 	
@@ -540,10 +543,10 @@ public class KinectManager : MonoBehaviour
 //	}
 	
 //	// Functions that let you recalibrate either player 1 or player 2.
-//	void RecalibratePlayer1()
-//	{
-//		OnUserLost(Player1ID);
-//	}
+	public void RecalibratePlayer1()
+	{
+		OnUserLost(Player1ID);
+	}
 //	
 //	void RecalibratePlayer2()
 //	{
@@ -656,7 +659,7 @@ public class KinectManager : MonoBehaviour
 			{
 				controller.RotateToCalibrationPose(UserId, IsCalibrationNeeded());
 			}
-			
+			//gen.pause (true);
 			// Try to replace that user!
 			Debug.Log("Starting looking for users");
 			KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);
@@ -698,9 +701,13 @@ public class KinectManager : MonoBehaviour
 	private Quaternion ConvertMatrixToQuat(KinectWrapper.SkeletonJointOrientation ori, int joint, bool flip)
 	{
 		Matrix4x4 mat = Matrix4x4.identity;
-		
-		Quaternion quat = new Quaternion(ori.x, ori.y, ori.z, ori.w);
-		mat.SetTRS(Vector3.zero, quat, Vector3.one);
+
+		/*fix attempt:*/Vector4 oriVec = new Vector4(ori.x, ori.y, ori.z, ori.w);
+		oriVec.Normalize();
+		Quaternion q = new Quaternion(oriVec.x, oriVec.y, oriVec.z, oriVec.w);
+		mat.SetTRS(Vector3.zero, q, Vector3.one);/*end fix attempt*/
+		//Quaternion quat = new Quaternion(ori.x, ori.y, ori.z, ori.w);
+		//mat.SetTRS(Vector3.zero, quat, Vector3.one);/*error FLAG*/
 
 		Vector3 vZ = mat.GetColumn(2);
 		Vector3 vY = mat.GetColumn(1);

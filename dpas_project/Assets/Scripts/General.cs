@@ -16,71 +16,239 @@ public class General : MonoBehaviour {
 
 	public bool paused = true;
 	public static bool isPaused = true;
+	bool quitting = false;
 	bool menu = false;
-	public Texture2D image;
-	//public bool destroyOnLoad = false;
+	bool instructions = false;
+	public Texture2D menuIndicator;
+	public Texture2D quitIndicator;
+	public Texture2D menuScreen;
+	public Texture2D startScreen;
+	public Texture2D endScreen;
+	public Texture2D airInstructions;
+	public Texture2D earthInstructions;
+	public Texture2D fireInstructions;
+	public Texture2D waterInstructions;
+	public Texture2D instructionIndicator;
+	Texture2D currentInstructions;
+	Texture2D currentMenu;
+	Texture2D activeImage;
 	public bool destroyOnReload = true;
+	//float magnitude = 0;
+	//public float controlCuttoff = 1;
 	KinectManager kMngr;
+
+	Air airControl;
+	Earth earthControl;
+	Fire fireControl;
+	Water waterControl;
+
+	public Element startingElement = Element.None;
+	public static Element element = Element.None;
+	GameObject[] airObjects;
+	GameObject[] earthObjects;
+	GameObject[] fireObjects;
+	GameObject[] waterObjects;
+
+	public enum Element {
+		Air = 1,
+		Earth = 2,
+		Fire = 3,
+		Water = 4,
+		None = 5
+	};
 	// Use this for initialization
 	void Start () {
 		if(!destroyOnReload){
 			DontDestroyOnLoad(gameObject);
 		}
+		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
 		kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
+		airObjects = GameObject.FindGameObjectsWithTag("Air");
+		earthObjects = GameObject.FindGameObjectsWithTag("Earth");
+		fireObjects = GameObject.FindGameObjectsWithTag("Fire");
+		waterObjects = GameObject.FindGameObjectsWithTag("Water");
+
+		airControl = GameObject.FindObjectOfType<Air>();
+		earthControl = GameObject.FindObjectOfType<Earth>();
+		fireControl = GameObject.FindObjectOfType<Fire>();
+		waterControl = GameObject.FindObjectOfType<Water>();
+		
+		currentInstructions = airInstructions;
+		General.element = startingElement;
+		changeElement(startingElement);
+		currentMenu = startScreen;
+		activeImage = currentMenu;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		/*if(kMngr.Player1Avatars[0] == null){
-			kMngr.Player1Avatars[0] = (GameObject)GameObject.Find ("kAvatar");
-		}
-		if(kMngr.Player1Avatars[1] == null){
-			kMngr.Player1Avatars[1] = (GameObject)GameObject.Find ("kController");
-		}*/
-		if (Input.GetKeyUp (KeyCode.J)){
-			General.printJointPos (avatarRoot);
-		}
-		if(Input.GetKeyUp (KeyCode.F)){
-			Application.LoadLevel("s-fire1");
-		}
-		if(Input.GetKeyUp (KeyCode.E)){
-			Application.LoadLevel("s-earth2");
-		}
-		if(Input.GetKeyUp (KeyCode.T)){
-			Application.LoadLevel ("testFire");
-		}
-		if(Input.GetKeyUp (KeyCode.Y)){
-			Application.LoadLevel("testEarth");
+		manageMenu();
+
+
+
+	}
+	void manageMenu(){
+		if(!kinectControl){
+			if(Input.GetKeyUp (KeyCode.F)){
+				
+				changeElement(Element.Fire);
+			}
+			if(Input.GetKeyUp (KeyCode.G)){
+				
+				changeElement(Element.Earth);
+			}
+			if(Input.GetKeyUp (KeyCode.H)){
+				
+				
+				changeElement(Element.Water);
+			}
+			if(Input.GetKeyUp (KeyCode.J)){
+				
+				
+				changeElement(Element.Air);
+			}
+			if (Input.GetKeyUp (KeyCode.P)){
+				pause(!paused);
+			}
+			if(Input.GetKeyUp (KeyCode.Equals)){
+				pause(true);
+				currentMenu = endScreen;
+				activeImage = currentMenu;
+			}
+			if(Input.GetKeyUp (KeyCode.Backspace)){
+				pause(true);
+				currentMenu = startScreen;
+				activeImage = currentMenu;
+			}
 		}
 
+
+		if(Input.GetKeyUp (KeyCode.Escape)){
+			Application.Quit ();
+		}
+		/*if(Input.GetKeyUp (KeyCode.Tab)){
+			kMngr.RecalibratePlayer1();
+			pause(true);
+
+		}*/
+		
+		
 		if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
 			menu = true;
 		}
 		else{
 			menu = false;
 		}
-		if (menu && Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45){
-			if (Vector3.Angle (rHand.position-rElbow.position, Vector3.up) < 45){
-				paused = true;
-				isPaused = paused;
-			}
-			else if (Vector3.Angle (rHand.position-rElbow.position, Vector3.right) < 45){
-				paused = false;
-				isPaused = paused;
+		//if (menu && ((Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45)||(!General.kinectControl&&Input.GetKey(KeyCode.P)))){
+		if(menu){
+			if (Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45){
+				if (Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45){
+					pause(true);
+					currentMenu = menuScreen;
+				}
+				else if (Vector3.Angle (rHand.position-rElbow.position, Vector3.right)<45){
+					pause(false);
+				}
 			}
 
 		}
-		if (Input.GetKeyUp (KeyCode.P)){
-			paused = !paused;
+			
+		if (paused){
+			if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up) < 60 && Vector3.Angle (rHand.position-rElbow.position, Vector3.left) < 45){
+				quitting = true;
+				if(Vector3.Angle (lElbow.position-lShoulder.position, Vector3.left) <45 && Vector3.Angle (lHand.position-lElbow.position, Vector3.left)<45){
+					//Application.Quit();
+					currentMenu = endScreen;
+					activeImage = currentMenu;
+				}
+			}
+			else{
+				quitting = false;
+			}
+			if(Vector3.Angle (lElbow.position - lShoulder.position, Vector3.left)<45 && Vector3.Angle(lHand.position - lElbow.position, Vector3.up)<45){
+				instructions = true;
+				if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.right)<45){
+					activeImage = currentInstructions;
+				}
+				if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up)<45){
+					activeImage = currentMenu;
+				}
+			}
+			else{
+				instructions = false;
+			}
+			if(Input.GetKeyUp (KeyCode.T)){
+				activeImage = currentInstructions;
+			}
+			if(Input.GetKeyUp(KeyCode.Y)){
+				activeImage = currentMenu;
+			}
+
+
+
+		}
+	}
+	public void pause(bool p){
+		if (p){
+			paused = true;
 			isPaused = paused;
+			//Time.timeScale = 0;
 		}
-		if(Input.GetKey(KeyCode.Q)){
+		else{
 			paused = false;
-			isPaused = false;
+			isPaused = paused;
+			//Time.timeScale = 1;
 		}
-	
+	}
+	public void changeElement(Element e){
+		element = e;
+		airControl.enabled = false;
+		earthControl.enabled = false;
+		fireControl.enabled = false;
+		waterControl.enabled = false;
+
+		foreach (GameObject g in airObjects){
+			g.SetActive (false);
+		}
+		foreach (GameObject g in earthObjects){
+			g.SetActive (false);
+		}
+		foreach (GameObject g in fireObjects){
+			g.SetActive (false);
+		}
+		foreach (GameObject g in waterObjects){
+			g.SetActive (false);
+		}
+		if (element == Element.Air){
+			airControl.enabled = true;
+			currentInstructions = airInstructions;
+			foreach (GameObject g in airObjects){
+				g.SetActive (true);
+			}
+		}
+		else if (element == Element.Earth){
+			earthControl.enabled = true;;
+			currentInstructions = earthInstructions;
+			foreach (GameObject g in earthObjects){
+				g.SetActive (true);
+			}
+		}
+		else if (element == Element.Fire){
+			fireControl.enabled = true;;
+			currentInstructions = fireInstructions;
+			foreach (GameObject g in fireObjects){
+				g.SetActive (true);
+			}
+		}
+		else if (element == Element.Water){
+			waterControl.enabled = true;;
+			currentInstructions = waterInstructions;
+			foreach (GameObject g in waterObjects){
+				g.SetActive (true);
+			}
+		}
 	}
 
 	public static void printJointPos(Transform root){
@@ -93,17 +261,22 @@ public class General : MonoBehaviour {
 
 	}
 	void OnGUI(){
-		if (menu){
-			GUI.Box (new Rect(50, 0, Screen.width - 100, 50), "menu");
-		}
+
 		if (paused){
-			if (image == null){
-				GUI.Box (new Rect(50, 50, Screen.width - 100, 100), "paused");
-			}
-			else{
-				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), image);
-			}
+
+			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), activeImage);
+
 
 		}
+		if (menu){
+			GUI.DrawTexture (new Rect(0, 0, Screen.width, Screen.height), menuIndicator);
+		}
+		if (quitting){
+			GUI.DrawTexture (new Rect((Screen.width/2)-50, (Screen.height/2)-25, 100, 50), quitIndicator);
+		}
+		if (instructions){
+			GUI.DrawTexture(new Rect(Screen.width-75, 0, 75, Screen.height), instructionIndicator);
+		}
+
 	}
 }

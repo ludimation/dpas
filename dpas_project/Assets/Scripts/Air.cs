@@ -5,10 +5,10 @@ public class Air : MonoBehaviour {
 	public Kinectalogue controller;
 	public AudioSource AudSrc;
 	public AudioClip launch;
-	public float speed = 1;
-	public float rotSpeed = 45;
-	public float deadzone = .1f;
-	public float rotDeadzone = 2;
+	public ParticleSystem part;
+	public Vector3 partRot = Vector3.forward;
+	public float size = 1;
+	public Vector3 cycloneSize = Vector3.one;
 
 	// Use this for initialization
 	void Start () {
@@ -17,31 +17,21 @@ public class Air : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 move;
-		float yaw;
-		if (General.kinectControl){
-			move = controller.getDiff();
-			move.Scale (new Vector3(1,1,1));
-			yaw = controller.getRoll ();
-			
-			if(move.magnitude<deadzone){
-				move = Vector3.zero;
+		if(!General.kinectControl){
+			if (Input.GetKey(KeyCode.Space)){
+				size += Time.deltaTime;
 			}
-			//transform.Translate (temp);
-			yaw = controller.getYaw();
-			if (Mathf.Abs (yaw) < rotDeadzone){
-				yaw = 0;
+			if(Input.GetKey (KeyCode.B)){
+				size -= Time.deltaTime;
 			}
-			
-			
+			size = Mathf.Max (.1f, size);
+			//Debug.Log ("max = "+Mathf.Max (.1f, size).ToString());
 		}
-		else{
-			move = new Vector3(Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
-			yaw = Input.GetAxis ("Mouse X");
-		}
-		//transform.Rotate (rotSpeed*new Vector3(0, yaw, 0));
-		//transform.Translate (speed*Time.deltaTime*move);
-		
+		part.transform.localScale = (1/size)*cycloneSize;
+
+		//part.startLifetime = size*5;
+		//partRot = Vector3.forward * size * 50;
+		part.transform.Rotate(Time.deltaTime * partRot * size);
 
 	}
 }
