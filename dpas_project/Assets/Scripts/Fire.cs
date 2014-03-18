@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Fire : MonoBehaviour {
 	public Kinectalogue controller;
 	public AudioSource AudSrc;
 	public AudioClip launch;
 	public GameObject projectile;
+	public FireAttack fireBlast;
 	//public float speed = 1;
 	//public float rotSpeed = 45;
 	//public float deadzone = .1f;
@@ -22,8 +24,12 @@ public class Fire : MonoBehaviour {
 	public float fireballSpeed = 1f;
 	//public Projectile lShot;
 	public Projectile fireball;
-	public ParticleSystem part;
-	public float size;
+	//public ParticleSystem part;
+	public List<ParticleSystem> flames;
+
+	//public FireAttack fireBlast;
+
+	//public float size;
 	// Use this for initialization
 	void Start () {
 		lHandOld = lHand.position;
@@ -36,16 +42,20 @@ public class Fire : MonoBehaviour {
 	void Update () {
 		if(!General.kinectControl){
 			if (Input.GetKey(KeyCode.Space)){
-				size += Time.deltaTime;
+				//General.playerSize += Time.deltaTime;
+				General.increaseSize(Time.deltaTime, 15);
+
 			}
 			if(Input.GetKey (KeyCode.B)){
-				size -= Time.deltaTime;
+				General.increaseSize(Time.deltaTime, 15);
+				//General.playerSize -= Time.deltaTime;
 			}
-			size = Mathf.Max (.1f, size);
-			size = Mathf.Min (10f, size);
+			//General.playerSize = Mathf.Max (.1f, General.playerSize);
+			//General.playerSize = Mathf.Min (10f, General.playerSize);
 		}
-		part.emissionRate = size*50;
-		part.startSpeed = size*.1f;
+		//part.emissionRate = General.playerSize*50;
+		//part.startSpeed = General.playerSize*.1f;
+		adjustFlames(General.playerSize);
 
 		////require movement away from root
 		/*if(Vector3.Distance (rHandOld, rootOld) < Vector3.Distance (rHand.position, root.position)){
@@ -107,6 +117,13 @@ public class Fire : MonoBehaviour {
 				temp.mortal = true;
 				temp.lifespan = 3;
 			}
+			if (Input.GetKeyDown (KeyCode.X)){
+				FireAttack temp = (FireAttack)Instantiate(fireBlast, root.position+transform.forward, transform.rotation);
+				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
+				foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
+				temp.strength = General.playerSize;
+			}
+			//Debug.DrawRay(root.position, transform.forward);
 
 		}
 		rHandOld = rHand.position;
@@ -116,7 +133,17 @@ public class Fire : MonoBehaviour {
 		//rShot.transform.position = rHand.position;
 
 	}
+	void adjustFlames(float s){
 
+		foreach (ParticleSystem part in flames){
+			part.emissionRate = s*50;
+			part.startSpeed = s*.1f;
+		}
+	}
+	public void Sleep(){
+		//called before deactivating script
+
+	}
 
 	/*void activate(){
 		part.gameObject.SetActive(true);

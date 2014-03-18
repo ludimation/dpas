@@ -157,6 +157,10 @@ public class Earth : MonoBehaviour {
 		terr.terrainData.SetHeights (0,0, temp);
 		//terr.enabled= true;
 	}
+	public void Sleep(){
+		//called before deactivating script
+		
+	}
 
 	void OnGUI(){
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");

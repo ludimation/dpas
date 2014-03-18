@@ -12,4 +12,9 @@ public class Water : MonoBehaviour {
 	void Update () {
 	
 	}
+	public void Sleep(){
+		//called before deactivating script
+		
+	}
+
 }

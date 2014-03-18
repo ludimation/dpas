@@ -15,7 +15,7 @@ Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\build_0_0_D
 Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\build_0_0_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\build_0_0_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
 Loading C:\Users\palon\Documents\GitHub\dpas\dpas_project\build_0_0_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
-- Completed reload, in  0.427 seconds
+- Completed reload, in  0.141 seconds
 desktop: 1440x900 60Hz; virtual: 1440x900 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -35,10 +35,24 @@ terr.enabled = True
  
 (Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
 
-System.Exception: Error initing OpenNI: 	DeviceOpen using default: no devices found
-
-  at KinectManager.Start () [0x00000] in <filename unknown>:0 
+Waiting for users to calibrate
  
 (Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
 
 Platform assembly: C:\Users\palon\Documents\GitHub\dpas\dpas_project\build_0_0_Data\Managed\Boo.Lang.dll (this message is harmless)
+[1] New user
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration started
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[1] Calibration success
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+All players calibrated.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+

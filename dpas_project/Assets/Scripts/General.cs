@@ -4,6 +4,9 @@ using System.Collections;
 public class General : MonoBehaviour {
 	public static bool kinectControl;
 	public bool controlByKinect = true;
+	public static bool keyControlOnly;
+	public bool keyboardOnly = false;
+
 	public Transform avatarRoot;
 
 	public Transform lHand;
@@ -16,6 +19,11 @@ public class General : MonoBehaviour {
 
 	public bool paused = true;
 	public static bool isPaused = true;
+
+
+	public static float playerSize = 1;
+	public static General g;
+
 	bool quitting = false;
 	bool menu = false;
 	bool instructions = false;
@@ -58,12 +66,15 @@ public class General : MonoBehaviour {
 	};
 	// Use this for initialization
 	void Start () {
+
 		if(!destroyOnReload){
 			DontDestroyOnLoad(gameObject);
 		}
+		g = this;
 		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
+		General.keyControlOnly = keyboardOnly;
 		kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
 		airObjects = GameObject.FindGameObjectsWithTag("Air");
 		earthObjects = GameObject.FindGameObjectsWithTag("Earth");
@@ -76,7 +87,7 @@ public class General : MonoBehaviour {
 		waterControl = GameObject.FindObjectOfType<Water>();
 		
 		currentInstructions = airInstructions;
-		General.element = startingElement;
+		//General.element = startingElement;
 		changeElement(startingElement);
 		currentMenu = startScreen;
 		activeImage = currentMenu;
@@ -85,6 +96,7 @@ public class General : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		manageMenu();
+		Debug.Log(playerSize.ToString()+", "+General.playerSize.ToString());
 
 
 
@@ -134,7 +146,7 @@ public class General : MonoBehaviour {
 
 		}*/
 		
-		
+		//Debug.Log (Vector3.Angle (lElbow.position-lShoulder.position, Vector3.up).ToString ()+", "+ Vector3.Angle(lHand.position-lElbow.position, Vector3.right).ToString());
 		if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
 			menu = true;
 		}
@@ -203,7 +215,13 @@ public class General : MonoBehaviour {
 		}
 	}
 	public void changeElement(Element e){
+		if(element == e){
+			return;
+		}
 		element = e;
+		if(airControl.enabled){
+			airControl.Sleep();
+		}
 		airControl.enabled = false;
 		earthControl.enabled = false;
 		fireControl.enabled = false;
@@ -258,6 +276,15 @@ public class General : MonoBehaviour {
 			msg += "\n"+c.name+": "+c.position.ToString ();
 		}
 		Debug.Log (msg);
+
+	}
+	public static float increaseSize(float amount, float limit){
+		if (playerSize > limit){
+			return playerSize;
+		}
+		playerSize += amount;
+		playerSize = Mathf.Min (playerSize, limit);
+		return playerSize;
 
 	}
 	void OnGUI(){
