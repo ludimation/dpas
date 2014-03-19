@@ -7,13 +7,18 @@ public class Fire : MonoBehaviour {
 	public AudioSource AudSrc;
 	public AudioClip launch;
 	public GameObject projectile;
+	bool primed = false;
 	public FireAttack fireBlast;
 	//public float speed = 1;
 	//public float rotSpeed = 45;
 	//public float deadzone = .1f;
 	//public float rotDeadzone = 2;
 	public Transform lHand;
+	public Transform lElbow;
+	public Transform lShoulder;
 	public Transform rHand;
+	public Transform rElbow;
+	public Transform rShoulder;
 	public Transform root;
 	Vector3 lHandOld;
 	//Vector3 lShotOrigin;
@@ -47,7 +52,7 @@ public class Fire : MonoBehaviour {
 
 			}
 			if(Input.GetKey (KeyCode.B)){
-				General.increaseSize(Time.deltaTime, 15);
+				General.increaseSize(-Time.deltaTime, 15);
 				//General.playerSize -= Time.deltaTime;
 			}
 			//General.playerSize = Mathf.Max (.1f, General.playerSize);
@@ -82,43 +87,54 @@ public class Fire : MonoBehaviour {
 		//based on angle between hand velocity and root/hand position
 		if(Vector3.Angle (lHand.position-lHandOld, lHandOld-rootOld)>60){
 			if(Vector3.Distance (lHandOld, lHand.position)> tolerance*Time.deltaTime){
-				AudSrc.PlayOneShot (launch);
-				Projectile temp = (Projectile)Instantiate (fireball, lHand.position, Quaternion.identity);
-				//temp.velocity = fireballSpeed*(lHand.position-lHandOld+(transform.rotation*move));
-				temp.velocity = fireballSpeed*(lHand.position-root.position);
+				//AudSrc.PlayOneShot (launch);
+				Projectile temp = (Projectile)Instantiate (fireball, (transform.rotation*lHand.position)+transform.position, Quaternion.identity);
+				temp.velocity = fireballSpeed*(transform.rotation*(lHand.position-root.position));
 				temp.mortal = true;
 				temp.lifespan = 3;
 			}
 		}
 		if(Vector3.Angle (rHand.position-rHandOld, rHandOld-rootOld)>60){
 			if(Vector3.Distance (rHandOld, rHand.position)> tolerance*Time.deltaTime){
-				AudSrc.PlayOneShot (launch);
-				Projectile temp = (Projectile)Instantiate (fireball, rHand.position, Quaternion.identity);
+				//AudSrc.PlayOneShot (launch);
+				Projectile temp = (Projectile)Instantiate (fireball, (transform.rotation*rHand.position)+transform.position, Quaternion.identity);
 				//temp.velocity = fireballSpeed*(rHand.position-rHandOld+(transform.rotation*move));
-				temp.velocity = fireballSpeed*(rHand.position-root.position);
+				temp.velocity = fireballSpeed*(transform.rotation*(rHand.position-root.position));
 				temp.mortal = true;
 				temp.lifespan = 3;
 			}
 		}
+		//if(Vector3.Angle (lHand.position-lElbow.position, Vector3.up) < 45 && Vector3.Angle (rHand.position-rElbow.position, Vector3.up) < 45){
+		//	primed = true;
+		//}
+		else if(Vector3.Angle (lHand.position-lElbow.position, Vector3.forward) < 45 && Vector3.Angle (rHand.position-rElbow.position, Vector3.forward) < 45){
+			FireAttack temp = (FireAttack)Instantiate(fireBlast, root.position+(2*transform.forward)+transform.position, transform.rotation);
+			Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
+			AudSrc.PlayOneShot (launch);
+			foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
+			temp.strength = General.playerSize;
+			//primed = false;
+
+		}
 		if(!General.kinectControl){
 			if (Input.GetKeyDown (KeyCode.Q)){
 				AudSrc.PlayOneShot (launch);
-				Projectile temp = (Projectile)Instantiate (fireball, lHand.position, Quaternion.identity);
+				Projectile temp = (Projectile)Instantiate (fireball, (transform.rotation*lHand.position)+transform.position, Quaternion.identity);
 				//temp.velocity = fireballSpeed*(lHand.position-lHandOld+(transform.rotation*move));
-				temp.velocity = fireballSpeed*(lHand.position-root.position);
+				temp.velocity = fireballSpeed*(transform.forward);
 				temp.mortal = true;
 				temp.lifespan = 3;
 			}
 			if(Input.GetKeyDown (KeyCode.E)){
 				AudSrc.PlayOneShot (launch);
-				Projectile temp = (Projectile)Instantiate (fireball, rHand.position, Quaternion.identity);
+				Projectile temp = (Projectile)Instantiate (fireball, (transform.rotation *rHand.position)+transform.position, Quaternion.identity);
 				//temp.velocity = fireballSpeed*(rHand.position-rHandOld+(transform.rotation*move));
-				temp.velocity = fireballSpeed*(rHand.position-root.position);
+				temp.velocity = fireballSpeed*(transform.forward);
 				temp.mortal = true;
 				temp.lifespan = 3;
 			}
 			if (Input.GetKeyDown (KeyCode.X)){
-				FireAttack temp = (FireAttack)Instantiate(fireBlast, root.position+transform.forward, transform.rotation);
+				FireAttack temp = (FireAttack)Instantiate(fireBlast, transform.position+(2*transform.forward)+Vector3.up, transform.rotation);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
 				temp.strength = General.playerSize;
