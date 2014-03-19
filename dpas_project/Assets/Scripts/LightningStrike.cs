@@ -12,12 +12,15 @@ public class LightningStrike : MonoBehaviour {
 	float minDist = -1f;
 	public Air source;
 	public LineRenderer line;
+	public AudioClip thunder;
+
 	void Start () {
 		if(line == null){
 			line = gameObject.GetComponent<LineRenderer>();
 		}
 		strikes = new List<Shrubbery>();
 		rigidbody.AddForce (-15 * Vector3.up, ForceMode.VelocityChange);
+
 	
 	}
 	
@@ -26,6 +29,7 @@ public class LightningStrike : MonoBehaviour {
 		time -= Time.deltaTime;
 		if (time < 0){
 			Destroy(gameObject);
+			return;
 		}
 		line.SetVertexCount(strikes.Count);
 		if(strikes.Count>0){
@@ -38,12 +42,13 @@ public class LightningStrike : MonoBehaviour {
 			}
 			Debug.DrawRay (strikes[i-1].transform.position, strikes[i].transform.position-strikes[i-1].transform.position);
 			
-			line.SetPosition (i, strikes[i].transform.position);
+			line.SetPosition (i, strikes[i].transform.position+(7*Vector3.up));
 		}
 		if (temp != null){
 			if(temp.resistance < strength){
+				source.AudSrc.PlayOneShot(thunder);
 				strikes.Add(temp);
-				temp.burning = true;
+				temp.Ignite();
 				Debug.Log ("successful strike, "+ strikes.Count.ToString () + " targets total");
 				temp = null;
 				General.g.changeElement (General.Element.Fire);

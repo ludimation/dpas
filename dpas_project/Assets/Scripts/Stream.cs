@@ -17,6 +17,11 @@ public class Stream : MonoBehaviour {
 		Fire f = other.GetComponent<Fire>();
 		if (f != null){
 			General.g.changeElement(General.Element.Air);
+			return;
+		}
+		FireAttack atk = other.GetComponent<FireAttack>();
+		if (atk != null){
+			Destroy(other.gameObject);
 		}
 
 	}

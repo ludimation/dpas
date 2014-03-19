@@ -34,6 +34,10 @@ public class Shrubbery : MonoBehaviour {
 	/*void OnCollisionEnter(Collision col){
 		Debug.Log ("burn baby burn");
 	}*/
+	public void Ignite(){
+		burning = true;
+		flame.enableEmission = true;
+	}
 
 	void OnTriggerEnter (Collider other){
 		//Debug.Log ("foo");
@@ -51,8 +55,9 @@ public class Shrubbery : MonoBehaviour {
 			if (source != null){
 				if (source.strength > resistance){
 					Debug.Log("trigger entered");
-					burning = true;
-					flame.enableEmission = true;
+					Ignite();
+					//burning = true;
+					//flame.enableEmission = true;
 				}
 			}
 		}
