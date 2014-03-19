@@ -96,7 +96,7 @@ public class General : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		manageMenu();
-		Debug.Log(playerSize.ToString()+", "+General.playerSize.ToString());
+		//Debug.Log(playerSize.ToString()+", "+General.playerSize.ToString());
 
 
 

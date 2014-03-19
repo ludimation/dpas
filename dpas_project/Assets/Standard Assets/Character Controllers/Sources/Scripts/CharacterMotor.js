@@ -218,8 +218,13 @@ private function UpdateFunction () {
 	// Find out how much we need to push towards the ground to avoid loosing grouning
 	// when walking down a step or over a sharp change in slope.
 	var pushDownOffset : float = Mathf.Max(controller.stepOffset, Vector3(currentMovementOffset.x, 0, currentMovementOffset.z).magnitude);
-	if (grounded)
+	if (grounded){
 		currentMovementOffset -= pushDownOffset * Vector3.up;
+	}
+	if (float.IsNaN(currentMovementOffset.x)||float.IsNaN(currentMovementOffset.y)||float.IsNaN(currentMovementOffset.z)){
+		Debug.LogWarning("character motor can go die in a corner");
+		currentMovementOffset = .1f*Vector3.one;
+	}
 	
 	// Reset variables that will be set by collision function
 	movingPlatform.hitPlatform = null;

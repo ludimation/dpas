@@ -48,7 +48,7 @@ public class Air : MonoBehaviour {
 				//General.playerSize += Time.deltaTime;
 			}
 			if(Input.GetKey (KeyCode.B)){
-				General.increaseSize(Time.deltaTime, 15);
+				General.increaseSize(-Time.deltaTime, 15);
 				//General.playerSize -= Time.deltaTime;
 			}
 			//General.playerSize = Mathf.Max (.1f, General.playerSize);
@@ -65,17 +65,19 @@ public class Air : MonoBehaviour {
 		if (transform.position.y > ionizationHeight){
 			ionized = true;
 		}
-		part.transform.localScale = (1/General.playerSize)*cycloneSize;
+		//part.transform.localScale = (1/General.playerSize)*cycloneSize;
 		if(charMotor.grounded){
 			if(ionized){
 				LightningStrike temp = (LightningStrike)Instantiate(bolt, transform.position+(25*Vector3.up), Quaternion.identity);
 				temp.source = this;
 				temp.strength = General.playerSize;
 				ionized = false;
+				charMotor.inputJump = false;
 				
 			}
 			else{
-				charMotor.inputJump = true;
+				//charMotor.inputJump = true;
+				charMotor.inputJump = !charMotor.inputJump;
 			}
 		}
 		else{
@@ -90,23 +92,28 @@ public class Air : MonoBehaviour {
 				float a = Vector3.Angle (lHand.position-lElbow.position, Vector3.up);
 				float b = Vector3.Angle (rHand.position-rElbow.position, Vector3.up);
 				if(a < 60 && b <60){
-					charMotor.movement.gravity = -grav*(60- Mathf.Min(a, b));
+					//charMotor.movement.gravity = -(grav/60)*(60- Mathf.Min(a, b));
+					charMotor.movement.gravity = - grav;
 				}
 				else if (a>120 && b>120){
-					charMotor.movement.gravity = grav*(Mathf.Max (a, b) - 120);
+					//charMotor.movement.gravity = (grav/60)*(Mathf.Max (a, b) - 180);
+					charMotor.movement.gravity = grav;
+				}
+				else {
+					charMotor.movement.gravity = grav*.3f;
 				}
 			}
 				//charMotor.movement.gravity = Input.GetAxis ("Flight") * 50;
 		}
 		//part.startLifetime = General.playerSize*5;
 		//partRot = Vector3.forward * General.playerSize * 50;
-		part.transform.Rotate(Time.deltaTime * partRot * General.playerSize);
+		//part.transform.Rotate(Time.deltaTime * partRot * General.playerSize);
 
 	}
 
 	public void Sleep(){
 		//called before deactivating
-		charMotor.inputJump=false;
+		charMotor.inputJump = false;
 		charMotor.movement.gravity = 10;
 		ionized = false;
 	}
