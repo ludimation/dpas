@@ -91,9 +91,6 @@ public class Air : MonoBehaviour {
 			else{
 				float a = Vector3.Angle (lHand.position-lElbow.position, Vector3.up);
 				float b = Vector3.Angle (rHand.position-rElbow.position, Vector3.up);
-				/*if(true){
-					Debug.Log ("hope this works");
-				}*/
 				if(a < 60 && b <60){
 					//charMotor.movement.gravity = -(grav/60)*(60- Mathf.Min(a, b));
 					charMotor.movement.gravity = - grav;
@@ -119,8 +116,5 @@ public class Air : MonoBehaviour {
 		charMotor.inputJump = false;
 		charMotor.movement.gravity = 10;
 		ionized = false;
-	}
-	public void UnSleep(){
-
 	}
 }

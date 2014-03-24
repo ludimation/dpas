@@ -223,7 +223,7 @@ private function UpdateFunction () {
 	}
 	if (float.IsNaN(currentMovementOffset.x)||float.IsNaN(currentMovementOffset.y)||float.IsNaN(currentMovementOffset.z)){
 		Debug.LogWarning("character motor can go die in a corner");
-		currentMovementOffset = -.1f*Vector3.one;
+		currentMovementOffset = .1f*Vector3.one;
 	}
 	
 	// Reset variables that will be set by collision function
