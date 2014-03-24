@@ -6,6 +6,7 @@ public class Fire : MonoBehaviour {
 	public Kinectalogue controller;
 	public AudioSource AudSrc;
 	public AudioClip launch;
+	public List<AudioClip> launchSounds;
 	public GameObject projectile;
 	bool primed = false;
 	public FireAttack fireBlast;
@@ -110,7 +111,7 @@ public class Fire : MonoBehaviour {
 		else if(Vector3.Angle (lHand.position-lElbow.position, Vector3.forward) < 45 && Vector3.Angle (rHand.position-rElbow.position, Vector3.forward) < 45){
 			FireAttack temp = (FireAttack)Instantiate(fireBlast, root.position+(2*transform.forward)+transform.position, transform.rotation);
 			Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-			AudSrc.PlayOneShot (launch);
+			AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 			foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
 			temp.strength = General.playerSize;
 			//primed = false;
@@ -118,7 +119,7 @@ public class Fire : MonoBehaviour {
 		}
 		if(!General.kinectControl){
 			if (Input.GetKeyDown (KeyCode.Q)){
-				AudSrc.PlayOneShot (launch);
+				AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				Projectile temp = (Projectile)Instantiate (fireball, (transform.rotation*lHand.position)+transform.position, Quaternion.identity);
 				//temp.velocity = fireballSpeed*(lHand.position-lHandOld+(transform.rotation*move));
 				temp.velocity = fireballSpeed*(transform.forward);
@@ -126,7 +127,7 @@ public class Fire : MonoBehaviour {
 				temp.lifespan = 3;
 			}
 			if(Input.GetKeyDown (KeyCode.E)){
-				AudSrc.PlayOneShot (launch);
+				AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				Projectile temp = (Projectile)Instantiate (fireball, (transform.rotation *rHand.position)+transform.position, Quaternion.identity);
 				//temp.velocity = fireballSpeed*(rHand.position-rHandOld+(transform.rotation*move));
 				temp.velocity = fireballSpeed*(transform.forward);
