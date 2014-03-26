@@ -46,7 +46,7 @@ public class LightningStrike : MonoBehaviour {
 		}
 		if (temp != null){
 			if(temp.resistance < strength){
-				source.AudSrc.PlayOneShot(thunder);
+				source.audSrc.PlayOneShot(thunder);
 				strikes.Add(temp);
 				temp.Ignite();
 				Debug.Log ("successful strike, "+ strikes.Count.ToString () + " targets total");

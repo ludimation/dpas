@@ -70,6 +70,13 @@ public class General : MonoBehaviour {
 		if(!destroyOnReload){
 			DontDestroyOnLoad(gameObject);
 		}
+		Gestures.lHand = lHand;
+		Gestures.rHand = rHand;
+		Gestures.lElbow = lElbow;
+		Gestures.rElbow = rElbow;
+		Gestures.lShoulder = lShoulder;
+		Gestures.rShoulder = rShoulder;
+
 		g = this;
 		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Air : MonoBehaviour {
 	public Kinectalogue controller;
-	public AudioSource AudSrc;
+	public AudioSource audSrc;
 	public AudioClip launch;
 	public ParticleSystem part;
 	public CharacterMotor charMotor;
@@ -12,7 +12,7 @@ public class Air : MonoBehaviour {
 	public bool ionized = false;
 	public float ionizationHeight = 200;
 	public float grav = 25f;
-	//public float size = 1;
+
 	public Vector3 cycloneSize = Vector3.one;
 	public LightningStrike bolt;
 
@@ -22,6 +22,11 @@ public class Air : MonoBehaviour {
 	public Transform rHand;
 	public Transform lElbow;
 	public Transform rElbow;
+	public Transform lShoulder;
+	public Transform rShoulder;
+
+	public float lightningCharge = 0f;
+	public float chargeTime = 5f;
 
 	// Use this for initialization
 	void Start () {
@@ -30,11 +35,10 @@ public class Air : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/*if (upDraft >0){
-			transform.Translate(upDraft*Time.deltaTime*Vector3.up);
-			Debug.Log ("updraft = "+upDraft.ToString ());
-			upDraft -= Time.deltaTime;
-		}*/
+		if(Vector3.Angle(lHand.position-lElbow.position, Vector3.up)<45&&Vector3.Angle(rHand.position-rElbow.position, Vector3.up)<45){
+			lightningCharge += Time.deltaTime / chargeTime;
+			audSrc.PlayOneShot(launch);
+		}
 
 		if(!General.kinectControl){
 
@@ -60,49 +64,6 @@ public class Air : MonoBehaviour {
 		if (transform.position.y > ionizationHeight){
 			ionized = true;
 		}
-		//part.transform.localScale = (1/General.playerSize)*cycloneSize;
-		/*if(charMotor.grounded){
-			if(ionized){
-				LightningStrike temp = (LightningStrike)Instantiate(bolt, transform.position+(25*Vector3.up), Quaternion.identity);
-				temp.source = this;
-				temp.strength = General.playerSize;
-				ionized = false;
-				charMotor.inputJump = false;
-				
-			}
-			else{
-				//charMotor.inputJump = true;
-				charMotor.inputJump = !charMotor.inputJump;
-			}
-		}*/
-		/*else{
-			charMotor.inputJump = false;
-			if(General.keyControlOnly){
-				charMotor.movement.gravity = (Input.GetAxis ("Flight") * -20) +5;
-			}
-			else if(transform.position.y > ionizationHeight){
-				charMotor.movement.gravity = 10;
-			}
-			else{
-				float a = Vector3.Angle (lHand.position-lElbow.position, Vector3.up);
-				float b = Vector3.Angle (rHand.position-rElbow.position, Vector3.up);
-				if(a < 60 && b <60){
-					//charMotor.movement.gravity = -(grav/60)*(60- Mathf.Min(a, b));
-					charMotor.movement.gravity = - grav;
-				}
-				else if (a>120 && b>120){
-					//charMotor.movement.gravity = (grav/60)*(Mathf.Max (a, b) - 180);
-					charMotor.movement.gravity = grav;
-				}
-				else {
-					charMotor.movement.gravity = grav*.3f;
-				}
-			}
-				//charMotor.movement.gravity = Input.GetAxis ("Flight") * 50;
-		}*/
-		//part.startLifetime = General.playerSize*5;
-		//partRot = Vector3.forward * General.playerSize * 50;
-		//part.transform.Rotate(Time.deltaTime * partRot * General.playerSize);
 
 	}
 
@@ -122,6 +83,10 @@ public class Air : MonoBehaviour {
 	}
 	void OnTriggerStay(){
 		//upDraft += 20*Time.deltaTime;
-		Debug.Log ("air elemental is colliding");
+//		Debug.Log ("air elemental is colliding");
+	}
+	void OnGUI(){
+		GUI.Box(new Rect (0, 0, lightningCharge*Screen.width, 150), "lightningCharge");
+
 	}
 }
