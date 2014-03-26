@@ -55,8 +55,8 @@ public class Kinectalogue : MonoBehaviour {
 			
 			diff = target.transform.position-reference;
 			diff.Scale (new Vector3(1,0,1));
-
 			posMagnitude = diff.magnitude;
+			diff.y = (lHand.transform.position.y-lShoulder.transform.position.y)+(rHand.transform.position.y-rShoulder.transform.position.y);
 			if(diff.magnitude > posMax){
 				diff.Normalize();
 				diff *= posMax;

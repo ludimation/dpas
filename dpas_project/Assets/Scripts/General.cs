@@ -241,6 +241,7 @@ public class General : MonoBehaviour {
 		}
 		if (element == Element.Air){
 			airControl.enabled = true;
+			airControl.UnSleep();
 			currentInstructions = airInstructions;
 			foreach (GameObject g in airObjects){
 				g.SetActive (true);
