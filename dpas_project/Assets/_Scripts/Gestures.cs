@@ -41,7 +41,7 @@ public static class Gestures : object {
 	//}
 
 	public static bool ArmsUp(){
-		Debug.Log (Vector3.Angle(lHand.position-lElbow.position, Vector3.up).ToString ()+", "+Vector3.Angle(rHand.position-rElbow.position, Vector3.up).ToString ()+", "+Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up).ToString ()+", "+Vector3.Angle(rShoulder.position-rShoulder.position, Vector3.up).ToString ());
+		//Debug.Log (Vector3.Angle(lHand.position-lElbow.position, Vector3.up).ToString ()+", "+Vector3.Angle(rHand.position-rElbow.position, Vector3.up).ToString ()+", "+Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up).ToString ()+", "+Vector3.Angle(rShoulder.position-rShoulder.position, Vector3.up).ToString ());
 
 		if(Vector3.Angle(lHand.position-lElbow.position, Vector3.up)<45&&Vector3.Angle(rHand.position-rElbow.position, Vector3.up)<45&&Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up)<45&&Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up)<45){
 			return true;
@@ -93,6 +93,12 @@ public static class Gestures : object {
 	}
 	public static Vector3 DirBetweenHands(){
 		return (rHand.position - lHand.position);
+	}
+	public static Quaternion shoulderRot(){
+		return Quaternion.FromToRotation (Vector3.right, rShoulder.position - lShoulder.position);
+	}
+	public static Quaternion flatShoulderRot(){
+		return Quaternion.FromToRotation (Vector3.right, Vector3.Scale(rShoulder.position - lShoulder.position, Vector3.one - Vector3.up));
 	}
 	/*void OnGUI(){
 		if(dbg){

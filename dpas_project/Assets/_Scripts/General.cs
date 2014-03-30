@@ -4,8 +4,8 @@ using System.Collections;
 public class General : MonoBehaviour {
 	public static bool kinectControl;
 	public bool controlByKinect = true;
-	public static bool keyControlOnly;
-	public bool keyboardOnly = false;
+	//public static bool keyControlOnly;
+	//public bool keyboardOnly = false;
 
 	public Transform avatarRoot;
 
@@ -81,7 +81,7 @@ public class General : MonoBehaviour {
 		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
-		General.keyControlOnly = keyboardOnly;
+		//General.keyControlOnly = keyboardOnly;
 		kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
 		airObjects = GameObject.FindGameObjectsWithTag("Air");
 		earthObjects = GameObject.FindGameObjectsWithTag("Earth");
@@ -226,9 +226,20 @@ public class General : MonoBehaviour {
 			return;
 		}
 		element = e;
-		if(airControl.enabled){
+
+		//if(airControl.enabled){
 			airControl.Sleep();
-		}
+		//}
+		//if(earthControl.enabled){
+			earthControl.Sleep ();
+		//}
+		//if(fireControl.enabled){
+			fireControl.Sleep();
+		//}
+		//if(waterControl.enabled){
+			waterControl.Sleep ();
+		//}
+
 		airControl.enabled = false;
 		earthControl.enabled = false;
 		fireControl.enabled = false;
@@ -255,21 +266,24 @@ public class General : MonoBehaviour {
 			}
 		}
 		else if (element == Element.Earth){
-			earthControl.enabled = true;;
+			earthControl.enabled = true;
+			earthControl.UnSleep();
 			currentInstructions = earthInstructions;
 			foreach (GameObject g in earthObjects){
 				g.SetActive (true);
 			}
 		}
 		else if (element == Element.Fire){
-			fireControl.enabled = true;;
+			fireControl.enabled = true;
+			fireControl.UnSleep();
 			currentInstructions = fireInstructions;
 			foreach (GameObject g in fireObjects){
 				g.SetActive (true);
 			}
 		}
 		else if (element == Element.Water){
-			waterControl.enabled = true;;
+			waterControl.enabled = true;
+			waterControl.UnSleep();
 			currentInstructions = waterInstructions;
 			foreach (GameObject g in waterObjects){
 				g.SetActive (true);
@@ -286,7 +300,7 @@ public class General : MonoBehaviour {
 		Debug.Log (msg);
 
 	}
-	public static float increaseSize(float amount, float limit){
+	/*public static float increaseSize(float amount, float limit){
 		if (playerSize > limit){
 			return playerSize;
 		}
@@ -294,6 +308,29 @@ public class General : MonoBehaviour {
 		playerSize = Mathf.Min (playerSize, limit);
 		return playerSize;
 
+	}*/
+	public static float changeSize(float amount, float upperLimit, float lowerLimit){
+		//string msg = "";
+		//Debug.Log (msg);
+		if (playerSize + amount > upperLimit){
+			//msg += "greater than upper";
+			playerSize = Mathf.Max (playerSize, upperLimit);
+			//return playerSize;
+		}
+		else if (playerSize + amount < lowerLimit){
+			//msg += "less than lower";
+			playerSize = Mathf.Min (playerSize, lowerLimit);
+			//return playerSize;
+		}
+		else{
+			playerSize += amount;
+		}
+		playerSize = Mathf.Max (playerSize, 0);
+		playerSize = Mathf.Min (playerSize, 100);
+		//msg +="amount " + amount.ToString () +"t: "+Time.deltaTime.ToString ();
+		//Debug.Log (msg);
+
+		return playerSize;
 	}
 	void OnGUI(){
 
