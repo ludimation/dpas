@@ -48,12 +48,13 @@ public class Air : MonoBehaviour {
 		if (Gestures.ArmsUp ()){
 			cF.Rain(Time.deltaTime);
 		}
+		//Debug.Log ("lArmStraight = "+Gestures.LArmStraight ().ToString ()+", LArmDirAngle = " + Vector3.Angle(Gestures.LArmDir(), Vector3.up));
 		if(Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45&&Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)>60){
 			rightStrike.gameObject.SetActive (true);
 			//rightStrike.enabled = true;
 		}
 		else{
-			//rightStrike.gameObject.SetActive(false);
+			rightStrike.gameObject.SetActive(false);
 			//rightStrike.enabled = false;
 		}
 		if(Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)<45&&Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)>60){
@@ -61,7 +62,7 @@ public class Air : MonoBehaviour {
 			//leftStrike.enabled = true;
 		}
 		else{
-			//leftStrike.gameObject.SetActive(false);
+			leftStrike.gameObject.SetActive(false);
 			//leftStrike.enabled = false;
 		}
 		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
@@ -125,7 +126,7 @@ public class Air : MonoBehaviour {
 				//rightStrike.enabled = true;
 			}
 			if(Input.GetKeyUp (KeyCode.Alpha1)){
-				rightStrike.gameObject.SetActive (false);
+				//rightStrike.gameObject.SetActive (false);
 				//rightStrike.enabled = false;
 			}
 			if(Input.GetKey (KeyCode.Alpha3)){
@@ -133,7 +134,7 @@ public class Air : MonoBehaviour {
 				//leftStrike.enabled = true;
 			}
 			if(Input.GetKeyUp (KeyCode.Alpha3)){
-				leftStrike.gameObject.SetActive (false);
+				//leftStrike.gameObject.SetActive (false);
 				//leftStrike.enabled = false;
 			}
 		}

@@ -91,7 +91,7 @@ public class Fire : MonoBehaviour {
 				
 			}
 		}
-		if(flameWait<0f&&Gestures.ArmsTogether ()){
+		if(Gestures.ArmsTogether ()){
 			//FireAttack temp = (FireAttack)Instantiate(fireBlast, transform.position+(2*transform.forward)+Vector3.Up, transform.rotation);
 			FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 			Physics.IgnoreCollision (temp.collider, collider);
@@ -100,7 +100,7 @@ public class Fire : MonoBehaviour {
 			foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
 			//General.changeSize (flamethrowerCost/Time.deltaTime);
 			temp.strength = General.playerSize;
-			flameWait = flameDelay;
+			//flameWait = flameDelay;
 			
 		}
 
@@ -113,7 +113,7 @@ public class Fire : MonoBehaviour {
 			foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
 			//General.changeSize (rocketJumpCost/Time.deltaTime);
 			temp.strength = General.playerSize;
-			charMotor.inputJump = true;
+			//charMotor.inputJump = true;
 			//gameObject.GetComponent<CharacterMotor>().inputJump = true;
 		}
 		else{			

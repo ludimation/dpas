@@ -24,11 +24,16 @@ public class basicControl : MonoBehaviour {
 
 
 
-		//pitch, yaw, roll
-		//transform.Translate (inPut.getDiff()*Time.deltaTime*sensetivity);
-		//transform.Rotate (inPut.getPitch()*Time.deltaTime,inPut.getYaw()*Time.deltaTime, inPut.getRoll()*Time.deltaTime);
 		move = (inPut.getDiff());
+		move.Scale (Vector3.right+Vector3.forward);
 		rot = inPut.getRot ();
+		if(General.element != General.Element.Earth && Gestures.LArmStraight () && Gestures.RArmStraight ()){
+			if(Vector3.Angle (Gestures.LArmDir(), Vector3.down) >30 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) >30){
+				if ((Vector3.Angle (Gestures.LArmDir(), Vector3.down) <60 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <60) || (General.element == General.Element.Air && (Vector3.Angle (Gestures.LArmDir(), Vector3.down) <135 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <135))){
+					move += Vector3.Scale (Gestures.LArmDir ()+ Gestures.RArmDir (), new Vector3(-1,-1,-1));
+				}
+			}
+		}
 		if(inPut.getMagnitudeRaw()>posCutoff){
 			move = Vector3.zero;
 			rot = Vector3.zero;
@@ -42,9 +47,6 @@ public class basicControl : MonoBehaviour {
 
 		}
 
-		//temp = rot - rotDeadzone;
-		//Vector3 temp2 = Vector3.Scale (rot, temp);
-		//temp.Scale (rot);
 		if(Mathf.Abs (rot.x) < rotDeadzone.x){
 			rot.x = 0;
 		}
@@ -71,10 +73,12 @@ public class basicControl : MonoBehaviour {
 		rot.Scale ((1f/90f)*Vector3.one);
 		move.Scale (Time.deltaTime*sensetivity);
 		rot.Scale (Time.deltaTime*rotSensetivity);
-		if(fly){
+		if(true||fly){
 			//transform.Translate (move);
 			cha.Move (transform.rotation*move);
+			Debug.Log (move.ToString());
 		}
+
 		else{
 			motor.inputMoveDirection = transform.rotation*Vector3.Scale(move, new Vector3(1,0,1));
 		}
