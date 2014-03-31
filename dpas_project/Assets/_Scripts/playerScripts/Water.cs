@@ -9,10 +9,13 @@ public class Water : MonoBehaviour {
 	public bool isAwake = false;
 	public WaterAttack wave;
 	public float waveCost;
+	public bool enableWave = true;
 	public WaterAttack geyser;
 	public float geyserCost;
+	public bool enableGeyser = true;
 	public WaterAttack waterJet;
 	public float waterJetCost;
+	public bool enableWaterJet = true;
 
 	public float waveSpeed;
 	Vector3 lHandOld;
@@ -30,7 +33,7 @@ public class Water : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Debug.DrawRay (transform.position, Gestures.flatShoulderRot()*Vector3.forward);
-		if(Gestures.ArmsTogether ()){
+		if(enableWaterJet&&Gestures.ArmsTogether ()){
 			//WaterAttack temp = (WaterAttack)Instantiate(WaterBlast, transform.position+(2*transform.forward)+Vector3.Up, transform.rotation);
 			WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
 			//Physics.IgnoreCollision (temp.collider, collider);
@@ -42,7 +45,7 @@ public class Water : MonoBehaviour {
 			//flameWait = flameDelay;
 			
 		}
-		if (Vector3.Angle (Gestures.LArmDir(), new Vector3(-1,-1,-1))<45 && Vector3.Angle (Gestures.RArmDir(), new Vector3(1,-1,-1))<45){
+		if (enableGeyser&&Vector3.Angle (Gestures.LArmDir(), new Vector3(-1,-1,-1))<45 && Vector3.Angle (Gestures.RArmDir(), new Vector3(1,-1,-1))<45){
 			WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
 			//Physics.IgnoreCollision (temp.collider, collider);
 			Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -57,7 +60,7 @@ public class Water : MonoBehaviour {
 			charMotor.inputJump = false;
 		}
 
-		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
+		if(enableWave&&Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 			//Debug.Log ("L wave");
 			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
@@ -72,7 +75,7 @@ public class Water : MonoBehaviour {
 				
 			}
 		}
-		if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
+		if(enableWave&&Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 			//Debug.Log ("R wave");
 			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);

@@ -68,7 +68,7 @@ public static class Gestures : object {
 
 	}
 	public static bool LArmStraight(){
-		if(Vector3.Angle (lHand.position-lElbow.position, lShoulder.position-lElbow.position)<45){
+		if(Vector3.Angle (lHand.position-lElbow.position, lElbow.position-lShoulder.position)<45){
 			return true;
 		}
 		else return false;
@@ -77,7 +77,7 @@ public static class Gestures : object {
 		return lHand.position-lShoulder.position;
 	}
 	public static bool RArmStraight(){
-		if(Vector3.Angle (rHand.position-rElbow.position, rShoulder.position-rElbow.position)<45){
+		if(Vector3.Angle (rHand.position-rElbow.position, rElbow.position-rShoulder.position)<45){
 			return true;
 		}
 		else return false;
