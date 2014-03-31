@@ -103,7 +103,7 @@ public class Water : MonoBehaviour {
 				
 			}
 			if(Input.GetKey(KeyCode.LeftShift)){
-				WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
+				WaterAttack temp = (WaterAttack)Instantiate(geyser, .5f*(lHand.position+rHand.position), transform.rotation);
 				//Physics.IgnoreCollision (temp.collider, collider);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
@@ -115,7 +115,7 @@ public class Water : MonoBehaviour {
 			}
 
 			if(Input.GetKey (KeyCode.X)){
-				WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
+				WaterAttack temp = (WaterAttack)Instantiate(waterJet, .5f*(lHand.position+rHand.position), transform.rotation);
 				//Physics.IgnoreCollision (temp.collider, collider);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);

@@ -173,6 +173,7 @@ public class Earth : MonoBehaviour {
 					//heights[i,j]-=.2f;
 					heights[i,j] *= 1-(.03f*(((tR-t)/tR)*(tR-t)/tR));
 				}
+				//heights[i,j] -= .01f;
 				//Debug.Log (temp.ToString ()+", "+p.ToString ()+": "+Vector2.Distance (temp,p).ToString());
 			}
 		}

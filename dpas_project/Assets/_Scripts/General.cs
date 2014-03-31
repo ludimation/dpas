@@ -245,10 +245,47 @@ public class General : MonoBehaviour {
 		fireControl.enabled = false;
 		waterControl.enabled = false;
 
-		foreach (GameObject g in airObjects){
-			g.SetActive (false);
+		if(e != Element.Air){
+			foreach (GameObject g in airObjects){
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = false;
+				}
+				else{
+					g.SetActive (false);
+				}
+			}
 		}
-		foreach (GameObject g in earthObjects){
+		if(e != Element.Earth){
+			foreach (GameObject g in earthObjects){
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = false;
+				}
+				else{
+					g.SetActive (false);
+				}
+			}
+		}
+		if(e != Element.Fire){
+			foreach (GameObject g in fireObjects){
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = false;
+				}
+				else{
+					g.SetActive (false);
+				}
+			}
+		}
+		if(e != Element.Water){
+			foreach (GameObject g in waterObjects){
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = false;
+				}
+				else{
+					g.SetActive (false);
+				}
+			}
+		}
+		/*foreach (GameObject g in earthObjects){
 			g.SetActive (false);
 		}
 		foreach (GameObject g in fireObjects){
@@ -256,13 +293,18 @@ public class General : MonoBehaviour {
 		}
 		foreach (GameObject g in waterObjects){
 			g.SetActive (false);
-		}
+		}*/
 		if (element == Element.Air){
 			airControl.enabled = true;
 			airControl.UnSleep();
 			currentInstructions = airInstructions;
 			foreach (GameObject g in airObjects){
-				g.SetActive (true);
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = true;
+				}
+				else{
+					g.SetActive (true);
+				}
 			}
 		}
 		else if (element == Element.Earth){
@@ -270,7 +312,12 @@ public class General : MonoBehaviour {
 			earthControl.UnSleep();
 			currentInstructions = earthInstructions;
 			foreach (GameObject g in earthObjects){
-				g.SetActive (true);
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = true;
+				}
+				else{
+					g.SetActive (true);
+				}
 			}
 		}
 		else if (element == Element.Fire){
@@ -278,7 +325,12 @@ public class General : MonoBehaviour {
 			fireControl.UnSleep();
 			currentInstructions = fireInstructions;
 			foreach (GameObject g in fireObjects){
-				g.SetActive (true);
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = true;
+				}
+				else{
+					g.SetActive (true);
+				}
 			}
 		}
 		else if (element == Element.Water){
@@ -286,7 +338,12 @@ public class General : MonoBehaviour {
 			waterControl.UnSleep();
 			currentInstructions = waterInstructions;
 			foreach (GameObject g in waterObjects){
-				g.SetActive (true);
+				if(g.particleSystem){
+					g.particleSystem.enableEmission = true;
+				}
+				else{
+					g.SetActive (true);
+				}
 			}
 		}
 	}

@@ -5,7 +5,10 @@ public class WaterAttack : MonoBehaviour {
 	public float time = 5;
 	public float priority;
 	public float size = 1;
+	public float maxSize = 25f;
 	public GameObject collisionHolder;
+	SpringJoint spring;
+	//HingeJoint spring;
 	// Use this for initialization
 	void Start () {
 		priority = Random.Range (int.MinValue, int.MaxValue);
@@ -17,6 +20,7 @@ public class WaterAttack : MonoBehaviour {
 		if (time < 0){
 			Destroy(gameObject);
 		}
+		rigidbody.AddForce (size*(Random.rotationUniform*Vector3.up),ForceMode.VelocityChange);
 	
 	}
 	void OnCollisionEnter(Collision col){
@@ -26,7 +30,7 @@ public class WaterAttack : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		WaterAttack wA = other.gameObject.GetComponent<WaterAttack>();
 		if(wA){
-			if(size<25){
+			if(size<maxSize&&wA.size<maxSize){
 				size+=wA.size;
 				if(priority > wA.priority){
 					Destroy(wA.gameObject);
@@ -34,8 +38,13 @@ public class WaterAttack : MonoBehaviour {
 					transform.localScale = Mathf.Pow (size, 1f/3f) * Vector3.one;
 
 					transform.Translate (Vector3.up);
-					time = 15;
+					time = 150;
 				}
+			}
+			else if(!spring){
+				spring = (SpringJoint)gameObject.AddComponent ("SpringJoint");
+				//spring = (HingeJoint)gameObject.AddComponent ("HingeJoint");
+				spring.connectedBody = other.rigidbody;
 			}
 		}
 	}
