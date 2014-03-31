@@ -12,18 +12,21 @@ var smooth = true;
 
 function LateUpdate () {
 	if (target) {
-		var postion = target.position + Vector3(xOffset, yOffset, zOffset);
+		var targetOffsetPosition = Vector3(xOffset, yOffset, zOffset);
+//		Debug.Log ("SmoothLookAt_da() :: targetOffsetPosition = " + targetOffsetPosition.ToString());
+		targetOffsetPosition = target.position + targetOffsetPosition;
+//		Debug.Log ("SmoothLookAt_da() :: targetOffsetPosition = " + targetOffsetPosition.ToString());
 		
 		if (smooth)
 		{
 			// Look at and dampen the rotation
-			var rotation = Quaternion.LookRotation(postion - transform.position);
-			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
+			var newRotation = Quaternion.LookRotation(targetOffsetPosition - transform.position);
+			transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * damping);
 		}
 		else
 		{
 			// Just lookat
-		    transform.LookAt(postion);
+		    transform.LookAt(targetOffsetPosition);
 		}
 	}
 }
