@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class blahhh : MonoBehaviour {
+public class matchPositionOnStart : MonoBehaviour {
 	public Transform startPos;
 	// Use this for initialization
 	void Start () {
