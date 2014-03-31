@@ -53,7 +53,7 @@ public class Water : MonoBehaviour {
 			foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
 			//General.changeSize (rocketJumpCost/Time.deltaTime);
 			//temp.strength = General.playerSize;
-			charMotor.inputJump = true;
+			//charMotor.inputJump = true;
 			//gameObject.GetComponent<CharacterMotor>().inputJump = true;
 		}
 		else {

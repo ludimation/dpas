@@ -73,15 +73,16 @@ public class basicControl : MonoBehaviour {
 		rot.Scale ((1f/90f)*Vector3.one);
 		move.Scale (Time.deltaTime*sensetivity);
 		rot.Scale (Time.deltaTime*rotSensetivity);
-		if(true||fly){
+		if(fly){
 			//transform.Translate (move);
 			cha.Move (transform.rotation*move);
-			Debug.Log (move.ToString());
+
 		}
 
 		else{
 			motor.inputMoveDirection = transform.rotation*Vector3.Scale(move, new Vector3(1,0,1));
 		}
+		Debug.Log (move.ToString());
 		transform.Rotate (rot);
 
 
