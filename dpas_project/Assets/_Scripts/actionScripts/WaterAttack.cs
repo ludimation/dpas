@@ -8,10 +8,14 @@ public class WaterAttack : MonoBehaviour {
 	public float maxSize = 25f;
 	public GameObject collisionHolder;
 	SpringJoint spring;
+	public ParticleSystem initial;
+	public ParticleSystem final;
 	//HingeJoint spring;
 	// Use this for initialization
 	void Start () {
 		priority = Random.Range (int.MinValue, int.MaxValue);
+		initial.enableEmission = true;
+		final.enableEmission = false;
 	}
 	
 	// Update is called once per frame
@@ -20,11 +24,13 @@ public class WaterAttack : MonoBehaviour {
 		if (time < 0){
 			Destroy(gameObject);
 		}
-		rigidbody.AddForce (size*(Random.rotationUniform*Vector3.up),ForceMode.VelocityChange);
+		//rigidbody.AddForce (size*(Random.rotationUniform*Vector3.up),ForceMode.VelocityChange);
 	
 	}
 	void OnCollisionEnter(Collision col){
 		collisionHolder.layer = 0;
+		initial.enableEmission = false;
+		final.enableEmission = true;
 
 	}
 	void OnTriggerEnter(Collider other){
