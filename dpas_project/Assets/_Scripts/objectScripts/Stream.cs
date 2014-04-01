@@ -8,7 +8,7 @@ public class Stream : MonoBehaviour {
 	public Cloud cloud;
 	public WaterAttack watAtk;
 	float emit;
-	public float emissionRate;
+	public float emissionWait = .5f;
 	// Use this for initialization
 	void Start () {
 	
@@ -16,6 +16,18 @@ public class Stream : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(size<=0){
+
+			Destroy(gameObject);
+		}
+		if (emit < 0){
+			emit = emissionWait;
+			WaterAttack temp = (WaterAttack)Instantiate (watAtk, transform.position, Quaternion.identity);
+			temp.size = Mathf.Min (size, .5f);
+			temp.gameObject.layer = 9;
+			size -= .5f;
+		}
+		emit -= Time.deltaTime;
 	
 	}
 

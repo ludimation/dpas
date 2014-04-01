@@ -12,9 +12,12 @@ public class Cloud : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (size <= 0){
+			Destroy(gameObject);
+		}
 		if (rainAmnt >0){
 			Instantiate(raindrop, transform.position + size*2*(Random.rotation*Vector3.up), Quaternion.identity);
-			//size -= Time.deltaTime;
+			size -= Time.deltaTime;
 			rainAmnt -= Time.deltaTime;
 		}
 	

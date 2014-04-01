@@ -12,6 +12,7 @@ public class WaterAttack : MonoBehaviour {
 	public ParticleSystem final;
 	public Cloud cloudPrefab;
 	public Cloud cloud;
+	public Stream streamPrefab;
 	//HingeJoint spring;
 	// Use this for initialization
 	void Start () {
@@ -29,10 +30,18 @@ public class WaterAttack : MonoBehaviour {
 		if(cloud){
 			cloud.rigidbody.AddForce(transform.position - cloud.transform.position, ForceMode.Acceleration);
 		}
+		if(spring&&!spring.connectedBody){
+			Destroy(spring);
+			spring = null;
+		}
 		//rigidbody.AddForce (size*(Random.rotationUniform*Vector3.up),ForceMode.VelocityChange);
 	
 	}
 	void OnCollisionEnter(Collision col){
+		//gameObject.GetComponent<ParticleSystem>().enableEmission = false;
+		foreach(ParticleSystem p in gameObject.GetComponentsInChildren<ParticleSystem>()){
+			p.enableEmission = false;
+		}
 		collisionHolder.layer = 0;
 		initial.enableEmission = false;
 		final.enableEmission = true;
@@ -50,14 +59,23 @@ public class WaterAttack : MonoBehaviour {
 					transform.localScale = Mathf.Pow (size, 1f/3f) * Vector3.one;
 
 					transform.Translate (Vector3.up);
-					time = 150;
+					time = 10;
 				}
 			}
 			else if(!spring){
 				spring = (SpringJoint)gameObject.AddComponent ("SpringJoint");
 				//spring = (HingeJoint)gameObject.AddComponent ("HingeJoint");
 				spring.connectedBody = other.rigidbody;
+				spring.minDistance = 2f;
+				spring.maxDistance = 7f;
 			}
+			else if(time < 5){
+				Instantiate(streamPrefab, transform.position+2*Vector3.up, Quaternion.identity);
+				Destroy(other.gameObject);
+				//Destroy(spring.connectedBody.gameObject);
+				Destroy(gameObject);
+			}
+
 		}
 
 	}

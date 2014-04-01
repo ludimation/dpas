@@ -16,6 +16,8 @@ public class Water : MonoBehaviour {
 	public WaterAttack waterJet;
 	public float waterJetCost;
 	public bool enableWaterJet = true;
+	public float jetWait = .03f;
+	float jetT = .03f;
 
 	public float waveSpeed;
 	Vector3 lHandOld;
@@ -32,8 +34,10 @@ public class Water : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		jetT -= Time.deltaTime;
 		//Debug.DrawRay (transform.position, Gestures.flatShoulderRot()*Vector3.forward);
-		if(enableWaterJet&&Gestures.ArmsTogether ()){
+		if(jetT < 0 && enableWaterJet&&Gestures.ArmsTogether ()){
+			jetT = jetWait;
 			//WaterAttack temp = (WaterAttack)Instantiate(WaterBlast, transform.position+(2*transform.forward)+Vector3.Up, transform.rotation);
 			WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
 			//Physics.IgnoreCollision (temp.collider, collider);
@@ -46,11 +50,15 @@ public class Water : MonoBehaviour {
 			
 		}
 		if (enableGeyser&&Vector3.Angle (Gestures.LArmDir(), new Vector3(-1,-1,-1))<45 && Vector3.Angle (Gestures.RArmDir(), new Vector3(1,-1,-1))<45){
-			WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
+			//jetT = jetWait;
+			if(jetT < 0 ){
+				WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
 			//Physics.IgnoreCollision (temp.collider, collider);
-			Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
+				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 			//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-			foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
+				foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
+				jetT = jetWait;
+			}
 			//General.changeSize (rocketJumpCost/Time.deltaTime);
 			//temp.strength = General.playerSize;
 			//charMotor.inputJump = true;
@@ -106,18 +114,20 @@ public class Water : MonoBehaviour {
 				
 			}
 			if(Input.GetKey(KeyCode.LeftShift)){
-				WaterAttack temp = (WaterAttack)Instantiate(geyser, .5f*(lHand.position+rHand.position), transform.rotation);
-				//Physics.IgnoreCollision (temp.collider, collider);
-				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-				foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
+				if(jetT < 0){
+					WaterAttack temp = (WaterAttack)Instantiate(geyser, .5f*(lHand.position+rHand.position), transform.rotation);
+					//Physics.IgnoreCollision (temp.collider, collider);
+					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
+					//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
+					foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
+				}
 				//General.changeSize (rocketJumpCost/Time.deltaTime);
 				//temp.strength = General.playerSize;
 				charMotor.inputJump = true;
 				//gameObject.GetComponent<CharacterMotor>().inputJump = true;
 			}
 
-			if(Input.GetKey (KeyCode.X)){
+			if(jetT < 0 && Input.GetKey (KeyCode.X)){
 				WaterAttack temp = (WaterAttack)Instantiate(waterJet, .5f*(lHand.position+rHand.position), transform.rotation);
 				//Physics.IgnoreCollision (temp.collider, collider);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -135,5 +145,9 @@ public class Water : MonoBehaviour {
 		//called when activating the script
 		isAwake = true;
 	}
+
+	//void OnCollisionStay(){
+
+	//}
 
 }
