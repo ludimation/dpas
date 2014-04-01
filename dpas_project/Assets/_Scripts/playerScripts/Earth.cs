@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Earth : MonoBehaviour {
 
@@ -19,6 +20,7 @@ public class Earth : MonoBehaviour {
 	public float platformChargeTime = 1;
 	public float platformCharge = 0;
 	public AudioClip rise;
+	public List<AudioClip> riseSounds;
 	public Transform upperIndicator;
 	public Transform lowerIndicator;
 	int terrXBound;
@@ -71,7 +73,7 @@ public class Earth : MonoBehaviour {
 				//highEnergy -= .75f;
 			}
 			if(Input.GetKeyDown (KeyCode.E)){
-				audSrc.PlayOneShot (rise);
+				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
 				temp.initialTime = 1;
@@ -92,7 +94,7 @@ public class Earth : MonoBehaviour {
 		//	if(lowEnergy>.75f){
 		if(Gestures.ArmsUp ()){
 			if(platformCharge > platformChargeTime){
-				audSrc.PlayOneShot (rise);
+				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
 				temp.initialTime = 1;
