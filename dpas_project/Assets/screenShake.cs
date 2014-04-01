@@ -2,15 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// Should take in screen shake commands for:
-// - charge (type [enum: lightning, rain, meteor, platform, tsunami, etc.], amount [0.0–1.0], amplitude [float], slope [sqrt(x), inverted square -(x-1)^2+1], smoothing [float])
-// - impact (type[enum: meteor, lightning, tsunami], amplitude[float], duration [float:seconds])
+// Takes in screen shake commands for:
+// - impact (type[enum], amplitude[float], tween [enum], duration [float:seconds])
+// - charge (type [enum], amount [0.0–1.0], amplitude [float], tween [enum], smoothing [float])
 
-// Should know how to create default shake effects for all FX types
+// TODO:
+// - Should know how to create default shake effects for all FX types
+// - should be able to increment and decrement charge shake
 
-// Should queue all effects into arrays so that they can be applied in one step
-// - charge shakes (should really only be one at any given point, but create an array just in case)
-// - impact shakes
 
 //[ExecuteInEditMode]
 
@@ -49,8 +48,7 @@ public class screenShake : MonoBehaviour {
 		TWEEN_SQRT_EASEIN_OFF,	// -sqrt(x) + 1
 		TWEEN_COUNT
 	}
-
-//*/
+	
 	// edit mode debugging bools (can be deleted or commented out later)
 	public bool			chargeIncreaseNow		= false	;
 	public bool			chargeDecreaseNow		= false	;
@@ -59,7 +57,7 @@ public class screenShake : MonoBehaviour {
 	// declare top-level properties
 	//====
 	public Transform		CameraTransform			; 
-	public float			maximumShakeAmplitude	= 1.0f; // in world units (to keep summation of amplitudes from shaking the camera too violently)
+	public float			maximumShakeAmplitude	= 5.0f; // in world units (to keep summation of amplitudes from shaking the camera too violently)
 	private bool			cameraStill = true;
 	private List<charge> 	chargeShakes;
 	private List<impact> 	impactShakes;
@@ -84,77 +82,198 @@ public class screenShake : MonoBehaviour {
 	//====
 	// TODO: Figure out a way to set defaults in constructor?
 	public struct charge {
-		public chargeType 	type 		;
-		public float 		amount 		;
-		public float 		targetAmount;
-		public float 		amplitude 	;
-		public tweenType	tween		;
-		public float 		smoothing	;
-		public float 		duration	;
-		public float		life			;
+		private chargeType 	typeVal 		;
+		private float 		amountVal 		;
+		private float 		targetAmountVal	;
+		private float 		amplitudeVal 	;
+		private tweenType	tweenVal		;
+		private float 		smoothingVal	;
+		private float 		durationVal		;
+		private float		lifeVal			;
 		
-			public charge(chargeType a1, float a2, float a3, float a4, tweenType a5, float a6, float a7, float a8){
-//				if (a1 == null)
-//					a1 = chargeType.CHARGE_LIGHTNING;
-//				if (a2 == null)
-//					a2 = 0.0f;
-//				if (a3 == null)
-//					a3 = 0.1f;
-//				if (a4 == null)
-//					a4 = 0.5f;
-//				if (a5 == null)
-//					a5 = tweenType.TWEEN_SQRT_EASEOUT_ON;
-//				if (a6 == null)
-//					a6 = 0.1f;
-//				if (a7 == null)
-//					a7 = 1000.0f;
-				
-				// try to use defaults instead? (wish I could declare these in a .h file :)
-				//			chargeTypeDefault		
-				//         	chargeAmountDefault		
-				//         	chargeAplitudeDefault	
-				//         	chargeTweenDefault		
-				//         	chargeSmoothingDefault	
-				//         	chargeDurationDefault	
-				
-				type 			= a1;
-				amount 			= a2;
-				targetAmount	= a3;
-				amplitude		= a4;
-				tween	 		= a5;
-				smoothing		= a6;
-				duration		= a7;
-				life 			= a8;
+		public charge(chargeType a1, float a2, float a3, float a4, tweenType a5, float a6, float a7, float a8) // 
+		{
+			// TODO: use defaults? (wish I could declare these in a .h file :)
+			//			chargeTypeDefault		
+			//         	chargeAmountDefault		
+			//         	chargeAplitudeDefault	
+			//         	chargeTweenDefault		
+			//         	chargeSmoothingDefault	
+			//         	chargeDurationDefault	
+			
+			typeVal 			= a1;
+			amountVal 			= a2; // 0.0f
+			targetAmountVal		= a3;
+			amplitudeVal		= a4;
+			tweenVal	 		= a5;
+			smoothingVal		= a6;
+			durationVal			= a7;
+			lifeVal 			= a8; // a7
+		}
+		public chargeType type
+		{
+			get
+			{
+				return typeVal;
 			}
+			set
+			{
+				typeVal = value;
+			}
+		}
+		public float amount
+		{
+			get
+			{
+				return amountVal;
+			}
+			set
+			{ 
+				amountVal = Mathf.Max (Mathf.Min (value, 1.0f), 0.0f); // clamp values to be from 0.0f to 1.0f
+			}
+		}
+		public float targetAmount
+		{
+			get
+			{
+				return targetAmountVal;
+			}
+			set
+			{ 
+				targetAmountVal = Mathf.Max (Mathf.Min (value, 1.0f), 0.0f); // clamp values to be from 0.0f to 1.0f
+			}
+		}
+		public float amplitude
+		{
+			get
+			{
+				return amplitudeVal;
+			}
+			set
+			{
+				amplitudeVal = value;
+			}
+		}
+		public tweenType tween
+		{
+			get
+			{
+				return tweenVal;
+			}
+			set
+			{
+				tweenVal = value;
+			}
+		}
+		public float smoothing
+		{
+			get
+			{
+				return smoothingVal;
+			}
+			set
+			{ 
+				smoothingVal = Mathf.Max (Mathf.Min (value, 1.0f), 0.0f); // clamp values to be from 0.0f to 1.0f
+			}
+		}
+		public float duration
+		{
+			get
+			{
+				return durationVal;
+			}
+			set
+			{
+				durationVal = value;
+			}
+		}
+		public float life
+		{
+			get
+			{
+				return lifeVal;
+			}
+			set
+			{
+				lifeVal = Mathf.Max (Mathf.Min (value, durationVal), 0.0f);
+			}
+		}
 	}
 	public struct impact {
-		public impactType 	type 		;
-		public float 		amplitude 	;
-		public tweenType	tween		;
-		public float 		duration	;
-		public float		life			;
+		private impactType 	typeVal 		;
+		private float 		amplitudeVal 	;
+		private tweenType	tweenVal		;
+		private float 		durationVal		;
+		private float		lifeVal			;
 
-		public impact(impactType a1, float a2, tweenType a3, float a4, float a5){
-//			if (a1 == null)
-//				a1 = impactType.IMPACT_LIGHTNING;
-//			if (a2 == null)
-//				a2 = 1.0f;
-//			if (a3 == null)
-//				a3 = tweenType.TWEEN_SQ_EASEOUT_OFF;
-//			if (a4 == null)
-//				a4 = 0.25f;
+		public impact(impactType a1, float a2, tweenType a3, float a4, float a5){ // 
 
-			// try to use defaults instead? (wish I could declare these in a .h file :)
+			// TODO: use defaults ? (wish I could declare these in a .h file :)
 			//			impactTypeDefault		
 			//        	impactAplitudeDefault	
 			//         	impactTweenDefault		
 			//         	impactDurationDefault	
 			
-			type 			= a1;
-			amplitude		= a2;
-			tween			= a3;
-			duration		= a4;
-			life 			= a5;
+			typeVal			= a1;
+			amplitudeVal	= a2;
+			tweenVal		= a3;
+			durationVal		= a4;
+			lifeVal			= a5; // a4
+		}
+		public impactType type
+		{
+			get
+			{
+				return typeVal;
+			}
+			set
+			{
+				typeVal = value;
+			}
+		}
+		public float amplitude
+		{
+			get
+			{
+				return amplitudeVal;
+			}
+			set
+			{
+				amplitudeVal = value;
+			}
+		}
+		public tweenType tween
+		{
+			get
+			{
+				return tweenVal;
+			}
+			set
+			{
+				tweenVal = value;
+			}
+		}
+		public float duration
+		{
+			get
+			{
+				return durationVal;
+			}
+			set
+			{
+				durationVal = value;
+			}
+		}
+		public float life
+		{
+			get
+			{
+				return lifeVal;
+			}
+			set
+			{
+				lifeVal = Mathf.Max (Mathf.Min (value, durationVal), 0.0f);
+			}
 		}
 	}
 	//*/
@@ -173,44 +292,59 @@ public class screenShake : MonoBehaviour {
 		chargeShakes = new List<charge>();
 		// array of impact structs
 		impactShakes = new List<impact>();
-		//*/
 	}
 
 	void OnDestroy() {
-		/*
 		//cleanup
 		chargeShakes.Clear ();
 		impactShakes.Clear ();
-		//*/
 	}
 		
 	// Update is called once per frame
 	void Update () {
 		// check debugging flags
 		if (chargeIncreaseNow) {
-//			if (chargeShakes.Count < 1)
-//				NewCharge ();
-//
-//
-//			if (chargeShakes[0].amount < 1.0f)
-//				chargeShakes[0].amount = chargeShakes[0].amount + 0.1f;
-//
-//			if (chargeShakes[0].amount > 1.0f)
-//				chargeShakes[0].amount = 1.0f;
+			if (chargeShakes.Count < 1)
+				NewCharge ();
 
-			chargeIncreaseNow		= false	;
+			float newTargetAmount = chargeShakes[0].targetAmount;
+			newTargetAmount = Mathf.Min (1.0f, newTargetAmount + 0.1f);
+			//   chargeShakes[0].targetAmount = newTargetAmount; // TODO: this set function refuses to work
+			// So this is the work-around
+			chargeShakes[0] = new charge (
+				chargeShakes[0].type		,	
+				chargeShakes[0].amount		,
+				newTargetAmount				,
+				chargeShakes[0].amplitude	,
+				chargeShakes[0].tween		,
+				chargeShakes[0].smoothing	,
+				chargeShakes[0].duration	,
+				chargeShakes[0].life
+				);
+
+			chargeIncreaseNow = false;
 		}
 		if (chargeDecreaseNow) {
-//			if (chargeShakes.Count > 0)
-//			{
-//				if (chargeShakes[0].amount > 0.0f)
-//					chargeShakes[0].amount += 0.1f;
-//
-//				if (chargeShakes[0].amount < 0.0f)
-//					chargeShakes[0].amount = 0.0f;
-//			}
+			if (chargeShakes.Count > 0)
+			{
+				float newTargetAmount = chargeShakes[0].targetAmount;
+				newTargetAmount = Mathf.Max (0.0f, newTargetAmount - 0.1f);
 
-			chargeDecreaseNow		= false	;
+				//	chargeShakes[0].targetAmount = newTargetAmount; // TODO: this set function refuses to work
+				// So this is the work-around
+				chargeShakes[0] = new charge (
+					chargeShakes[0].type		,
+					chargeShakes[0].amount		,
+					newTargetAmount				,
+					chargeShakes[0].amplitude	,
+					chargeShakes[0].tween		,
+					chargeShakes[0].smoothing	,
+					chargeShakes[0].duration	,
+					chargeShakes[0].life
+					);
+			}
+
+			chargeDecreaseNow = false;
 		}
 		if (impactNow) {
 			NewImpact ();
@@ -222,7 +356,6 @@ public class screenShake : MonoBehaviour {
 			impactNow				= false	;
 		}
 
-
 		Vector3 	shakePosition	= new Vector3 ();
 		Quaternion	shakeRotation	= new Quaternion ();
 		float 		amplitude		= 0.0f;
@@ -232,32 +365,67 @@ public class screenShake : MonoBehaviour {
 			if (chargeShakes.Count != 0)
 			{
 				foreach (charge element in chargeShakes) {
-					// add to screen shake amplitude
-					// update time-sensitive elements 		// use delta time for duration-specific ones
-					// remove any zeroed out structs
+					for (int i = chargeShakes.Count; i > 0; i--)
+					{
+						// add to screen shake amplitude // TODO: use other tweens here (currently linear)
+						float iAmp = chargeShakes[i-1].amplitude * chargeShakes[i-1].amount;
+						amplitude = amplitude + iAmp;
+						// update time-sensitive elements 		// use delta time for duration-specific ones
+						float lifeNew = chargeShakes[i-1].life - Time.deltaTime;
+						float amountNew = chargeShakes[i-1].amount + (
+							(chargeShakes[i-1].targetAmount - chargeShakes[i-1].amount)
+							* chargeShakes[i-1].smoothing
+							);
+						// remove any zeroed out structs
+						if (lifeNew <= 0.0f)
+							chargeShakes.RemoveAt(i-1);
+						else
+						{
+							//	impactShakes[i-1].life = lifeNew; // TODO: this set method refuses to work
+							// So this is a work-around
+							chargeShakes[i-1] = new charge (
+								chargeShakes[i-1].type			,
+								amountNew						,
+								chargeShakes[i-1].targetAmount	,
+								chargeShakes[i-1].amplitude		,
+								chargeShakes[i-1].tween			,
+								chargeShakes[i-1].smoothing		,
+								chargeShakes[i-1].duration		,
+								lifeNew
+								);
+						}
+					}
 				}
 			}
 			if (impactShakes.Count != 0)
 			{
 				for (int i = impactShakes.Count; i > 0; i--)
 				{
-					// add to screen shake amplitude
+					// add to screen shake amplitude // TODO: use other tweens here (currently linear)
 					float iAmp = impactShakes[i-1].amplitude * (impactShakes[i-1].life / impactShakes[i-1].duration);
 					amplitude = amplitude + iAmp;
 					// update time-sensitive elements 		// use delta time for duration-specific ones
 					float lifeNew = impactShakes[i-1].life - Time.deltaTime;
-					impactShakes[i-1] = new impact(
-						impactShakes[i-1].type, 
-						impactShakes[i-1].amplitude, 
-						impactShakes[i-1].tween, 
-						impactShakes[i-1].duration,
-						lifeNew
-						);
 					// remove any zeroed out structs
-					if (impactShakes[i-1].life <= 0.0f)
+					if (lifeNew <= 0.0f)
 						impactShakes.RemoveAt(i-1);
+					else
+					{
+					 	//	impactShakes[i-1].life = lifeNew; // TODO: this set method refuses to work
+						// So this is a work-around
+						impactShakes[i-1] = new impact (
+							impactShakes[i-1].type		,	
+							impactShakes[i-1].amplitude	,
+							impactShakes[i-1].tween		,
+							impactShakes[i-1].duration	,
+							lifeNew
+							);
+					}
 				}
 			}
+
+			// clamp amplitude at maximum
+			amplitude = Mathf.Min(maximumShakeAmplitude, amplitude);
 
 			// might wanna use Mathf.PerlinNoise instead of random points
 			// Mathf.PerlinNoise
@@ -274,37 +442,42 @@ public class screenShake : MonoBehaviour {
 
 			cameraStill = true;
 		}
-		//*/
 	}
 
 	void NewImpact () {
 		
 		// create new struct with arguments handed in (or defaults)
 		impact impactTemp = new impact(
-			impactTypeDefault,	
-         	impactAplitudeDefault,
-         	impactTweenDefault,
-         	impactDurationDefault,
+			impactTypeDefault		,	
+         	impactAplitudeDefault	,
+         	impactTweenDefault		,
+         	impactDurationDefault	,
 			impactDurationDefault
 			);
 		// add it to the array of impact structs
 		impactShakes.Add(impactTemp);
 
 		cameraStill = false;
-		//*/
 	}
 	
 	void NewCharge () {
-		/*
 		// create new struct with arguments handed in (or defaults)
-		charge chargeTemp = new charge();
+		charge chargeTemp = new charge(
+			chargeTypeDefault		,
+			0.0f					,
+       		chargeAmountDefault		,
+         	chargeAplitudeDefault	,
+         	chargeTweenDefault		,
+         	chargeSmoothingDefault	,
+         	chargeDurationDefault	,
+			chargeDurationDefault
+			);
 		// add it to the array of chage structs
 		chargeShakes.Add(chargeTemp);
 
 		//TODO: return a unique ID for updates to this charge effect
 
 		cameraStill = false;
-		//*/
 	}
 
 	void UpdateCharge () {
