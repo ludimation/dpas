@@ -82,7 +82,7 @@ public class basicControl : MonoBehaviour {
 		else{
 			motor.inputMoveDirection = transform.rotation*Vector3.Scale(move, new Vector3(1,0,1));
 		}
-		Debug.Log (move.ToString());
+		//Debug.Log (move.ToString());
 		transform.Rotate (rot);
 
 
