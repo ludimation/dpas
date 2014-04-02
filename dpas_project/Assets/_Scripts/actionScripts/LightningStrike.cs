@@ -50,6 +50,7 @@ public class LightningStrike : MonoBehaviour {
 		//Debug.Log ("Lstrike entering");
 		Shrubbery shrub = targ.GetComponent<Shrubbery>();
 		if(shrub!=null){
+			General.screenShake.NewImpact ();
 			Cloud temp = source.cF.Nearest ();
 			if (!temp){
 				Debug.Log ("no cloud found");

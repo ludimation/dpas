@@ -3,6 +3,9 @@ using System.Collections;
 
 public class General : MonoBehaviour {
 	public static bool kinectControl;
+	public static ScreenShake screenShake;
+	public ScreenShake screenShaker;
+
 	public bool controlByKinect = true;
 	//public static bool keyControlOnly;
 	//public bool keyboardOnly = false;
@@ -78,6 +81,8 @@ public class General : MonoBehaviour {
 		Gestures.rShoulder = rShoulder;
 
 		g = this;
+
+		screenShake = screenShaker;
 		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;

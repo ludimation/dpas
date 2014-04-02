@@ -65,6 +65,7 @@ public class Fire : MonoBehaviour {
 		
 		//if(Vector3.Angle (lHandOld, Gestures.LArmDir())>60){
 		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
+			General.screenShake.NewImpact ();
 			//Debug.Log ("L fireball");
 			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> tolerance*Time.deltaTime){
 				AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
@@ -79,6 +80,7 @@ public class Fire : MonoBehaviour {
 			}
 		}
 		if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
+			General.screenShake.NewImpact ();
 			//Debug.Log ("R fireball");
 			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> tolerance*Time.deltaTime){
 				AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
@@ -92,6 +94,7 @@ public class Fire : MonoBehaviour {
 			}
 		}
 		if(Gestures.ArmsTogether ()){
+			General.screenShake.NewImpact ();
 			//FireAttack temp = (FireAttack)Instantiate(fireBlast, transform.position+(2*transform.forward)+Vector3.Up, transform.rotation);
 			FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 			Physics.IgnoreCollision (temp.collider, collider);
@@ -106,6 +109,7 @@ public class Fire : MonoBehaviour {
 
 		//if(Gestures.LArmStraight()&&Gestures.RArmStraight ()&&
 		if (Vector3.Angle (Gestures.flatShoulderRot ()*Gestures.LArmDir(), new Vector3(-1,-1,-1))<45 && Vector3.Angle (Gestures.flatShoulderRot ()*Gestures.RArmDir(), new Vector3(1,-1,-1))<45){
+			General.screenShake.NewImpact ();
 			FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 			Physics.IgnoreCollision (temp.collider, collider);
 			Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();

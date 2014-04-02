@@ -46,10 +46,12 @@ public class Air : MonoBehaviour {
 
 
 		if (Gestures.ArmsUp ()){
+			General.screenShake.NewImpact ();
 			cF.Rain(Time.deltaTime);
 		}
 		//Debug.Log ("lArmStraight = "+Gestures.LArmStraight ().ToString ()+", LArmDirAngle = " + Vector3.Angle(Gestures.LArmDir(), Vector3.up));
 		if(Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45&&Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)>60){
+			General.screenShake.NewImpact ();
 			rightStrike.gameObject.SetActive (true);
 			//rightStrike.enabled = true;
 		}
@@ -58,6 +60,7 @@ public class Air : MonoBehaviour {
 			//rightStrike.enabled = false;
 		}
 		if(Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)<45&&Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)>60){
+			General.screenShake.NewImpact ();
 			leftStrike.gameObject.SetActive (true);
 			//leftStrike.enabled = true;
 		}
@@ -68,6 +71,7 @@ public class Air : MonoBehaviour {
 		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 			//Debug.Log ("L gust");
 			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
+				General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -83,6 +87,7 @@ public class Air : MonoBehaviour {
 		if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 			//Debug.Log ("R gust");
 			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
+				General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
 				//AirAttack temp = (AirAttack)Instantiate(gust, transform.position+(transform.rotation*(RArmDir()-rHandOld)), Quaternion.identity);
@@ -106,16 +111,19 @@ public class Air : MonoBehaviour {
 				General.changeSize(-3*Time.deltaTime, 100, 0);
 			}
 			if (Input.GetKey (KeyCode.R)){
+				General.screenShake.NewImpact ();
 				cF.Rain (Time.deltaTime);
 			}
 
 			if(Input.GetKeyDown (KeyCode.E)){
+				General.screenShake.NewImpact ();
 				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);
 				
 			}
 			if(Input.GetKeyDown (KeyCode.Q)){
+				General.screenShake.NewImpact ();
 				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);

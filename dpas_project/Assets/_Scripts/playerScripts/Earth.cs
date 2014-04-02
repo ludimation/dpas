@@ -68,11 +68,13 @@ public class Earth : MonoBehaviour {
 			//	highEnergy = lowEnergy = 1;
 			//}
 			if(Input.GetKeyDown (KeyCode.Q)){
+				General.screenShake.NewImpact ();
 				deform(rad);
 				audSrc.PlayOneShot (smash);
 				//highEnergy -= .75f;
 			}
 			if(Input.GetKeyDown (KeyCode.E)){
+				General.screenShake.NewImpact ();
 				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
@@ -94,6 +96,7 @@ public class Earth : MonoBehaviour {
 		//	if(lowEnergy>.75f){
 		if(Gestures.ArmsUp ()){
 			if(platformCharge > platformChargeTime){
+				General.screenShake.NewImpact ();
 				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
@@ -108,6 +111,8 @@ public class Earth : MonoBehaviour {
 
 		else if(Gestures.ArmsDown()){
 			if(smashCharge > smashChargeTime){
+				General.screenShake.NewImpact ();
+				deform(rad);
 				audSrc.PlayOneShot (smash);
 				smashCharge = 0;
 			}

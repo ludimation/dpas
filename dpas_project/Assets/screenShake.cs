@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 //[ExecuteInEditMode]
 
-public class screenShake : MonoBehaviour {
+public class ScreenShake : MonoBehaviour {
 
 	// declare enums
 	//====
@@ -81,6 +81,8 @@ public class screenShake : MonoBehaviour {
 	// struct constructors
 	//====
 	// TODO: Figure out a way to set defaults in constructor?
+	// 		change amplitude to a vector 3 for directional shake
+
 	public struct charge {
 		private chargeType 	typeVal 		;
 		private float 		amountVal 		;
@@ -444,7 +446,7 @@ public class screenShake : MonoBehaviour {
 		}
 	}
 
-	void NewImpact () {
+	public void NewImpact () {
 		
 		// create new struct with arguments handed in (or defaults)
 		impact impactTemp = new impact(

@@ -102,12 +102,14 @@ public class Water : MonoBehaviour {
 		
 		if(!General.kinectControl){
 			if(Input.GetKeyDown (KeyCode.E)){
+				General.screenShake.NewImpact ();
 				WaterAttack temp = (WaterAttack)Instantiate(wave, rHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				foo.AddForce (waveSpeed*transform.forward, ForceMode.VelocityChange);
 				
 			}
 			if(Input.GetKeyDown (KeyCode.Q)){
+				General.screenShake.NewImpact ();
 				WaterAttack temp = (WaterAttack)Instantiate(wave, lHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				foo.AddForce (waveSpeed*transform.forward, ForceMode.VelocityChange);
@@ -115,6 +117,7 @@ public class Water : MonoBehaviour {
 			}
 			if(Input.GetKey(KeyCode.LeftShift)){
 				if(jetT < 0){
+					General.screenShake.NewImpact ();
 					WaterAttack temp = (WaterAttack)Instantiate(geyser, .5f*(lHand.position+rHand.position), transform.rotation);
 					//Physics.IgnoreCollision (temp.collider, collider);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -128,6 +131,7 @@ public class Water : MonoBehaviour {
 			}
 
 			if(jetT < 0 && Input.GetKey (KeyCode.X)){
+				General.screenShake.NewImpact ();
 				WaterAttack temp = (WaterAttack)Instantiate(waterJet, .5f*(lHand.position+rHand.position), transform.rotation);
 				//Physics.IgnoreCollision (temp.collider, collider);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
