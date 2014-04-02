@@ -6,6 +6,7 @@ public class basicControl : MonoBehaviour {
 	public float posCutoff = 1;
 	public Vector3 sensetivity = Vector3.one;
 	public Vector3 rotSensetivity = Vector3.up;
+	public Vector3 flightSensitivityModifier = Vector3.one;
 
 	public float deadzone = .01f;
 	public Vector3 rotDeadzone = 5*Vector3.one;
