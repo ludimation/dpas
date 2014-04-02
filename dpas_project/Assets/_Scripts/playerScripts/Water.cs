@@ -35,6 +35,7 @@ public class Water : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!General.isPaused){
+			transform.localScale = (1+(.1f*General.playerSize))*Vector3.one;
 			if (General.playerSize <.01f){
 				General.g.changeElement (General.Element.Air);
 			}

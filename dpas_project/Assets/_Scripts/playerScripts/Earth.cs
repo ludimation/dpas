@@ -41,8 +41,10 @@ public class Earth : MonoBehaviour {
 		terrYratio = terr.terrainData.heightmapHeight/terr.terrainData.size.z;
 		//Debug.Log (terrXratio.ToString ());
 		
-		terr.enabled = true;
-		terrOrig.enabled = false;
+		//terr.enabled = true;
+		terr.gameObject.SetActive (true);
+		//terrOrig.enabled = false;
+		terrOrig.gameObject.SetActive (false);
 		//Debug.Log ("terr.enabled = "+ terr.enabled.ToString());
 		terrXBound = terr.terrainData.heightmapWidth;
 		terrYBound = terr.terrainData.heightmapHeight;
