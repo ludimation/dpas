@@ -385,15 +385,15 @@ public class General : MonoBehaviour {
 
 	}*/
 	public static float changeSize(float amount, float upperLimit, float lowerLimit){
-		//string msg = "";
-		//Debug.Log (msg);
+		string msg = "pSize = "+playerSize.ToString ()+"; ";
+		Debug.Log (msg);
 		if (playerSize + amount > upperLimit){
-			//msg += "greater than upper";
+			msg += "greater than upper; ";
 			playerSize = Mathf.Max (playerSize, upperLimit);
 			//return playerSize;
 		}
 		else if (playerSize + amount < lowerLimit){
-			//msg += "less than lower";
+			msg += "less than lower; ";
 			playerSize = Mathf.Min (playerSize, lowerLimit);
 			//return playerSize;
 		}
@@ -402,8 +402,8 @@ public class General : MonoBehaviour {
 		}
 		playerSize = Mathf.Max (playerSize, 0);
 		playerSize = Mathf.Min (playerSize, 100);
-		//msg +="amount " + amount.ToString () +"t: "+Time.deltaTime.ToString ();
-		//Debug.Log (msg);
+		msg +="amount " + amount.ToString () +", t: "+Time.frameCount.ToString ()+", pSize = "+playerSize.ToString ();
+		Debug.Log (msg);
 
 		return playerSize;
 	}

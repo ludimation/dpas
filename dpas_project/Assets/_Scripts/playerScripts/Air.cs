@@ -70,7 +70,7 @@ public class Air : MonoBehaviour {
 		}
 		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 			//Debug.Log ("L gust");
-			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
+			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed/Time.deltaTime){
 				General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
@@ -86,7 +86,7 @@ public class Air : MonoBehaviour {
 		}
 		if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 			//Debug.Log ("R gust");
-			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
+			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed/Time.deltaTime){
 				General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
@@ -99,6 +99,7 @@ public class Air : MonoBehaviour {
 				
 			}
 		}
+		Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
 		lHandOld = Gestures.LArmDir();
 		rHandOld = Gestures.RArmDir();
 
@@ -160,6 +161,33 @@ public class Air : MonoBehaviour {
 		baseControl.fly = true;
 
 
+	}
+	void OnTriggerStay(Collider other){
+		if (enabled){
+			if(Gestures.ArmsOut ()){
+				FireAttack fA = other.GetComponent<FireAttack>();
+				if(fA){
+					General.g.changeElement(General.Element.Fire);
+					General.playerSize = 1f;
+				}
+				Shrubbery shrub = other.GetComponent<Shrubbery>();
+				if(shrub&&shrub.burning){
+					Debug.Log ("shrubbery encountered, changing form");
+					General.g.changeElement(General.Element.Fire);
+					General.playerSize = 1f;
+				}
+				WaterAttack wA = other.GetComponent<WaterAttack>();
+				if(wA){
+					General.g.changeElement(General.Element.Water);
+					General.playerSize = 1f;
+				}
+				Stream strm = other.GetComponent<Stream>();
+				if(strm){
+					General.g.changeElement(General.Element.Water);
+					General.playerSize = 1f;
+				}
+			}
+		}
 	}
 
 }

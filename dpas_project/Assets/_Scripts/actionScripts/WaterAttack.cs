@@ -6,6 +6,7 @@ public class WaterAttack : MonoBehaviour {
 	public float priority;
 	public float size = 1;
 	public float maxSize = 25f;
+	public float secondaryTimer = 25f;
 	public GameObject collisionHolder;
 	SpringJoint spring;
 	public ParticleSystem initial;
@@ -39,9 +40,9 @@ public class WaterAttack : MonoBehaviour {
 	}
 	void OnCollisionEnter(Collision col){
 		//gameObject.GetComponent<ParticleSystem>().enableEmission = false;
-		foreach(ParticleSystem p in gameObject.GetComponentsInChildren<ParticleSystem>()){
-			p.enableEmission = false;
-		}
+		//foreach(ParticleSystem p in gameObject.GetComponentsInChildren<ParticleSystem>()){
+		//	p.enableEmission = false;
+		//}
 		collisionHolder.layer = 0;
 		initial.enableEmission = false;
 		final.enableEmission = true;
@@ -59,7 +60,7 @@ public class WaterAttack : MonoBehaviour {
 					transform.localScale = Mathf.Pow (size, 1f/3f) * Vector3.one;
 
 					transform.Translate (Vector3.up);
-					time = 10;
+					time = secondaryTimer;
 				}
 			}
 			else if(!spring){
@@ -77,6 +78,19 @@ public class WaterAttack : MonoBehaviour {
 			}
 
 		}
+		Shrubbery shrub = other.gameObject.GetComponent<Shrubbery>();
+		if (shrub&&shrub.burning){
+			shrub.UnIgnite ();
+			shrub.AddWater ();
+			if(!cloud){
+				cloud = (Cloud)Instantiate(cloudPrefab, transform.position + 5*Vector3.up, Quaternion.identity);
+				cloud.size = 2*Mathf.Min (shrub.fuel, size);
+			}
+			else{
+				cloud.size += 2*Mathf.Min (shrub.fuel, size);
+			}
+			size -= Mathf.Min (shrub.fuel, size);
+		}
 
 	}
 	void OnTriggerStay(Collider other){
@@ -88,10 +102,10 @@ public class WaterAttack : MonoBehaviour {
 			//temp.size = 2*Mathf.Min(size, fA.Strength);
 			if(!cloud){
 				cloud = (Cloud)Instantiate(cloudPrefab, transform.position + 5*Vector3.up, Quaternion.identity);
-				cloud.size = Mathf.Min (fA.strength, size);
+				cloud.size = 2*Mathf.Min (fA.strength, size);
 			}
 			else{
-				cloud.size += Mathf.Min (fA.strength, size);
+				cloud.size += 2*Mathf.Min (fA.strength, size);
 			}
 			fA.strength -= Mathf.Min (fA.strength, size);
 			size -= Mathf.Min (fA.strength, size);

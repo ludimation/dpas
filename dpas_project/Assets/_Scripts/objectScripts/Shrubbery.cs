@@ -24,7 +24,7 @@ public class Shrubbery : MonoBehaviour {
 			//flame.emissionRate *= 1+Time.deltaTime;
 		}
 
-		if (fuel < 0){
+		if (fuel <= 0){
 			GameObject.Destroy (gameObject);
 		}
 
@@ -73,7 +73,7 @@ public class Shrubbery : MonoBehaviour {
 			}
 		}
 		Water waterElemental = other.GetComponent<Water>();
-		if(burning&&waterElemental){
+		if(burning&&waterElemental&&waterElemental.enabled){
 			General.changeSize(-fuel, 100, 0);
 			UnIgnite();
 		}
