@@ -9,6 +9,7 @@ public class Stream : MonoBehaviour {
 	public WaterAttack watAtk;
 	float emit;
 	public float emissionWait = .5f;
+	public bool obstacle = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -16,11 +17,11 @@ public class Stream : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(size<=0){
+		if(!obstacle&&size<=0){
 
 			Destroy(gameObject);
 		}
-		if (emit < 0){
+		if (!obstacle&&emit < 0){
 			emit = emissionWait;
 			WaterAttack temp = (WaterAttack)Instantiate (watAtk, transform.position, Quaternion.identity);
 			temp.size = Mathf.Min (size, .5f);
@@ -34,8 +35,13 @@ public class Stream : MonoBehaviour {
 	void OnTriggerStay (Collider other){
 		Water waterElemental = other.GetComponent<Water>();
 		if(waterElemental){
-			General.changeSize(Time.deltaTime, 100, 0);
-			size -= Time.deltaTime;
+			if(!obstacle){
+				General.changeSize(Time.deltaTime, 100, 0);
+				size -= Time.deltaTime;
+			}
+			else{
+				General.changeSize (Time.deltaTime, 10, 0);
+			}
 
 		}
 

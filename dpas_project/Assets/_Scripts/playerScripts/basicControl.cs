@@ -25,15 +25,20 @@ public class basicControl : MonoBehaviour {
 
 
 		move = (inPut.getDiff());
-		move.Scale (Vector3.right+Vector3.forward);
+		//move.Scale (Vector3.right+Vector3.forward);
 		rot = inPut.getRot ();
-		if(General.element != General.Element.Earth && Gestures.LArmStraight () && Gestures.RArmStraight ()){
+		/*if(General.element != General.Element.Earth && Gestures.LArmStraight () && Gestures.RArmStraight ()){
 			if(Vector3.Angle (Gestures.LArmDir(), Vector3.down) >30 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) >30){
 				if ((Vector3.Angle (Gestures.LArmDir(), Vector3.down) <60 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <60) || (General.element == General.Element.Air && (Vector3.Angle (Gestures.LArmDir(), Vector3.down) <135 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <135))){
 					move += Vector3.Scale (Gestures.LArmDir ()+ Gestures.RArmDir (), new Vector3(-1,-1,-1));
 				}
 			}
-		}
+		}*/
+		/*if(Genreal.element == General.Element.Air){
+			if (Gestures.LArmStraight () && Gestures.RArmStraight ()){
+				if(
+			}
+		}*/
 		if(inPut.getMagnitudeRaw()>posCutoff){
 			move = Vector3.zero;
 			rot = Vector3.zero;

@@ -70,7 +70,7 @@ public class WaterAttack : MonoBehaviour {
 				spring.maxDistance = 7f;
 			}
 			else if(time < 5){
-				Instantiate(streamPrefab, transform.position+2*Vector3.up, Quaternion.identity);
+				Instantiate(streamPrefab, transform.position+.5f*Vector3.up, Quaternion.identity);
 				Destroy(other.gameObject);
 				//Destroy(spring.connectedBody.gameObject);
 				Destroy(gameObject);

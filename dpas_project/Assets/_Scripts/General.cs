@@ -221,12 +221,13 @@ public class General : MonoBehaviour {
 		if (p){
 			paused = true;
 			isPaused = paused;
-			Time.timeScale = .00001f;
+			//Time.timeScale = .00001f;
 		}
 		else{
 			paused = false;
 			isPaused = paused;
-			Time.timeScale = 1;
+			//Time.timeScale = .00001f;
+			//Time.timeScale = 1;
 		}
 	}
 	public void changeElement(Element e){
