@@ -3,6 +3,9 @@ using System.Collections;
 
 public class General : MonoBehaviour {
 	public static bool kinectControl;
+	public static ScreenShake screenShake;
+	public ScreenShake screenShaker;
+
 	public bool controlByKinect = true;
 	//public static bool keyControlOnly;
 	//public bool keyboardOnly = false;
@@ -78,6 +81,8 @@ public class General : MonoBehaviour {
 		Gestures.rShoulder = rShoulder;
 
 		g = this;
+
+		screenShake = screenShaker;
 		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
@@ -87,6 +92,9 @@ public class General : MonoBehaviour {
 		earthObjects = GameObject.FindGameObjectsWithTag("Earth");
 		fireObjects = GameObject.FindGameObjectsWithTag("Fire");
 		waterObjects = GameObject.FindGameObjectsWithTag("Water");
+		foreach (GameObject gO in waterObjects){
+			Debug.Log (gO.name);
+		}
 
 		airControl = GameObject.FindObjectOfType<Air>();
 		earthControl = GameObject.FindObjectOfType<Earth>();
@@ -213,17 +221,18 @@ public class General : MonoBehaviour {
 		if (p){
 			paused = true;
 			isPaused = paused;
-			//Time.timeScale = 0;
+			//Time.timeScale = .00001f;
 		}
 		else{
 			paused = false;
 			isPaused = paused;
+			//Time.timeScale = .00001f;
 			//Time.timeScale = 1;
 		}
 	}
 	public void changeElement(Element e){
 		if(element == e){
-			return;
+			//return;
 		}
 		element = e;
 
@@ -277,7 +286,11 @@ public class General : MonoBehaviour {
 		}
 		if(e != Element.Water){
 			foreach (GameObject g in waterObjects){
-				if(g.particleSystem){
+				if(!g){
+					
+					Debug.LogWarning ("water avatar object has been destroyed, cannot deactivate");
+				}
+				else if(g.particleSystem){
 					g.particleSystem.enableEmission = false;
 				}
 				else{
@@ -325,7 +338,9 @@ public class General : MonoBehaviour {
 			fireControl.UnSleep();
 			currentInstructions = fireInstructions;
 			foreach (GameObject g in fireObjects){
+				//Debug.Log ("found fire object");
 				if(g.particleSystem){
+					//Debug.Log ("with paprticle system");
 					g.particleSystem.enableEmission = true;
 				}
 				else{
@@ -338,7 +353,10 @@ public class General : MonoBehaviour {
 			waterControl.UnSleep();
 			currentInstructions = waterInstructions;
 			foreach (GameObject g in waterObjects){
-				if(g.particleSystem){
+				if(!g){
+					Debug.LogWarning ("water avatar object has been destroyed, cannot reactivate");
+				}
+				else if(g.particleSystem){
 					g.particleSystem.enableEmission = true;
 				}
 				else{

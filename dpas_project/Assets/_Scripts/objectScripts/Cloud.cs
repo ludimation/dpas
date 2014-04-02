@@ -5,6 +5,9 @@ public class Cloud : MonoBehaviour {
 	public WaterAttack raindrop;
 	// Use this for initialization
 	public float size = 1;
+	public float rainWait = .3f;
+	float rainT = .3f;
+	public bool obstacle = false;
 	float rainAmnt;
 	void Start () {
 	
@@ -12,11 +15,18 @@ public class Cloud : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (rainAmnt >0){
-			Instantiate(raindrop, transform.position + size*2*(Random.rotation*Vector3.up), Quaternion.identity);
-			//size -= Time.deltaTime;
-			rainAmnt -= Time.deltaTime;
+		if (obstacle&&size <= 0){
+			Destroy(gameObject);
 		}
+		if (!General.isPaused && rainAmnt >0){
+			if(rainT<0){
+				Instantiate(raindrop, transform.position + size*2*(Random.rotation*Vector3.up), Quaternion.identity);
+				size -= Time.deltaTime;
+				rainAmnt -= Time.deltaTime;
+				rainT = rainWait;
+			}
+		}
+		rainT -= Time.deltaTime;
 	
 	}
 	public void Rain (float amnt){
