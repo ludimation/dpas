@@ -58,20 +58,13 @@ public class LightningStrike : MonoBehaviour {
 			}
 			else{
 				boltOrigin = temp.transform;
+				shrub.Ignite ();
+				source.audSrc.PlayOneShot(thunder);
+				target = targ.transform;
 			}
 
-			shrub.Ignite ();
-			source.audSrc.PlayOneShot(thunder);
-			target = targ.transform;
-			/*Debug.Log ("Lstrike foundshrub");
-			if (minDist <0){
-				minDist = Vector3.Distance(target.transform.position, transform.position);
-				temp = shrub;
-			}
-			else if (minDist>Vector3.Distance(target.transform.position, transform.position)){
-				minDist = Mathf.Min (minDist, Vector3.Distance (target.transform.position, transform.position));
-				temp = shrub;
-			}*/
+
+
 		}
 	}
 }

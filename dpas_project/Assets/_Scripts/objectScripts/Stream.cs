@@ -35,6 +35,7 @@ public class Stream : MonoBehaviour {
 	void OnTriggerStay (Collider other){
 		Water waterElemental = other.GetComponent<Water>();
 		if(waterElemental){
+			//Debug.Log ("water elemental, "+obstacle.ToString ()+", "+Time.frameCount.ToString ());
 			if(!obstacle){
 				General.changeSize(Time.deltaTime, 100, 0);
 				size -= Time.deltaTime;

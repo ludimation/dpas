@@ -50,6 +50,9 @@ public class Fire : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!General.isPaused){
+			if (General.playerSize <.01f){
+				General.g.changeElement (General.Element.Air);
+			}
 			flameWait -= Time.deltaTime;
 			if(!General.kinectControl){
 				if (Input.GetKey(KeyCode.Space)){
@@ -71,6 +74,7 @@ public class Fire : MonoBehaviour {
 					General.screenShake.NewImpact ();
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					FireAttack temp = (FireAttack)Instantiate(fireball, lHand.position, Quaternion.identity);
+					General.changeSize (-Time.deltaTime, 100, 0);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 					foo.AddForce (fireballSpeed*(transform.rotation*(Gestures.LArmDir()-lHandOld)), ForceMode.VelocityChange);
 					//foo.AddForce (fireballSpeed*Gestures.LArmDir(), ForceMode.VelocityChange);
@@ -86,6 +90,7 @@ public class Fire : MonoBehaviour {
 					General.screenShake.NewImpact ();
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					FireAttack temp = (FireAttack)Instantiate(fireball, rHand.position, Quaternion.identity);
+					General.changeSize (-Time.deltaTime, 100, 0);
 					//FireAttack temp = (FireAttack)Instantiate(fireball, transform.position+(transform.rotation*(RArmDir()-rHandOld)), Quaternion.identity);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 					foo.AddForce (fireballSpeed*(transform.rotation*(Gestures.RArmDir()-rHandOld)), ForceMode.VelocityChange);
@@ -97,6 +102,7 @@ public class Fire : MonoBehaviour {
 			if(Gestures.ArmsTogether ()){
 				General.screenShake.NewImpact ();
 				//FireAttack temp = (FireAttack)Instantiate(fireBlast, transform.position+(2*transform.forward)+Vector3.Up, transform.rotation);
+				General.changeSize (-Time.deltaTime, 100, 0);
 				FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 				Physics.IgnoreCollision (temp.collider, collider);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -111,6 +117,7 @@ public class Fire : MonoBehaviour {
 			//if(Gestures.LArmStraight()&&Gestures.RArmStraight ()&&
 			if (Vector3.Angle (Gestures.flatShoulderRot ()*Gestures.LArmDir(), new Vector3(-1,-1,-1))<45 && Vector3.Angle (Gestures.flatShoulderRot ()*Gestures.RArmDir(), new Vector3(1,-1,-1))<45){
 				General.screenShake.NewImpact ();
+				General.changeSize (-Time.deltaTime, 100, 0);
 				FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 				Physics.IgnoreCollision (temp.collider, collider);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -128,16 +135,18 @@ public class Fire : MonoBehaviour {
 			if(!General.kinectControl){
 				//Debug.Log (Time.deltaTime.ToString ());
 				if (Input.GetKeyDown (KeyCode.Q)){
+					General.changeSize (-Time.deltaTime, 100, 0);
 					General.screenShake.NewImpact ();
 					Debug.Log ("Q");
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					FireAttack temp = (FireAttack)Instantiate (fireball, (lHand.position), Quaternion.identity);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 					foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
-					General.changeSize (fireballCost*Time.deltaTime, 50, 1);
+					//General.changeSize (fireballCost*Time.deltaTime, 50, 1);
 					temp.strength = General.playerSize;
 				}
 				if(Input.GetKeyDown (KeyCode.E)){
+					General.changeSize (-Time.deltaTime, 100, 0);
 					General.screenShake.NewImpact ();
 					Debug.Log ("E");
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
@@ -149,6 +158,7 @@ public class Fire : MonoBehaviour {
 				}
 				if (Input.GetKey (KeyCode.X)){
 					General.screenShake.NewImpact ();
+					General.changeSize (-Time.deltaTime, 100, 0);
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 
 					FireAttack temp = (FireAttack)Instantiate(flamethrower, transform.position+(2*transform.forward)+Vector3.up, transform.rotation);
@@ -159,6 +169,7 @@ public class Fire : MonoBehaviour {
 				}
 				if(Input.GetKey (KeyCode.LeftShift)){
 					General.screenShake.NewImpact ();
+					General.changeSize (-Time.deltaTime, 100, 0);
 					FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 					Physics.IgnoreCollision (temp.collider, collider);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();

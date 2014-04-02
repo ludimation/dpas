@@ -161,5 +161,31 @@ public class Air : MonoBehaviour {
 
 
 	}
+	void OnTriggerStay(Collider other){
+		if (enabled){
+			if(Gestures.ArmsOut ()){
+				FireAttack fA = other.GetComponent<FireAttack>();
+				if(fA){
+					General.g.changeElement(General.Element.Fire);
+					General.playerSize = 1f;
+				}
+				Shrubbery shrub = other.GetComponent<Shrubbery>();
+				if(shrub&&shrub.burning){
+					General.g.changeElement(General.Element.Fire);
+					General.playerSize = 1f;
+				}
+				WaterAttack wA = other.GetComponent<WaterAttack>();
+				if(wA){
+					General.g.changeElement(General.Element.Water);
+					General.playerSize = 1f;
+				}
+				Stream strm = other.GetComponent<Stream>();
+				if(strm){
+					General.g.changeElement(General.Element.Water);
+					General.playerSize = 1f;
+				}
+			}
+		}
+	}
 
 }
