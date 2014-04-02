@@ -83,4 +83,15 @@ public class Shrubbery : MonoBehaviour {
 		}
 
 	}
+	void OnTriggerStay(Collider other){
+		Fire temp = other.GetComponent<Fire>();
+		if (burning && temp != null && temp.enabled){
+			General.changeSize(fuel, fuelLimit, 0);
+			//General.playerSize += fuel;
+			fuel = 0;
+			Debug.Log("shrubbery trigger stay");
+			//burning = true;
+			//flame.enableEmission = true;
+		}
+	}
 }
