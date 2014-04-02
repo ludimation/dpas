@@ -70,7 +70,7 @@ public class Air : MonoBehaviour {
 		}
 		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 			//Debug.Log ("L gust");
-			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed/Time.deltaTime){
+			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
 				General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
@@ -86,7 +86,7 @@ public class Air : MonoBehaviour {
 		}
 		if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 			//Debug.Log ("R gust");
-			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed/Time.deltaTime){
+			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
 				General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);

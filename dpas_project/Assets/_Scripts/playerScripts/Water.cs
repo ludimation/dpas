@@ -77,7 +77,7 @@ public class Water : MonoBehaviour {
 
 			if(enableWave&&Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 				//Debug.Log ("L wave");
-				if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed/Time.deltaTime){
+				if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
 					General.screenShake.NewImpact ();
 					//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					WaterAttack temp = (WaterAttack)Instantiate(wave, lHand.position, Quaternion.identity);
@@ -94,7 +94,7 @@ public class Water : MonoBehaviour {
 			}
 			if(enableWave&&Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 				//Debug.Log ("R wave");
-				if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed/Time.deltaTime){
+				if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
 					General.screenShake.NewImpact ();
 					//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					WaterAttack temp = (WaterAttack)Instantiate(wave, rHand.position, Quaternion.identity);
