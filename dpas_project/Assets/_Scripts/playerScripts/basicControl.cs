@@ -19,77 +19,78 @@ public class basicControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 move;
-		Vector3 rot;
+		if(!General.isPaused){
+			Vector3 move;
+			Vector3 rot;
 
 
 
-		move = (inPut.getDiff());
-		//move.Scale (Vector3.right+Vector3.forward);
-		rot = inPut.getRot ();
-		/*if(General.element != General.Element.Earth && Gestures.LArmStraight () && Gestures.RArmStraight ()){
-			if(Vector3.Angle (Gestures.LArmDir(), Vector3.down) >30 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) >30){
-				if ((Vector3.Angle (Gestures.LArmDir(), Vector3.down) <60 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <60) || (General.element == General.Element.Air && (Vector3.Angle (Gestures.LArmDir(), Vector3.down) <135 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <135))){
-					move += Vector3.Scale (Gestures.LArmDir ()+ Gestures.RArmDir (), new Vector3(-1,-1,-1));
+			move = (inPut.getDiff());
+			//move.Scale (Vector3.right+Vector3.forward);
+			rot = inPut.getRot ();
+			/*if(General.element != General.Element.Earth && Gestures.LArmStraight () && Gestures.RArmStraight ()){
+				if(Vector3.Angle (Gestures.LArmDir(), Vector3.down) >30 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) >30){
+					if ((Vector3.Angle (Gestures.LArmDir(), Vector3.down) <60 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <60) || (General.element == General.Element.Air && (Vector3.Angle (Gestures.LArmDir(), Vector3.down) <135 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <135))){
+						move += Vector3.Scale (Gestures.LArmDir ()+ Gestures.RArmDir (), new Vector3(-1,-1,-1));
+					}
 				}
+			}*/
+			/*if(Genreal.element == General.Element.Air){
+				if (Gestures.LArmStraight () && Gestures.RArmStraight ()){
+					if(
+				}
+			}*/
+			if(inPut.getMagnitudeRaw()>posCutoff){
+				move = Vector3.zero;
+				rot = Vector3.zero;
 			}
-		}*/
-		/*if(Genreal.element == General.Element.Air){
-			if (Gestures.LArmStraight () && Gestures.RArmStraight ()){
-				if(
+			//deadzone stuff
+			if (move.magnitude < deadzone){
+				move = Vector3.zero;
 			}
-		}*/
-		if(inPut.getMagnitudeRaw()>posCutoff){
-			move = Vector3.zero;
-			rot = Vector3.zero;
-		}
-		//deadzone stuff
-		if (move.magnitude < deadzone){
-			move = Vector3.zero;
-		}
-		else{
-			move -= (deadzone * move.normalized);
+			else{
+				move -= (deadzone * move.normalized);
+
+			}
+
+			if(Mathf.Abs (rot.x) < rotDeadzone.x){
+				rot.x = 0;
+			}
+			else{
+				rot.x -= Mathf.Sign(rot.x) * rotDeadzone.x;
+			}
+			if(Mathf.Abs (rot.y) < rotDeadzone.y){
+				rot.y = 0;
+			}
+			else{
+				rot.y -= Mathf.Sign (rot.y)*rotDeadzone.y;
+			}
+			if(Mathf.Abs (rot.z) < rotDeadzone.z){
+				rot.z = 0;
+			}
+			else{
+				rot.z -= Mathf.Sign (rot.z)*rotDeadzone.z;
+			}
+			if(!General.kinectControl){
+				move += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis ("Flight"), Input.GetAxis ("Vertical"));
+				rot += 45*new Vector3(0, Input.GetAxis ("Yaw"), 0);
+			}
+			rot.Scale (new Vector3(Mathf.Abs (rot.x), Mathf.Abs (rot.y), Mathf.Abs (rot.z)));
+			rot.Scale ((1f/90f)*Vector3.one);
+			move.Scale (Time.deltaTime*sensetivity);
+			rot.Scale (Time.deltaTime*rotSensetivity);
+			if(fly){
+				//transform.Translate (move);
+				cha.Move (transform.rotation*move);
+
+			}
+
+			else{
+				motor.inputMoveDirection = transform.rotation*Vector3.Scale(move, new Vector3(1,0,1));
+			}
+			//Debug.Log (move.ToString());
+			transform.Rotate (rot);
 
 		}
-
-		if(Mathf.Abs (rot.x) < rotDeadzone.x){
-			rot.x = 0;
-		}
-		else{
-			rot.x -= Mathf.Sign(rot.x) * rotDeadzone.x;
-		}
-		if(Mathf.Abs (rot.y) < rotDeadzone.y){
-			rot.y = 0;
-		}
-		else{
-			rot.y -= Mathf.Sign (rot.y)*rotDeadzone.y;
-		}
-		if(Mathf.Abs (rot.z) < rotDeadzone.z){
-			rot.z = 0;
-		}
-		else{
-			rot.z -= Mathf.Sign (rot.z)*rotDeadzone.z;
-		}
-		if(!General.kinectControl){
-			move += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis ("Flight"), Input.GetAxis ("Vertical"));
-			rot += 45*new Vector3(0, Input.GetAxis ("Yaw"), 0);
-		}
-		rot.Scale (new Vector3(Mathf.Abs (rot.x), Mathf.Abs (rot.y), Mathf.Abs (rot.z)));
-		rot.Scale ((1f/90f)*Vector3.one);
-		move.Scale (Time.deltaTime*sensetivity);
-		rot.Scale (Time.deltaTime*rotSensetivity);
-		if(fly){
-			//transform.Translate (move);
-			cha.Move (transform.rotation*move);
-
-		}
-
-		else{
-			motor.inputMoveDirection = transform.rotation*Vector3.Scale(move, new Vector3(1,0,1));
-		}
-		//Debug.Log (move.ToString());
-		transform.Rotate (rot);
-
-
 	}
 }
