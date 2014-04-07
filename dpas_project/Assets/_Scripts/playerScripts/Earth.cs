@@ -29,6 +29,11 @@ public class Earth : MonoBehaviour {
 	float terrXratio;
 	float terrYratio;
 
+	public List<Texture2D> indicator1;
+	int indicator1Level = 0;
+	public List<Texture2D> indicator2;
+	int indicator2level = 0;
+
 	//public GameObject earthEffect;
 	public List<GameObject> effects;
 	//public Texture2D heightMap;
@@ -87,6 +92,25 @@ public class Earth : MonoBehaviour {
 			//if(Input.GetKey(KeyCode.R)){
 			//	highEnergy = lowEnergy = 1;
 			//}
+			if(Input.GetKey(KeyCode.Alpha1)){
+				indicator1Level = 1;
+				indicator2Level = 0;
+			}
+			else{
+				indicator1Level = 0;
+				//indicator2Level = 1;
+
+			}
+			if(Input.GetKey(KeyCode.Alpha2)){
+				indicator1Level = 0;
+				indicator2Level = 1;
+			}
+			else{
+				//indicator1Level = 0;
+				indicator2Level = 0;
+				
+			}
+
 			if(Input.GetKeyDown (KeyCode.Q)){
 				General.screenShake.NewImpact ();
 				deform(rad);
@@ -224,6 +248,9 @@ public class Earth : MonoBehaviour {
 	}
 
 	void OnGUI(){
+		for (int i = 0; i<Mathf.Min(indicator1.Count, indicator1Level + 1); ++i){
+			GUI.Box (new Rect(0, i*256, 256, 256), indicator1[i]):
+		}
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
 		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
 

@@ -223,18 +223,18 @@ public class General : MonoBehaviour {
 		}
 			
 		if (paused){
-			if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up) < 60 && Vector3.Angle (rHand.position-rElbow.position, Vector3.left) < 45){
-				quitting = true;
-				if(Vector3.Angle (lElbow.position-lShoulder.position, Vector3.left) <45 && Vector3.Angle (lHand.position-lElbow.position, Vector3.left)<45){
+			//if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up) < 60 && Vector3.Angle (rHand.position-rElbow.position, Vector3.left) < 45){
+				//quitting = true;
+				//if(Vector3.Angle (lElbow.position-lShoulder.position, Vector3.left) <45 && Vector3.Angle (lHand.position-lElbow.position, Vector3.left)<45){
 					//Application.Quit();
-					currentMenu = endScreen;
-					activeImage = currentMenu;
-				}
-			}
-			else{
-				quitting = false;
-			}
-			if(Vector3.Angle (lElbow.position - lShoulder.position, Vector3.left)<45 && Vector3.Angle(lHand.position - lElbow.position, Vector3.up)<45){
+					//currentMenu = endScreen;
+					//activeImage = currentMenu;
+				//}
+			//}
+			//else{
+			//	quitting = false;
+			//}
+			/*if(Vector3.Angle (lElbow.position - lShoulder.position, Vector3.left)<45 && Vector3.Angle(lHand.position - lElbow.position, Vector3.up)<45){
 				instructions = true;
 				if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.right)<45){
 					activeImage = currentInstructions;
@@ -245,7 +245,7 @@ public class General : MonoBehaviour {
 			}
 			else{
 				instructions = false;
-			}
+			}*/
 			if(Input.GetKeyUp (KeyCode.T)){
 				activeImage = currentInstructions;
 			}

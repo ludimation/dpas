@@ -10,7 +10,7 @@ public static class Gestures : object {
 	public static Transform lShoulder;
 	public static Transform rShoulder;
 	static Vector3 lHandOld;
-
+	
 	//public Transform player;
 
 	//public bool dbg = false;
