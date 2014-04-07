@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Water : MonoBehaviour {
 
+	//public GameObject effect;
+	//public List<Transform>
+	public List<GameObject> effects;
 	public Transform lHand;
 	public Transform rHand;
 	public float minThrowSpeed = 2.5f;

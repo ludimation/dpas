@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class General : MonoBehaviour {
 	public static bool kinectControl;
@@ -11,6 +12,13 @@ public class General : MonoBehaviour {
 	//public bool keyboardOnly = false;
 
 	public Transform avatarRoot;
+
+	public GameObject airEffect;
+	public GameObject earthEffect;
+	public GameObject fireEffect;
+	public GameObject waterEffect;
+
+	public List<Transform> effectJoints;
 
 	public Transform lHand;
 	public Transform lElbow;
@@ -86,20 +94,52 @@ public class General : MonoBehaviour {
 		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
-		//General.keyControlOnly = keyboardOnly;
-		kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
-		airObjects = GameObject.FindGameObjectsWithTag("Air");
-		earthObjects = GameObject.FindGameObjectsWithTag("Earth");
-		fireObjects = GameObject.FindGameObjectsWithTag("Fire");
-		waterObjects = GameObject.FindGameObjectsWithTag("Water");
-		foreach (GameObject gO in waterObjects){
-			Debug.Log (gO.name);
-		}
 
 		airControl = GameObject.FindObjectOfType<Air>();
 		earthControl = GameObject.FindObjectOfType<Earth>();
 		fireControl = GameObject.FindObjectOfType<Fire>();
 		waterControl = GameObject.FindObjectOfType<Water>();
+		//General.keyControlOnly = keyboardOnly;
+		//kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
+		GameObject t;
+		//airControl.effects = new List<GameObject>();
+		earthControl.effects = new List<GameObject>();
+		fireControl.effects = new List<GameObject>();
+		waterControl.effects = new List<GameObject>();
+
+		foreach (Transform j in effectJoints){
+			//t = (GameObject)Instantiate(airEffect, j.position, Quaternion.identity);
+			//t.transform.parent = j;
+			//t.tag = "Air";
+			//airControl.effects.Add
+
+			
+			t = (GameObject)Instantiate(earthEffect, j.position, Quaternion.identity);
+			t.transform.parent = j;
+			t.tag = "Earth";
+			earthControl.effects.Add (t);
+			
+			t = (GameObject)Instantiate(fireEffect, j.position, Quaternion.identity);
+			t.transform.parent = j;
+			t.tag = "Fire";
+			fireControl.effects.Add (t);
+
+			
+			t = (GameObject)Instantiate(waterEffect, j.position, Quaternion.identity);
+			t.transform.parent = j;
+			t.tag = "Water";
+			waterControl.effects.Add (t);
+
+		}
+		airObjects = GameObject.FindGameObjectsWithTag("Air");
+		earthObjects = GameObject.FindGameObjectsWithTag("Earth");
+		fireObjects = GameObject.FindGameObjectsWithTag("Fire");
+		waterObjects = GameObject.FindGameObjectsWithTag("Water");
+		//foreach (GameObject gO in waterObjects){
+		//	Debug.Log (gO.name);
+		//}
+
+
 		
 		currentInstructions = airInstructions;
 		//General.element = startingElement;

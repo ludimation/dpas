@@ -12,6 +12,7 @@ public class Fire : MonoBehaviour {
 	public FireAttack fireBlast;
 	public Transform lHand;
 	public Transform rHand;
+	public List<GameObject> effects;
 
 	public FireAttack flamethrower;
 	public float flamethrowerCost = 1f;

@@ -29,7 +29,9 @@ public class Earth : MonoBehaviour {
 	float terrXratio;
 	float terrYratio;
 
-	public Texture2D heightMap;
+	//public GameObject earthEffect;
+	public List<GameObject> effects;
+	//public Texture2D heightMap;
 	//int terrYRes;
 
 	public Terrain terr;
@@ -54,12 +56,28 @@ public class Earth : MonoBehaviour {
 		//terr.terrainData.SetHeights (0,0, temp);
 		reset();
 		//Debug.Log ("terr.enabled = "+ terr.enabled.ToString());
+		/*GameObject t;
+		foreach (Transform j in General.g.effectJoints){
+
+			
+			
+			t = (GameObject)Instantiate(earthEffect, j.position, Quaternion.identity);
+			t.transform.parent = j;
+			t.tag = "Earth";
+			effects.Add (t);
+			
+
+			
+		}*/
 
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		foreach (GameObject e in effects){
+			Debug.Log (e.transform.position.ToString ());
+		}
 		//if(Input.GetKeyUp(KeyCode.L)){
 		//	reset();
 		//}
