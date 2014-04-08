@@ -16,21 +16,25 @@ public class Earth : MonoBehaviour {
 	public AudioSource audSrc;
 	public float smashChargeTime = 1;
 	public float smashCharge = 0;
+	public float smashCoolTime = .25f;
 	public AudioClip smash;
 	public float platformChargeTime = 1;
 	public float platformCharge = 0;
+	public float platformCoolTime = .25f;
 	public AudioClip rise;
 	public List<AudioClip> riseSounds;
-	public Transform upperIndicator;
-	public Transform lowerIndicator;
+	//public Transform upperIndicator;
+	//public Transform lowerIndicator;
 	int terrXBound;
 	int terrYBound;
 	int terrRes;
 	float terrXratio;
 	float terrYratio;
 
+	public Texture2D smashIcon;
 	public List<Texture2D> indicator1;
 	int indicator1Level = 0;
+	public Texture2D platformIcon;
 	public List<Texture2D> indicator2;
 	int indicator2Level = 0;
 
@@ -80,9 +84,9 @@ public class Earth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		foreach (GameObject e in effects){
+		/*foreach (GameObject e in effects){
 			Debug.Log (e.transform.position.ToString ());
-		}
+		}*/
 		//if(Input.GetKeyUp(KeyCode.L)){
 		//	reset();
 		//}
@@ -93,37 +97,38 @@ public class Earth : MonoBehaviour {
 			//	highEnergy = lowEnergy = 1;
 			//}
 			if(Input.GetKey(KeyCode.Alpha1)){
-				indicator1Level = 1;
+				indicator1Level = 2;
 				indicator2Level = 0;
 			}
-			else{
-				indicator1Level = 0;
-				//indicator2Level = 1;
 
-			}
-			if(Input.GetKey(KeyCode.Alpha2)){
+			else if(Input.GetKey(KeyCode.Alpha2)){
 				indicator1Level = 0;
-				indicator2Level = 1;
+				indicator2Level = 2;
 			}
 			else{
-				//indicator1Level = 0;
-				indicator2Level = 0;
+				indicator1Level = 1;
+				indicator2Level = 1;
 				
 			}
 
 			if(Input.GetKeyDown (KeyCode.Q)){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				deform(rad);
+
 				audSrc.PlayOneShot (smash);
+				smashCharge = -.5f;*/
+				Smash();
 				//highEnergy -= .75f;
 			}
 			if(Input.GetKeyDown (KeyCode.E)){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
 				temp.initialTime = 1;
 				temp.time = 1;
+				platformCharge = - .5f;*/
+				Platform();
 				//lowEnergy -= .75f;
 				//temp.start = transform.position + new  Vector3(0,-2, 0)
 			}
@@ -140,43 +145,93 @@ public class Earth : MonoBehaviour {
 		//	if(lowEnergy>.75f){
 		if(Gestures.ArmsUp ()){
 			if(platformCharge > platformChargeTime){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
 				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
 				temp.target = transform.position;
 				temp.initialTime = 1;
-				temp.time = 31;
-				platformCharge = 0;
+				temp.time = 1;
+				//platformCharge = 0;
+				smashCharge = 0;
+				platformCharge = -platformCoolTime;*/
+				Platform();
 				//lowEnergy-=.5f;
 			}
+			//if(platformCharge <0){
 			smashCharge += Time.deltaTime;
+			indicator2Level = 0;
+			indicator1Level = 2;
+			//}
 		}
 			//highEnergy += Time.deltaTime;
 
 		else if(Gestures.ArmsDown()){
 			if(smashCharge > smashChargeTime){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				deform(rad);
 				audSrc.PlayOneShot (smash);
-				smashCharge = 0;
+				smashCharge = -smashCoolTime;
+				platformCharge = 0;*/
+				Smash();
+				//smashCharge = 0;
 			}
+			//if(smashCharge < 0){
 			platformCharge += Time.deltaTime;
+			indicator2Level = 2;
+			indicator1Level = 0;
+			//}
 
 
 		}
 		else{
-			platformCharge -= Time.deltaTime;
-			smashCharge -= Time.deltaTime;
-			platformCharge = Mathf.Max (1.5f, platformCharge);
-			smashCharge = Mathf.Max (1.5f, platformCharge);
+			if(platformCharge <0){
+				platformCharge += Time.deltaTime;
+			}
+			else{
+				platformCharge -= Time.deltaTime;
+				platformCharge = Mathf.Max (0, platformCharge);
+				platformCharge = Mathf.Min (1.5f, platformCharge);
+
+			}
+			if(smashCharge <0){
+				smashCharge += Time.deltaTime;
+			}
+			else{
+				smashCharge -= Time.deltaTime;
+				smashCharge = Mathf.Max (0, smashCharge);
+				smashCharge = Mathf.Min (1.5f, smashCharge);
+			}
+			
+			indicator2Level = 1;
+			indicator1Level = 1;
 		}
 		//highEnergy = Mathf.Max (highEnergy, 0);
 		//lowEnergy = Mathf.Max (lowEnergy, 0);
 		//highEnergy = Mathf.Min (highEnergy, 1);
 		//lowEnergy = Mathf.Min (lowEnergy, 1);
 		
-		lowerIndicator.localScale = (1+platformCharge)*Vector3.one;
-		upperIndicator.localScale = (1+smashCharge)*Vector3.one;
+		//lowerIndicator.localScale = (1+platformCharge)*Vector3.one;
+		//upperIndicator.localScale = (1+smashCharge)*Vector3.one;
+	}
+	void Smash(){
+		General.screenShake.NewImpact ();
+		deform(rad);
+		audSrc.PlayOneShot (smash);
+		smashCharge = -smashCoolTime;
+		platformCharge = 0;
+	}
+	void Platform(){
+		General.screenShake.NewImpact ();
+		audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
+		Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
+		temp.target = transform.position;
+		temp.initialTime = 1;
+		temp.time = 1;
+		//platformCharge = 0;
+		smashCharge = 0;
+		platformCharge = -platformCoolTime;
+		Debug.Log (smashCharge.ToString ()+", "+platformCharge.ToString ());
+
 	}
 	void deform (float radius){
 		float x = transform.position.x-terr.transform.position.x;
@@ -248,8 +303,24 @@ public class Earth : MonoBehaviour {
 	}
 
 	void OnGUI(){
-		for (int i = 0; i<Mathf.Min(indicator1.Count, indicator1Level + 1); ++i){
-			GUI.Box (new Rect(0, i*256, 256, 256), indicator1[i]);
+		if(smashCharge < 0){
+			GUI.DrawTexture (new Rect(0, 0, 256, 256), smashIcon);
+		}
+		else{
+			for (int i = 0; i<Mathf.Min(indicator1.Count, indicator1Level); ++i){
+				//GUI.Box (new Rect(0, i*256, 256, 256), indicator1[i]);
+				GUI.DrawTexture (new Rect(0, i*256, 256, 256), indicator1[i]);
+			}
+		}
+		if(platformCharge <0){
+			GUI.DrawTexture (new Rect(256, 0, 256, 256), platformIcon);
+
+		}
+		else{
+			for (int i = 0; i<Mathf.Min(indicator2.Count, indicator2Level); ++i){
+				//GUI.Box (new Rect(256, i*256, 256, 256), indicator2[i]);
+				GUI.DrawTexture (new Rect(256, i*256, 256, 256), indicator2[i]);
+			}
 		}
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
 		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
