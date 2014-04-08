@@ -32,7 +32,7 @@ public class Earth : MonoBehaviour {
 	public List<Texture2D> indicator1;
 	int indicator1Level = 0;
 	public List<Texture2D> indicator2;
-	int indicator2level = 0;
+	int indicator2Level = 0;
 
 	//public GameObject earthEffect;
 	public List<GameObject> effects;
@@ -249,7 +249,7 @@ public class Earth : MonoBehaviour {
 
 	void OnGUI(){
 		for (int i = 0; i<Mathf.Min(indicator1.Count, indicator1Level + 1); ++i){
-			GUI.Box (new Rect(0, i*256, 256, 256), indicator1[i]):
+			GUI.Box (new Rect(0, i*256, 256, 256), indicator1[i]);
 		}
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
 		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
