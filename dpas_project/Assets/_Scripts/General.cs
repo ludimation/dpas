@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class General : MonoBehaviour {
+	public static bool dbgMode;
+	public bool debugMode = true;
 	public static bool kinectControl;
 	public static ScreenShake screenShake;
 	public ScreenShake screenShaker;
@@ -94,6 +96,7 @@ public class General : MonoBehaviour {
 		//Time.timeScale = 0;
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
+		General.dbgMode = debugMode;
 
 		airControl = GameObject.FindObjectOfType<Air>();
 		earthControl = GameObject.FindObjectOfType<Earth>();
@@ -158,6 +161,9 @@ public class General : MonoBehaviour {
 	}
 	void manageMenu(){
 		if(!kinectControl){
+			if(Input.GetKeyUp (KeyCode.KeypadEnter)){
+				kMngr.RecalibratePlayer1();
+			}
 			if(Input.GetKeyUp (KeyCode.F)){
 				
 				changeElement(Element.Fire);
@@ -327,8 +333,10 @@ public class General : MonoBehaviour {
 		if(e != Element.Water){
 			foreach (GameObject g in waterObjects){
 				if(!g){
-					
-					Debug.LogWarning ("water avatar object has been destroyed, cannot deactivate");
+					if(General.dbgMode){
+						Debug.LogWarning ("water avatar object has been destroyed, cannot deactivate");
+				
+					}
 				}
 				else if(g.particleSystem){
 					g.particleSystem.enableEmission = false;
@@ -393,7 +401,7 @@ public class General : MonoBehaviour {
 			waterControl.UnSleep();
 			currentInstructions = waterInstructions;
 			foreach (GameObject g in waterObjects){
-				if(!g){
+				if(!g&&General.dbgMode){
 					Debug.LogWarning ("water avatar object has been destroyed, cannot reactivate");
 				}
 				else if(g.particleSystem){
@@ -412,7 +420,10 @@ public class General : MonoBehaviour {
 		foreach(Transform c in root.transform){
 			msg += "\n"+c.name+": "+c.position.ToString ();
 		}
-		Debug.Log (msg);
+		
+		if(General.dbgMode){
+			Debug.Log (msg);
+		}
 
 	}
 	/*public static float increaseSize(float amount, float limit){

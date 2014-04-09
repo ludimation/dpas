@@ -230,8 +230,10 @@ public class Earth : MonoBehaviour {
 		//platformCharge = 0;
 		smashCharge = 0;
 		platformCharge = -platformCoolTime;
-		Debug.Log (smashCharge.ToString ()+", "+platformCharge.ToString ());
-
+		
+		if(General.dbgMode){
+			Debug.Log (smashCharge.ToString ()+", "+platformCharge.ToString ());
+		}
 	}
 	void deform (float radius){
 		float x = transform.position.x-terr.transform.position.x;
@@ -248,7 +250,10 @@ public class Earth : MonoBehaviour {
 		//x0--;
 		int dY = Mathf.Min (tR*2, terr.terrainData.heightmapHeight-y0);
 		//y0--;
-		Debug.Log ("x0 = "+x0.ToString ()+", y0 = "+y0.ToString ()+", dX = "+dX.ToString ()+", dY = "+dY.ToString ());
+		
+		if(General.dbgMode){
+			Debug.Log ("x0 = "+x0.ToString ()+", y0 = "+y0.ToString ()+", dX = "+dX.ToString ()+", dY = "+dY.ToString ());
+		}
 		//float[,] heights = terr.terrainData.GetHeights (Mathf.Max (tX-tR,0), Mathf.Max (tY-tR, 0), Mathf.Min (tR*2, terr.terrainData.heightmapWidth-(tX+tR)), Mathf.Min (tR*2, terr.terrainData.heightmapHeight-(tY+tR)));
 		float[,] heights = terr.terrainData.GetHeights (x0, y0, dX, dY);
 		int width = heights.GetUpperBound (0);
@@ -303,7 +308,7 @@ public class Earth : MonoBehaviour {
 	}
 
 	void OnGUI(){
-		if(smashCharge < 0){
+		/*if(smashCharge < 0){
 			GUI.DrawTexture (new Rect(0, 0, 256, 256), smashIcon);
 		}
 		else{
@@ -321,7 +326,7 @@ public class Earth : MonoBehaviour {
 				//GUI.Box (new Rect(256, i*256, 256, 256), indicator2[i]);
 				GUI.DrawTexture (new Rect(256, i*256, 256, 256), indicator2[i]);
 			}
-		}
+		}*/
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
 		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
 

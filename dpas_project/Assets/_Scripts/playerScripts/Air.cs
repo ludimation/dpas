@@ -99,7 +99,10 @@ public class Air : MonoBehaviour {
 				
 			}
 		}
-		Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
+		
+		if(General.dbgMode){
+			Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
+		}
 		lHandOld = Gestures.LArmDir();
 		rHandOld = Gestures.RArmDir();
 

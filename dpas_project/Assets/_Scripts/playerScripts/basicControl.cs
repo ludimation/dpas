@@ -13,6 +13,10 @@ public class basicControl : MonoBehaviour {
 	public CharacterController cha;
 	public CharacterMotor motor;
 	public bool fly = false;
+	Vector3 move;
+	Vector3 rot;
+	public Texture2D debugCircle;
+	public Texture2D debugPoint;
 	// Use this for initialization
 	void Start () {
 		motor = cha.GetComponent<CharacterMotor>();
@@ -21,8 +25,7 @@ public class basicControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!General.isPaused){
-			Vector3 move;
-			Vector3 rot;
+
 
 
 
@@ -92,6 +95,14 @@ public class basicControl : MonoBehaviour {
 			//Debug.Log (move.ToString());
 			transform.Rotate (rot);
 
+		}
+	}
+	void OnGUI(){
+		
+		if(General.dbgMode){
+			GUI.DrawTexture (new Rect((Screen.width-128)/2, Screen.height-128, 128, 128), debugCircle);
+			GUI.DrawTexture (new Rect(((Screen.width-32)/2)+(move.x*32), (Screen.height-80)-(move.z*32), 32, 32), debugPoint);
+			Debug.Log (move.ToString ());
 		}
 	}
 }
