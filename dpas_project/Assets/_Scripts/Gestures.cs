@@ -100,6 +100,13 @@ public static class Gestures : object {
 	public static Quaternion flatShoulderRot(){
 		return Quaternion.FromToRotation (Vector3.right, Vector3.Scale(rShoulder.position - lShoulder.position, Vector3.one - Vector3.up));
 	}
+
+	public static bool MenuGesture(){
+		return false;
+	}
+	public static bool PauseGesture(){
+		return false;
+	}
 	/*void OnGUI(){
 		if(dbg){
 			if(HandsUp()){

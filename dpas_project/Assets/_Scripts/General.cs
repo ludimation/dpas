@@ -35,6 +35,7 @@ public class General : MonoBehaviour {
 
 
 	public static float playerSize = 1;
+	public static float availableEnergy = 10;
 	public static General g;
 
 	bool quitting = false;
@@ -162,7 +163,7 @@ public class General : MonoBehaviour {
 	void manageMenu(){
 		if(!kinectControl){
 			if(Input.GetKeyUp (KeyCode.KeypadEnter)){
-				kMngr.RecalibratePlayer1();
+				//kMngr.RecalibratePlayer1();
 			}
 			if(Input.GetKeyUp (KeyCode.F)){
 				
@@ -208,7 +209,8 @@ public class General : MonoBehaviour {
 		}*/
 		
 		//Debug.Log (Vector3.Angle (lElbow.position-lShoulder.position, Vector3.up).ToString ()+", "+ Vector3.Angle(lHand.position-lElbow.position, Vector3.right).ToString());
-		if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
+		//if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
+		if(Gestures.MenuGesture() && !paused){
 			menu = true;
 		}
 		else{
@@ -217,13 +219,14 @@ public class General : MonoBehaviour {
 		//if (menu && ((Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45)||(!General.kinectControl&&Input.GetKey(KeyCode.P)))){
 		if(menu){
 			if (Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45){
-				if (Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45){
+				//if (Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45){
+				if(Gestures.PauseGesture()){
 					pause(true);
 					currentMenu = menuScreen;
 				}
-				else if (Vector3.Angle (rHand.position-rElbow.position, Vector3.right)<45){
+				/*else if (Vector3.Angle (rHand.position-rElbow.position, Vector3.right)<45){
 					pause(false);
-				}
+				}*/
 			}
 
 		}

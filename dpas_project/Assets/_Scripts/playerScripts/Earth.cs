@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Earth : MonoBehaviour {
 
 	public float rad = 15;
+	public float smashDepth = .02f;
 	public Transform lHand;
 	public Transform rHand;
 	public Transform lowerBound;
@@ -282,7 +283,8 @@ public class Earth : MonoBehaviour {
 
 					//heights[i,j] *= 1-t;
 					//heights[i,j]-=.2f;
-					heights[i,j] *= 1-(.03f*(((tR-t)/tR)*(tR-t)/tR));
+					//heights[i,j] *= 1-(.03f*(((tR-t)/tR)*(tR-t)/tR));
+					heights[i,j] *= 1-(smashDepth*(((tR-t)/tR)*(tR-t)/tR));
 				}
 				//heights[i,j] -= .01f;
 				//Debug.Log (temp.ToString ()+", "+p.ToString ()+": "+Vector2.Distance (temp,p).ToString());

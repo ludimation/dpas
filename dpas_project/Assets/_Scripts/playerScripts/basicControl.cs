@@ -17,6 +17,7 @@ public class basicControl : MonoBehaviour {
 	Vector3 rot;
 	public Texture2D debugCircle;
 	public Texture2D debugPoint;
+	public float downforce = .5f;
 	// Use this for initialization
 	void Start () {
 		motor = cha.GetComponent<CharacterMotor>();
@@ -30,6 +31,11 @@ public class basicControl : MonoBehaviour {
 
 
 			move = (inPut.getDiff());
+			move.y = -downforce;
+			if((General.element == General.Element.Fire && !cha.isGrounded)||General.element == General.Element.Air){
+				move -= (Gestures.LArmDir ()+Gestures.RArmDir ()).normalized;
+			}
+
 			//move.Scale (Vector3.right+Vector3.forward);
 			rot = inPut.getRot ();
 			/*if(General.element != General.Element.Earth && Gestures.LArmStraight () && Gestures.RArmStraight ()){
@@ -102,7 +108,7 @@ public class basicControl : MonoBehaviour {
 		if(General.dbgMode){
 			GUI.DrawTexture (new Rect((Screen.width-128)/2, Screen.height-128, 128, 128), debugCircle);
 			GUI.DrawTexture (new Rect(((Screen.width-32)/2)+(move.x*32), (Screen.height-80)-(move.z*32), 32, 32), debugPoint);
-			Debug.Log (move.ToString ());
+			//Debug.Log (move.ToString ());
 		}
 	}
 }

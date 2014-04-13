@@ -102,7 +102,7 @@ public class Fire : MonoBehaviour {
 					
 				}
 			}
-			Debug.Log ("armsTogether = "+Gestures.ArmsTogether().ToString ()+", armsDown = "+Gestures.ArmsDown().ToString()+", dir = "+(transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir())).ToString());
+			//Debug.Log ("armsTogether = "+Gestures.ArmsTogether().ToString ()+", armsDown = "+Gestures.ArmsDown().ToString()+", dir = "+(transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir())).ToString());
 			if(flameWait<0&&Gestures.ArmsTogether () && !Gestures.ArmsDown()){
 				General.screenShake.NewImpact ();
 				General.changeSize (-Time.deltaTime*flamethrowerCost, 100, 0);

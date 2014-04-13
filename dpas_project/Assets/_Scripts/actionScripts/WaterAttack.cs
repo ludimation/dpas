@@ -81,7 +81,7 @@ public class WaterAttack : MonoBehaviour {
 		Shrubbery shrub = other.gameObject.GetComponent<Shrubbery>();
 		if (shrub&&shrub.burning){
 			shrub.UnIgnite ();
-			shrub.AddWater ();
+			shrub.AddWater (size);
 			if(!cloud){
 				cloud = (Cloud)Instantiate(cloudPrefab, transform.position + 5*Vector3.up, Quaternion.identity);
 				cloud.size = 2*Mathf.Min (shrub.fuel, size);

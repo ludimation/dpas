@@ -543,10 +543,10 @@ public class KinectManager : MonoBehaviour
 //	}
 	
 //	// Functions that let you recalibrate either player 1 or player 2.
-	public void RecalibratePlayer1()
-	{
-		OnUserLost(Player1ID);
-	}
+//	public void RecalibratePlayer1()
+//	{
+//		OnUserLost(Player1ID);
+//	}
 //	
 //	void RecalibratePlayer2()
 //	{
