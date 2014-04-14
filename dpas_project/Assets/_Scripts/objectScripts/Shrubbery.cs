@@ -75,7 +75,7 @@ public class Shrubbery : MonoBehaviour {
 			burnModel.SetActive (false);
 			bigModel.SetActive (false);
 		}*/
-		Debug.Log ("dead = "+dead.ToString ()+", burning = "+burning.ToString ()+", water = "+waterAmount.ToString ()+", fuel = "+fuel.ToString());
+		//Debug.Log ("dead = "+dead.ToString ()+", burning = "+burning.ToString ()+", water = "+waterAmount.ToString ()+", fuel = "+fuel.ToString());
 	
 	}
 	void StuffHappen(){

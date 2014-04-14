@@ -3,7 +3,8 @@ using System.Collections;
 
 public class basicControl : MonoBehaviour {
 	public Kinectalogue inPut;
-	public float posCutoff = 1;
+	public float posCutoff = .616f;
+	public float hardCutoff = .75f;
 	public Vector3 sensetivity = Vector3.one;
 	public Vector3 rotSensetivity = Vector3.up;
 	public Vector3 flightSensitivityModifier = Vector3.one;
@@ -31,9 +32,21 @@ public class basicControl : MonoBehaviour {
 
 
 			move = (inPut.getDiff());
-			move.y = -downforce;
-			if((General.element == General.Element.Fire && !cha.isGrounded)||General.element == General.Element.Air){
-				move -= (Gestures.LArmDir ()+Gestures.RArmDir ()).normalized;
+			if(General.element == General.Element.Air){
+				if(Gestures.OneArmUp ()){
+					Debug.Log ("one arm is up");
+					move = Vector3.zero;
+				}
+				else{
+					move.y = -downforce;
+				}
+			}
+			else{
+				move.y = 0;
+			}
+			if((General.element == General.Element.Fire && !cha.isGrounded)||(General.element == General.Element.Air&&!Gestures.OneArmUp ())){
+				//move -= (Gestures.LArmDir ()+Gestures.RArmDir ()).normalized;
+				move -= (Gestures.LArmDir ()+Gestures.RArmDir ());
 			}
 
 			//move.Scale (Vector3.right+Vector3.forward);
@@ -50,11 +63,19 @@ public class basicControl : MonoBehaviour {
 					if(
 				}
 			}*/
-			if(inPut.getMagnitudeRaw()>posCutoff){
+			//Debug.Log ("cut = "+ posCutoff.ToString ()+", mag = "+inPut.getMagnitudeRaw ().ToString ());
+			if(inPut.getMagnitudeRaw()>posCutoff*2){
 				move = Vector3.zero;
 				rot = Vector3.zero;
+				//Debug.Log ("cuttoff")
+			}
+			else if(inPut.getMagnitudeRaw()>posCutoff){
+				move.Normalize();
+				move *= .5f;
+				//Debug.Log ("cuttoff")
 			}
 			//deadzone stuff
+			//Debug.Log ("dz = "+ deadzone.ToString ()+ ", mag = "+move.magnitude.ToString ()+", move = "+move.ToString ());
 			if (move.magnitude < deadzone){
 				move = Vector3.zero;
 			}

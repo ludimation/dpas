@@ -41,6 +41,10 @@ public class General : MonoBehaviour {
 	bool quitting = false;
 	bool menu = false;
 	bool instructions = false;
+	public Texture2D selector;
+	Vector2 rHandLoc;
+	Vector2 lHandLoc;
+	public float maxSelectDistance = 20;
 	public Texture2D menuIndicator;
 	public Texture2D quitIndicator;
 	public Texture2D menuScreen;
@@ -105,6 +109,10 @@ public class General : MonoBehaviour {
 		waterControl = GameObject.FindObjectOfType<Water>();
 		//General.keyControlOnly = keyboardOnly;
 		//kMngr = (KinectManager)gameObject.GetComponent ("KinectManager");
+		if(!kMngr){
+			kMngr = (KinectManager)gameObject.GetComponent<KinectManager>();
+		}
+		//kMngr.
 		GameObject t;
 		//airControl.effects = new List<GameObject>();
 		earthControl.effects = new List<GameObject>();
@@ -155,15 +163,40 @@ public class General : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		manageMenu();
+		Debug.Log ("checkjoints = "+checkJoints().ToString());
+		Debug.Log (Vector2.Distance (lHandLoc, rHandLoc).ToString ());
 		//Debug.Log(playerSize.ToString()+", "+General.playerSize.ToString());
 
 
 
 	}
+	public static bool checkJoints(){
+		//foreach
+		for(int i = 0; i< 13; ++i){
+
+			if (!g.kMngr.IsJointPositionTracked(1, i)){
+				return false;
+			}
+		}
+		return true;
+	}
 	void manageMenu(){
+		if(paused){
+			//kMngr.
+			rHandLoc = new Vector2(Gestures.RArmDir().x, -Gestures.RArmDir().y);
+			lHandLoc = new Vector2(Gestures.LArmDir().x, -Gestures.LArmDir().y);
+			rHandLoc.Scale (new Vector2(Screen.width, Screen.height));
+			lHandLoc.Scale (new Vector2(Screen.width, Screen.height));
+			if(Vector2.Distance (lHandLoc, rHandLoc)<maxSelectDistance){
+				pause(false);
+			}
+
+		}
 		if(!kinectControl){
 			if(Input.GetKeyUp (KeyCode.KeypadEnter)){
 				//kMngr.RecalibratePlayer1();
+				//kMngr.ClearKinectUsers();
+
 			}
 			if(Input.GetKeyUp (KeyCode.F)){
 				
@@ -466,6 +499,9 @@ public class General : MonoBehaviour {
 		if (paused){
 
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), activeImage);
+			//GUI.DrawTexture (new Rect((Screen.width/2)+(1000*Gestures.RArmDir().x), (Screen.height/2)-(1000*Gestures.RArmDir().y), 64,64), selector);
+			GUI.DrawTexture (new Rect(lHandLoc.x+(Screen.width/2), lHandLoc.y+(Screen.height/2), 64,64), selector);
+			GUI.DrawTexture (new Rect(rHandLoc.x+(Screen.width/2), rHandLoc.y+(Screen.height/2), 64,64), selector);
 
 
 		}

@@ -85,6 +85,18 @@ public static class Gestures : object {
 	public static Vector3 RArmDir(){
 		return rHand.position-rShoulder.position;
 	}
+	public static bool OneArmUp(){
+		Debug.Log ("checking arms");
+		if(Vector3.Angle (lHand.position-lElbow.position, Vector3.up)<45&&Vector3.Angle (lElbow.position-lShoulder.position,Vector3.up)<45){
+			Debug.Log ("left hand is up");
+			return true;
+		}
+		else if(Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45&&Vector3.Angle (rElbow.position-rShoulder.position,Vector3.up)<45){
+			Debug.Log ("right hand is up");
+			return true;
+		}
+		return false;
+	}
 	public static float AngleBetweenArms(){
 		return (Vector3.Angle (lHand.position-lShoulder.position, rHand.position-rShoulder.position));
 	}
@@ -102,9 +114,15 @@ public static class Gestures : object {
 	}
 
 	public static bool MenuGesture(){
+		if(Vector3.Angle (lHand.position-lElbow.position, Vector3.right)<45 && Vector3.Angle (lElbow.position-lShoulder.position, Vector3.up)<45){
+			return true;
+		}
 		return false;
 	}
 	public static bool PauseGesture(){
+		if(Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45 && Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right)<45){
+			return true;
+		}
 		return false;
 	}
 	/*void OnGUI(){

@@ -154,9 +154,9 @@ public class Fire : MonoBehaviour {
 			if(!General.kinectControl){
 				//Debug.Log (Time.deltaTime.ToString ());
 				if (Input.GetKeyDown (KeyCode.Q)){
-					General.changeSize (-Time.deltaTime, 100, 0);
+					//General.changeSize (-Time.deltaTime, 100, 0);
 					General.screenShake.NewImpact ();
-					Debug.Log ("Q");
+					//Debug.Log ("Q");
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					FireAttack temp = (FireAttack)Instantiate (fireball, (lHand.position), Quaternion.identity);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -165,9 +165,9 @@ public class Fire : MonoBehaviour {
 					temp.strength = General.playerSize;
 				}
 				if(Input.GetKeyDown (KeyCode.E)){
-					General.changeSize (-Time.deltaTime, 100, 0);
+					//General.changeSize (-Time.deltaTime, 100, 0);
 					General.screenShake.NewImpact ();
-					Debug.Log ("E");
+					//Debug.Log ("E");
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					FireAttack temp = (FireAttack)Instantiate (fireball, (rHand.position), Quaternion.identity);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
