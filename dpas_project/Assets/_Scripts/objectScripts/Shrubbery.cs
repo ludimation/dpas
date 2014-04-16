@@ -27,7 +27,7 @@ public class Shrubbery : MonoBehaviour {
 	public float timeUpperBound = 2;
 	public float timeLowerBound = 2;
 	float time;
-	int currentSize = 0;
+	public int currentSize = 0;
 
 
 	// Use this for initialization
@@ -36,6 +36,7 @@ public class Shrubbery : MonoBehaviour {
 			Debug.LogWarning ("improper number of tree models");
 		}
 		time = Random.Range (timeLowerBound, timeUpperBound);
+		StuffHappen();
 		//flame.enableEmission = false;
 		//new Vector3 (
 	

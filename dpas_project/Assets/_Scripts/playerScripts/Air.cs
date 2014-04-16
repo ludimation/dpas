@@ -40,17 +40,25 @@ public class Air : MonoBehaviour {
 	float gustT;
 	public List<AudioClip> gustSounds;
 	public float gustCost = 0; //does nothing for now
-	public float minThrowSpeed = 2.5f;
+	public float minThrowSpeed = 2.5f;//does nothing I think for now
+
+	public bool enableLightning = true;
+	public List<AudioClip> lightningSounds;
+	public float lightningWait = 0;
+	float lightningT;
+	float lightningCost; //dos nothing for now
 
 
 	// Use this for initialization
 	void Start () {
 		gustT = gustWait;
+		lightningT = lightningWait;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		gustT -= Time.deltaTime;
+		lightningT -= Time.deltaTime;
 
 		if (Gestures.ArmsUp ()){
 			General.screenShake.NewImpact ();
@@ -158,7 +166,13 @@ public class Air : MonoBehaviour {
 
 		}
 	}
-
+	public void CastLightning(){
+		if(enableLightning && lightningT< 0){
+			lightningT = lightningWait;
+			General.screenShake.NewImpact ();
+			audSrc.PlayOneShot (lightningSounds[Random.Range(0, lightningSounds.Count)]);
+		}
+	}
 	public void Sleep(){
 		//isAwake = false;
 		charMotor.enabled = true;
