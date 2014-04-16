@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Air : MonoBehaviour {
 	public Kinectalogue controller;
@@ -20,9 +21,9 @@ public class Air : MonoBehaviour {
 	//public LightningStrike bolt;
 	//public LightningStrike zap;
 
-	public float upDraft = 0f;
+	//public float upDraft = 0f;
 	
-	public bool isAwake = false;
+	//public bool isAwake = false;
 
 
 	public float lightningCharge = 0f;
@@ -32,18 +33,24 @@ public class Air : MonoBehaviour {
 	Vector3 rHandOld;
 	public Transform lHand;
 	public Transform rHand;
+	public bool enableGust = true;
 	public AirAttack gust;
-	public float gustSpeed;
+	public float gustSpeed = 1;
+	public float gustWait = .1f;
+	float gustT;
+	public List<AudioClip> gustSounds;
+	public float gustCost = 0; //does nothing for now
 	public float minThrowSpeed = 2.5f;
+
 
 	// Use this for initialization
 	void Start () {
-
+		gustT = gustWait;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+		gustT -= Time.deltaTime;
 
 		if (Gestures.ArmsUp ()){
 			General.screenShake.NewImpact ();
@@ -71,51 +78,22 @@ public class Air : MonoBehaviour {
 			leftStrike.gameObject.SetActive(false);
 			//leftStrike.enabled = false;
 		}
-		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
-			//Debug.Log ("L gust");
-			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
-				/*General.screenShake.NewImpact ();
-				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
-				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				//foo.AddForce (gustSpeed*(transform.rotation*(Gestures.LArmDir()-lHandOld)), ForceMode.VelocityChange);
-				foo.AddForce (gustSpeed*(transform.rotation*Gestures.LArmDir()), ForceMode.VelocityChange);
-				//foo.AddForce (gustSpeed*Gestures.LArmDir(), ForceMode.VelocityChange);
-				//General.changeSize (gustCost/Time.deltaTime);
-				//temp.strength = General.playerSize;*/
-				WindGust(lHand.position, transform.rotation*(Gestures.LArmDir()-lHandOld));
-
-				
-			}
-		}
-		if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
-			//Debug.Log ("R gust");
-			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
-				/*General.screenShake.NewImpact ();
-				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
-				//AirAttack temp = (AirAttack)Instantiate(gust, transform.position+(transform.rotation*(RArmDir()-rHandOld)), Quaternion.identity);
-				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				//foo.AddForce (gustSpeed*(transform.rotation*(Gestures.RArmDir()-rHandOld)), ForceMode.VelocityChange);
-				foo.AddForce (gustSpeed*(transform.rotation*Gestures.RArmDir()), ForceMode.VelocityChange);
-				//General.changeSize (gustCost/Time.deltaTime);
-				//temp.strength = General.playerSize;*/
-				WindGust(rHand.position, transform.rotation*(Gestures.RArmDir()-rHandOld));
-				
-			}
-		}
-		
 		if(General.dbgMode){
 //			Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
 		}
+
+
+
 		lHandOld = Gestures.LArmDir();
 		rHandOld = Gestures.RArmDir();
+		
 
 		if(!General.kinectControl){
 			
 			if (Input.GetKey(KeyCode.Space)){
 				General.changeSize(3*Time.deltaTime, 100, 0);
 			}
+
 			if(Input.GetKey (KeyCode.B)){
 				General.changeSize(-3*Time.deltaTime, 100, 0);
 			}
@@ -124,14 +102,18 @@ public class Air : MonoBehaviour {
 				cF.Rain (Time.deltaTime);
 			}
 
+
 			if(Input.GetKeyDown (KeyCode.E)){
 				/*General.screenShake.NewImpact ();
 				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);*/
 				WindGust(rHand.position, transform.forward);
+
 				
 			}
+
+
 			if(Input.GetKeyDown (KeyCode.Q)){
 				/*General.screenShake.NewImpact ();
 				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
@@ -140,6 +122,7 @@ public class Air : MonoBehaviour {
 				WindGust(lHand.position, transform.forward);
 				
 			}
+
 			if(Input.GetKey(KeyCode.Alpha1)){
 				rightStrike.gameObject.SetActive (true);
 				//rightStrike.enabled = true;
@@ -148,6 +131,7 @@ public class Air : MonoBehaviour {
 				//rightStrike.gameObject.SetActive (false);
 				//rightStrike.enabled = false;
 			}
+
 			if(Input.GetKey (KeyCode.Alpha3)){
 				leftStrike.gameObject.SetActive (true);
 				//leftStrike.enabled = true;
@@ -156,12 +140,23 @@ public class Air : MonoBehaviour {
 				//leftStrike.gameObject.SetActive (false);
 				//leftStrike.enabled = false;
 			}
+
 		}
+
 	}
+
 	void WindGust(Vector3 pos, Vector3 dir){
-		General.screenShake.NewImpact ();
-		AirAttack temp = (AirAttack)Instantiate(gust, pos, Quaternion.identity);
-		temp.rigidbody.AddForce (gustSpeed*dir, ForceMode.VelocityChange);
+
+		if(enableGust&&gustT < 0){
+
+			gustT = gustWait;
+			General.screenShake.NewImpact ();
+			AirAttack temp = (AirAttack)Instantiate(gust, pos, Quaternion.identity);
+		//	General.changeSize (gustCost, 100, 0);
+			temp.rigidbody.AddForce (gustSpeed*dir, ForceMode.VelocityChange);
+			audSrc.PlayOneShot (gustSounds[Random.Range(0,gustSounds.Count)]);
+
+		}
 	}
 
 	public void Sleep(){

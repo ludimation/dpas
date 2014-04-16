@@ -13,6 +13,7 @@ public class Earth : MonoBehaviour {
 	//float lowEnergy = 0;
 	//float highEnergy = 0;
 
+	public bool enablePlatform = true;
 	public Platform platform;
 	public AudioSource audSrc;
 	public float smashChargeTime = 1;
@@ -22,10 +23,16 @@ public class Earth : MonoBehaviour {
 	public float platformChargeTime = 1;
 	public float platformCharge = 0;
 	public float platformCoolTime = .25f;
-	public AudioClip rise;
+	//public AudioClip rise;
 	public List<AudioClip> riseSounds;
 
+	public bool enableBoulder = true;
 	public EarthAttack boulderPrefab;
+	public List<AudioClip> boulderSounds;
+	public float boulderCost;
+	public float boulderWait;
+	float boulderT;
+	public float boulderSpeed;
 	//public Transform upperIndicator;
 	//public Transform lowerIndicator;
 	int terrXBound;
@@ -53,6 +60,8 @@ public class Earth : MonoBehaviour {
 	bool rPrimed = false;
 	// Use this for initialization
 	void Start () {
+		boulderT = boulderWait;
+
 		terrXratio = terr.terrainData.heightmapWidth/terr.terrainData.size.x;
 		terrYratio = terr.terrainData.heightmapHeight/terr.terrainData.size.z;
 		//Debug.Log (terrXratio.ToString ());
@@ -89,7 +98,7 @@ public class Earth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		boulderT -= Time.deltaTime;
 		if(!General.kinectControl){
 
 			if(Input.GetKey(KeyCode.Alpha1)){
@@ -145,7 +154,7 @@ public class Earth : MonoBehaviour {
 			lPrimed = true;
 		}
 		if (lPrimed && Gestures.LArmStraight ()){
-			ThrowBoulder(lHand.position, Gestures.LArmDir ());
+			ThrowBoulder(lHand.position, transform.rotation*Gestures.LArmDir ());
 			lPrimed = false;
 			lHand.localScale = Vector3.one;
 		}
@@ -154,7 +163,7 @@ public class Earth : MonoBehaviour {
 			rHand.localScale = 2*Vector3.one;
 		}
 		if (rPrimed && Gestures.RArmStraight ()){
-			ThrowBoulder(rHand.position, Gestures.RArmDir ());
+			ThrowBoulder(rHand.position, transform.rotation*Gestures.RArmDir ());
 			rPrimed = false;
 			rHand.localScale = Vector3.one;
 		}
@@ -211,8 +220,15 @@ public class Earth : MonoBehaviour {
 	
 	}
 	void ThrowBoulder (Vector3 pos, Vector3 dir){
-		EarthAttack b = (EarthAttack)Instantiate(boulderPrefab, pos, Random.rotation);
-		b.rigidbody.AddForce (25*dir, ForceMode.VelocityChange);
+		if(enableBoulder && boulderT <0){
+			boulderT = boulderWait;
+			EarthAttack b = (EarthAttack)Instantiate(boulderPrefab, pos, Random.rotation);
+			b.rigidbody.AddForce (boulderSpeed*dir, ForceMode.VelocityChange);
+			audSrc.PlayOneShot (boulderSounds[Random.Range(0, boulderSounds.Count)]);
+			General.screenShake.NewImpact();
+			General.changeSize(boulderCost, 100, 0);
+		}
+
 
 	}
 	void Smash(){
@@ -305,25 +321,25 @@ public class Earth : MonoBehaviour {
 	}
 
 	void OnGUI(){
-		/*if(smashCharge < 0){
-			GUI.DrawTexture (new Rect(0, 0, 256, 256), smashIcon);
+		if(smashCharge < 0){
+			GUI.DrawTexture (new Rect(0, 0, 128, 128), smashIcon);
 		}
 		else{
 			for (int i = 0; i<Mathf.Min(indicator1.Count, indicator1Level); ++i){
-				//GUI.Box (new Rect(0, i*256, 256, 256), indicator1[i]);
-				GUI.DrawTexture (new Rect(0, i*256, 256, 256), indicator1[i]);
+				//GUI.Box (new Rect(0, i*128, 128, 128), indicator1[i]);
+				GUI.DrawTexture (new Rect(0, i*128, 128, 128), indicator1[i]);
 			}
 		}
 		if(platformCharge <0){
-			GUI.DrawTexture (new Rect(256, 0, 256, 256), platformIcon);
+			GUI.DrawTexture (new Rect(128, 0, 128, 128), platformIcon);
 
 		}
 		else{
 			for (int i = 0; i<Mathf.Min(indicator2.Count, indicator2Level); ++i){
-				//GUI.Box (new Rect(256, i*256, 256, 256), indicator2[i]);
-				GUI.DrawTexture (new Rect(256, i*256, 256, 256), indicator2[i]);
+				//GUI.Box (new Rect(128, i*128, 128, 128), indicator2[i]);
+				GUI.DrawTexture (new Rect(128, i*128, 128, 128), indicator2[i]);
 			}
-		}*/
+		}
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
 		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
 
