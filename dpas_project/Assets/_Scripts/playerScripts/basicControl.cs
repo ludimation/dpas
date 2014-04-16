@@ -37,7 +37,11 @@ public class basicControl : MonoBehaviour {
 					Debug.Log ("one arm is up");
 					move = Vector3.zero;
 				}
-				else{
+				else if(Gestures.ArmsTogether() && !Gestures.ArmsDown()){
+					move.y = -downforce;
+					move *= .25f;
+				}
+				else {
 					move.y = -downforce;
 				}
 			}

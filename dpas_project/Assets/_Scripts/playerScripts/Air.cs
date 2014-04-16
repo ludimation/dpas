@@ -49,6 +49,9 @@ public class Air : MonoBehaviour {
 			General.screenShake.NewImpact ();
 			cF.Rain(Time.deltaTime);
 		}
+		else if(Gestures.ArmsTogether() && !Gestures.ArmsDown()){
+			WindGust(.5f*(lHand.position +rHand.position), transform.rotation*Gestures.CommonDir ());
+		}
 		//Debug.Log ("lArmStraight = "+Gestures.LArmStraight ().ToString ()+", LArmDirAngle = " + Vector3.Angle(Gestures.LArmDir(), Vector3.up));
 		if(Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45&&Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)>60){
 			General.screenShake.NewImpact ();
@@ -71,7 +74,7 @@ public class Air : MonoBehaviour {
 		if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 			//Debug.Log ("L gust");
 			if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
@@ -79,7 +82,8 @@ public class Air : MonoBehaviour {
 				foo.AddForce (gustSpeed*(transform.rotation*Gestures.LArmDir()), ForceMode.VelocityChange);
 				//foo.AddForce (gustSpeed*Gestures.LArmDir(), ForceMode.VelocityChange);
 				//General.changeSize (gustCost/Time.deltaTime);
-				//temp.strength = General.playerSize;
+				//temp.strength = General.playerSize;*/
+				WindGust(lHand.position, transform.rotation*(Gestures.LArmDir()-lHandOld));
 
 				
 			}
@@ -87,7 +91,7 @@ public class Air : MonoBehaviour {
 		if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 			//Debug.Log ("R gust");
 			if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
 				//AirAttack temp = (AirAttack)Instantiate(gust, transform.position+(transform.rotation*(RArmDir()-rHandOld)), Quaternion.identity);
@@ -95,7 +99,8 @@ public class Air : MonoBehaviour {
 				//foo.AddForce (gustSpeed*(transform.rotation*(Gestures.RArmDir()-rHandOld)), ForceMode.VelocityChange);
 				foo.AddForce (gustSpeed*(transform.rotation*Gestures.RArmDir()), ForceMode.VelocityChange);
 				//General.changeSize (gustCost/Time.deltaTime);
-				//temp.strength = General.playerSize;
+				//temp.strength = General.playerSize;*/
+				WindGust(rHand.position, transform.rotation*(Gestures.RArmDir()-rHandOld));
 				
 			}
 		}
@@ -120,17 +125,19 @@ public class Air : MonoBehaviour {
 			}
 
 			if(Input.GetKeyDown (KeyCode.E)){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);
+				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);*/
+				WindGust(rHand.position, transform.forward);
 				
 			}
 			if(Input.GetKeyDown (KeyCode.Q)){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
 				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);
+				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);*/
+				WindGust(lHand.position, transform.forward);
 				
 			}
 			if(Input.GetKey(KeyCode.Alpha1)){
@@ -151,15 +158,20 @@ public class Air : MonoBehaviour {
 			}
 		}
 	}
+	void WindGust(Vector3 pos, Vector3 dir){
+		General.screenShake.NewImpact ();
+		AirAttack temp = (AirAttack)Instantiate(gust, pos, Quaternion.identity);
+		temp.rigidbody.AddForce (gustSpeed*dir, ForceMode.VelocityChange);
+	}
 
 	public void Sleep(){
-		isAwake = false;
+		//isAwake = false;
 		charMotor.enabled = true;
 		//ionized = false;
 		baseControl.fly = false;
 	}
 	public void UnSleep(){
-		isAwake = true;
+		//isAwake = true;
 		charMotor.enabled = false;
 		baseControl.fly = true;
 

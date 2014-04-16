@@ -8,7 +8,8 @@ public class Fire : MonoBehaviour {
 	public AudioClip launch;
 	public List<AudioClip> launchSounds;
 	public GameObject projectile;
-	bool primed = false;
+	bool lPrimed = false;
+	bool rPrimed = false;
 	public FireAttack fireBlast;
 	public Transform lHand;
 	public Transform rHand;
@@ -69,9 +70,27 @@ public class Fire : MonoBehaviour {
 				}
 			}
 			adjustFlames(Mathf.Min (General.playerSize, 10));
-			
+			if (Gestures.LArmBent ()){
+				//if(Input.GetKeyDown (KeyCode.Mouse1)){
+				lHand.localScale = 2*Vector3.one;
+				lPrimed = true;
+			}
+			if (lPrimed && Gestures.LArmStraight ()){
+				ThrowFireball(lHand.position, Gestures.LArmDir ());
+				lPrimed = false;
+				//lHand.localScale = Vector3.one;
+			}
+			if (Gestures.RArmBent ()){
+				rPrimed = true;
+				//rHand.localScale = 2*Vector3.one;
+			}
+			if (rPrimed && Gestures.RArmStraight ()){
+				ThrowFireball(rHand.position, Gestures.RArmDir ());
+				rPrimed = false;
+				rHand.localScale = Vector3.one;
+			}
 			//if(Vector3.Angle (lHandOld, Gestures.LArmDir())>60){
-			if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
+			/*if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 				//Debug.Log ("L fireball");
 				if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> tolerance*Time.deltaTime){
 					ThrowFireball(lHand.position, Gestures.LArmDir()-lHandOld.normalized);
@@ -86,9 +105,9 @@ public class Fire : MonoBehaviour {
 					temp.strength = General.playerSize;*/
 
 
-				}
-			}
-			if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
+				//}
+			//}
+			/*if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 				//Debug.Log ("R fireball");
 				if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> tolerance*Time.deltaTime){
 					ThrowFireball(rHand.position, Gestures.RArmDir()-rHandOld.normalized);
@@ -102,8 +121,8 @@ public class Fire : MonoBehaviour {
 					//General.changeSize (fireballCost/Time.deltaTime);
 					temp.strength = General.playerSize;*/
 					
-				}
-			}
+				//}
+			//}
 			//Debug.Log ("armsTogether = "+Gestures.ArmsTogether().ToString ()+", armsDown = "+Gestures.ArmsDown().ToString()+", dir = "+(transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir())).ToString());
 			if(flameWait<0&&Gestures.ArmsTogether () && !Gestures.ArmsDown()){
 				/*General.screenShake.NewImpact ();
