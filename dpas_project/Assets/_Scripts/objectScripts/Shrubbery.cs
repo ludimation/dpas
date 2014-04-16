@@ -100,6 +100,12 @@ public class Shrubbery : MonoBehaviour {
 				Debug.Log ("threshold "+currentSize.ToString ()+" exceeded, not growing");
 				--currentSize;
 			}
+			General.availableEnergy -=fuel;
+			fuel = currentSize *.5f;
+			
+			General.availableEnergy +=fuel;
+			resistance = currentSize;
+			fuelLimit = currentSize *.5f;
 			//currentSize = Mathf.Min (liveModels.Count-1, currentSize);
 			dead = false;
 		}
@@ -112,10 +118,13 @@ public class Shrubbery : MonoBehaviour {
 	}
 	public void AddWater(float w){
 		waterAmount += w;
-		General.availableEnergy += waterAmount;
+		//General.availableEnergy += waterAmount;
 		if(fuel<waterAmount){
-			General.availableEnergy -= waterAmount-fuel;
-			fuel = waterAmount;
+			//General.availableEnergy -= waterAmount-fuel;
+			//fuel = waterAmount;
+		}
+		if(burning){
+			burning = false;
 		}
 		//fuel += w;
 		//General.availableEnergy -= w;

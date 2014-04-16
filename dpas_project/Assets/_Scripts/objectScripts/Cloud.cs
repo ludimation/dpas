@@ -33,4 +33,14 @@ public class Cloud : MonoBehaviour {
 		Debug.Log ("raining: "+amnt.ToString ());
 		rainAmnt += amnt;
 	}
+
+	void OnTriggerEnter (Collider col){
+		Debug.Log ("trigger entered");
+		AirAttack aA = col.gameObject.GetComponent<AirAttack>();
+		//Debug.Log (aA.ToString ());
+		if(aA){
+			Debug.Log ("air attack detected");
+			rigidbody.AddForce (col.rigidbody.velocity, ForceMode.Impulse);
+		}
+	}
 }

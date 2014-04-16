@@ -74,7 +74,8 @@ public class Fire : MonoBehaviour {
 			if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
 				//Debug.Log ("L fireball");
 				if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> tolerance*Time.deltaTime){
-					General.screenShake.NewImpact ();
+					ThrowFireball(lHand.position, Gestures.LArmDir()-lHandOld.normalized);
+					/*General.screenShake.NewImpact ();
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					FireAttack temp = (FireAttack)Instantiate(fireball, lHand.position, Quaternion.identity);
 					General.changeSize (-Time.deltaTime*fireballCost, 100, 0);
@@ -82,7 +83,7 @@ public class Fire : MonoBehaviour {
 					foo.AddForce (fireballSpeed*(transform.rotation*(Gestures.LArmDir()-lHandOld).normalized), ForceMode.VelocityChange);
 					//foo.AddForce (fireballSpeed*Gestures.LArmDir(), ForceMode.VelocityChange);
 					//General.changeSize (fireballCost/Time.deltaTime);
-					temp.strength = General.playerSize;
+					temp.strength = General.playerSize;*/
 
 
 				}
@@ -90,7 +91,8 @@ public class Fire : MonoBehaviour {
 			if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 				//Debug.Log ("R fireball");
 				if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> tolerance*Time.deltaTime){
-					General.screenShake.NewImpact ();
+					ThrowFireball(rHand.position, Gestures.RArmDir()-rHandOld.normalized);
+					/*General.screenShake.NewImpact ();
 					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 					FireAttack temp = (FireAttack)Instantiate(fireball, rHand.position, Quaternion.identity);
 					General.changeSize (-Time.deltaTime*fireballCost, 100, 0);
@@ -98,13 +100,13 @@ public class Fire : MonoBehaviour {
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 					foo.AddForce (fireballSpeed*(transform.rotation*((Gestures.RArmDir()-rHandOld).normalized)), ForceMode.VelocityChange);
 					//General.changeSize (fireballCost/Time.deltaTime);
-					temp.strength = General.playerSize;
+					temp.strength = General.playerSize;*/
 					
 				}
 			}
 			//Debug.Log ("armsTogether = "+Gestures.ArmsTogether().ToString ()+", armsDown = "+Gestures.ArmsDown().ToString()+", dir = "+(transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir())).ToString());
 			if(flameWait<0&&Gestures.ArmsTogether () && !Gestures.ArmsDown()){
-				General.screenShake.NewImpact ();
+				/*General.screenShake.NewImpact ();
 				General.changeSize (-Time.deltaTime*flamethrowerCost, 100, 0);
 				AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
 				
@@ -113,7 +115,8 @@ public class Fire : MonoBehaviour {
 				//foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
 				foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
 				//General.changeSize (flamethrowerCost/Time.deltaTime);
-				temp.strength = General.playerSize;
+				temp.strength = General.playerSize;*/
+				ShootFlamethrower(transform.position+(2*transform.forward)+Vector3.up, transform.forward);
 				/*General.screenShake.NewImpact ();
 				//FireAttack temp = (FireAttack)Instantiate(fireBlast, transform.position+(2*transform.forward)+Vector3.Up, transform.rotation);
 				General.changeSize (-Time.deltaTime*flamethrowerCost, 100, 0);
@@ -133,7 +136,7 @@ public class Fire : MonoBehaviour {
 			//if(Gestures.LArmStraight()&&Gestures.RArmStraight ()&&
 			if (Vector3.Angle (Gestures.flatShoulderRot ()*Gestures.LArmDir(), new Vector3(-1,-1,-1))<45 && Vector3.Angle (Gestures.flatShoulderRot ()*Gestures.RArmDir(), new Vector3(1,-1,-1))<45){
 				if(flameWait<0){
-					General.screenShake.NewImpact ();
+					/*General.screenShake.NewImpact ();
 					General.changeSize (-Time.deltaTime*rocketJumpCost, 100, 0);
 					FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 					Physics.IgnoreCollision (temp.collider, collider);
@@ -142,65 +145,33 @@ public class Fire : MonoBehaviour {
 					foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
 					//General.changeSize (rocketJumpCost/Time.deltaTime);
 					temp.strength = General.playerSize;
-					flameWait = flameDelay;
+					flameWait = flameDelay;*/
+					FireRocket(.5f*(lHand.position+rHand.position), transform.rotation*Gestures.CommonDir ());
 				}
 				charMotor.inputJump = true;
-				//gameObject.GetComponent<CharacterMotor>().inputJump = true;
+
 			}
 			else{			
 				charMotor.inputJump = false;
-				//gameObject.GetComponent<CharacterMotor>().inputJump = false;
+
 			}
 			if(!General.kinectControl){
 				//Debug.Log (Time.deltaTime.ToString ());
 				if (Input.GetKeyDown (KeyCode.Q)){
-					//General.changeSize (-Time.deltaTime, 100, 0);
-					General.screenShake.NewImpact ();
-					//Debug.Log ("Q");
-					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-					FireAttack temp = (FireAttack)Instantiate (fireball, (lHand.position), Quaternion.identity);
-					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-					foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
-					//General.changeSize (fireballCost*Time.deltaTime, 50, 1);
-					temp.strength = General.playerSize;
+					ThrowFireball(lHand.position, transform.forward);
 				}
 				if(Input.GetKeyDown (KeyCode.E)){
-					//General.changeSize (-Time.deltaTime, 100, 0);
-					General.screenShake.NewImpact ();
-					//Debug.Log ("E");
-					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-					FireAttack temp = (FireAttack)Instantiate (fireball, (rHand.position), Quaternion.identity);
-					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-					foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
-					//General.changeSize (fireballCost/Time.deltaTime);
-					temp.strength = General.playerSize;
+					ThrowFireball(rHand.position, transform.forward);
 				}
 				if (Input.GetKey (KeyCode.X)){
-					General.screenShake.NewImpact ();
-					General.changeSize (-Time.deltaTime*flamethrowerCost, 100, 0);
-					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-
-					FireAttack temp = (FireAttack)Instantiate(flamethrower, transform.position+(2*transform.forward)+Vector3.up, transform.rotation);
-					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-					foo.AddForce (transform.forward*fireballSpeed, ForceMode.VelocityChange);
-					//General.changeSize (flamethrowerCost/Time.deltaTime);
-					temp.strength = General.playerSize;
+					ShootFlamethrower(transform.position+(2*transform.forward)+Vector3.up, transform.forward);
 				}
 				if(Input.GetKey (KeyCode.LeftShift)){
-					General.screenShake.NewImpact ();
-					General.changeSize (-Time.deltaTime, 100, 0);
-					FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
-					Physics.IgnoreCollision (temp.collider, collider);
-					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-					AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-					foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
-					//General.changeSize (rocketJumpCost/Time.deltaTime);
-					temp.strength = General.playerSize;
+					FireRocket(.5f*(lHand.position+rHand.position), transform.rotation*Gestures.CommonDir ());
 					charMotor.inputJump = true;
-					//gameObject.GetComponent<CharacterMotor>().inputJump = true;
+
 
 				}
-				//Debug.DrawRay(root.position, transform.forward);
 
 			}
 			//Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
@@ -208,6 +179,30 @@ public class Fire : MonoBehaviour {
 			lHandOld = Gestures.LArmDir();
 			//Debug.Log (flameWait.ToString ());
 		}
+	}
+	void ThrowFireball(Vector3 pos, Vector3 dir){
+		General.screenShake.NewImpact ();
+		AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
+		FireAttack temp = (FireAttack)Instantiate (fireball, (pos), Quaternion.identity);
+		temp.rigidbody.AddForce (dir*fireballSpeed, ForceMode.VelocityChange);
+		temp.strength = General.playerSize;
+	}
+	void ShootFlamethrower(Vector3 pos, Vector3 dir){
+		General.screenShake.NewImpact ();
+		General.changeSize (-Time.deltaTime*flamethrowerCost, 100, 0);
+		AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
+		FireAttack temp = (FireAttack)Instantiate(flamethrower, pos, transform.rotation);
+		temp.rigidbody.AddForce (dir*fireballSpeed, ForceMode.VelocityChange);
+		temp.strength = General.playerSize;
+	}
+
+	void FireRocket (Vector3 pos, Vector3 dir){
+		General.screenShake.NewImpact ();
+		General.changeSize (-Time.deltaTime * rocketJumpCost, 100, 0);
+		FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
+		AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
+		temp.rigidbody.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
+		temp.strength = General.playerSize;
 	}
 	void adjustFlames(float s){
 

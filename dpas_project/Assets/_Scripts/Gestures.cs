@@ -85,14 +85,20 @@ public static class Gestures : object {
 	public static Vector3 RArmDir(){
 		return rHand.position-rShoulder.position;
 	}
+	public static bool RArmBent(){
+		return Vector3.Distance (rShoulder.position, rHand.position)<Vector3.Distance (rShoulder.position, rElbow.position);
+	}
+	public static bool LArmBent(){
+		return Vector3.Distance (lShoulder.position, lHand.position)<Vector3.Distance (lShoulder.position, lElbow.position);
+	}
 	public static bool OneArmUp(){
-		Debug.Log ("checking arms");
+		//Debug.Log ("checking arms");
 		if(Vector3.Angle (lHand.position-lElbow.position, Vector3.up)<45&&Vector3.Angle (lElbow.position-lShoulder.position,Vector3.up)<45){
-			Debug.Log ("left hand is up");
+			//Debug.Log ("left hand is up");
 			return true;
 		}
 		else if(Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45&&Vector3.Angle (rElbow.position-rShoulder.position,Vector3.up)<45){
-			Debug.Log ("right hand is up");
+			//Debug.Log ("right hand is up");
 			return true;
 		}
 		return false;

@@ -24,6 +24,8 @@ public class Earth : MonoBehaviour {
 	public float platformCoolTime = .25f;
 	public AudioClip rise;
 	public List<AudioClip> riseSounds;
+
+	public EarthAttack boulderPrefab;
 	//public Transform upperIndicator;
 	//public Transform lowerIndicator;
 	int terrXBound;
@@ -46,7 +48,9 @@ public class Earth : MonoBehaviour {
 
 	public Terrain terr;
 	public Terrain terrOrig;
-	public bool isAwake = false;
+	//public bool isAwake = false;
+	bool lPrimed = false;
+	bool rPrimed = false;
 	// Use this for initialization
 	void Start () {
 		terrXratio = terr.terrainData.heightmapWidth/terr.terrainData.size.x;
@@ -85,18 +89,9 @@ public class Earth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/*foreach (GameObject e in effects){
-			Debug.Log (e.transform.position.ToString ());
-		}*/
-		//if(Input.GetKeyUp(KeyCode.L)){
-		//	reset();
-		//}
+
 		if(!General.kinectControl){
-			/*lowEnergy += Time.deltaTime;
-			highEnergy += Time.deltaTime;*/
-			//if(Input.GetKey(KeyCode.R)){
-			//	highEnergy = lowEnergy = 1;
-			//}
+
 			if(Input.GetKey(KeyCode.Alpha1)){
 				indicator1Level = 2;
 				indicator2Level = 0;
@@ -113,48 +108,59 @@ public class Earth : MonoBehaviour {
 			}
 
 			if(Input.GetKeyDown (KeyCode.Q)){
-				/*General.screenShake.NewImpact ();
-				deform(rad);
 
-				audSrc.PlayOneShot (smash);
-				smashCharge = -.5f;*/
 				Smash();
-				//highEnergy -= .75f;
+
 			}
 			if(Input.GetKeyDown (KeyCode.E)){
-				/*General.screenShake.NewImpact ();
-				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
-				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
-				temp.target = transform.position;
-				temp.initialTime = 1;
-				temp.time = 1;
-				platformCharge = - .5f;*/
+
 				Platform();
-				//lowEnergy -= .75f;
-				//temp.start = transform.position + new  Vector3(0,-2, 0)
+
 			}
+			if (Input.GetKeyDown (KeyCode.Mouse0)){
+				//if(Input.GetKeyDown (KeyCode.Mouse1)){
+				lHand.localScale = 2*Vector3.one;
+				lPrimed = true;
+			}
+			if(lPrimed && Input.GetKeyUp (KeyCode.Mouse0)){
+				ThrowBoulder(lHand.position, transform.forward);
+				lPrimed = false;
+				lHand.localScale = Vector3.one;
+			}
+			if(Input.GetKeyDown (KeyCode.Mouse1)){
+				rPrimed = true;
+				rHand.localScale = 2*Vector3.one;
+			}
+			if(rPrimed && Input.GetKeyUp (KeyCode.Mouse1)){
+				ThrowBoulder(rHand.position, transform.forward);
+				rPrimed = false;
+				rHand.localScale = Vector3.one;
+			}
+
 		}
-		//if((.5f*(lHand.position + rHand.position)).y<lowerBound.position.y){
-			//if(highEnergy>.75f){
-				
-			//	audSrc.PlayOneShot (smash);
-			//	highEnergy -= .5f;
-			//}
-			//lowEnergy += Time.deltaTime;
-		//}
-		//else if((.5f*(lHand.position + rHand.position)).y>upperBound.position.y){
-		//	if(lowEnergy>.75f){
+		
+		if (Gestures.LArmBent ()){
+			//if(Input.GetKeyDown (KeyCode.Mouse1)){
+			lHand.localScale = 2*Vector3.one;
+			lPrimed = true;
+		}
+		if (lPrimed && Gestures.LArmStraight ()){
+			ThrowBoulder(lHand.position, Gestures.LArmDir ());
+			lPrimed = false;
+			lHand.localScale = Vector3.one;
+		}
+		if (Gestures.RArmBent ()){
+			rPrimed = true;
+			rHand.localScale = 2*Vector3.one;
+		}
+		if (rPrimed && Gestures.RArmStraight ()){
+			ThrowBoulder(rHand.position, Gestures.RArmDir ());
+			rPrimed = false;
+			rHand.localScale = Vector3.one;
+		}
 		if(Gestures.ArmsUp ()){
 			if(platformCharge > platformChargeTime){
-				/*General.screenShake.NewImpact ();
-				audSrc.PlayOneShot (riseSounds[Random.Range(0,riseSounds.Count)]);
-				Platform temp = (Platform)Instantiate(platform, transform.position + new  Vector3(0,-2, 0), Quaternion.identity);
-				temp.target = transform.position;
-				temp.initialTime = 1;
-				temp.time = 1;
-				//platformCharge = 0;
-				smashCharge = 0;
-				platformCharge = -platformCoolTime;*/
+			
 				Platform();
 				//lowEnergy-=.5f;
 			}
@@ -168,11 +174,7 @@ public class Earth : MonoBehaviour {
 
 		else if(Gestures.ArmsDown()){
 			if(smashCharge > smashChargeTime){
-				/*General.screenShake.NewImpact ();
-				deform(rad);
-				audSrc.PlayOneShot (smash);
-				smashCharge = -smashCoolTime;
-				platformCharge = 0;*/
+			
 				Smash();
 				//smashCharge = 0;
 			}
@@ -206,17 +208,16 @@ public class Earth : MonoBehaviour {
 			indicator2Level = 1;
 			indicator1Level = 1;
 		}
-		//highEnergy = Mathf.Max (highEnergy, 0);
-		//lowEnergy = Mathf.Max (lowEnergy, 0);
-		//highEnergy = Mathf.Min (highEnergy, 1);
-		//lowEnergy = Mathf.Min (lowEnergy, 1);
-		
-		//lowerIndicator.localScale = (1+platformCharge)*Vector3.one;
-		//upperIndicator.localScale = (1+smashCharge)*Vector3.one;
+	
+	}
+	void ThrowBoulder (Vector3 pos, Vector3 dir){
+		EarthAttack b = (EarthAttack)Instantiate(boulderPrefab, pos, Random.rotation);
+		b.rigidbody.AddForce (25*dir, ForceMode.VelocityChange);
+
 	}
 	void Smash(){
 		General.screenShake.NewImpact ();
-		deform(rad);
+		deform(rad, smashDepth);
 		audSrc.PlayOneShot (smash);
 		smashCharge = -smashCoolTime;
 		platformCharge = 0;
@@ -228,6 +229,7 @@ public class Earth : MonoBehaviour {
 		temp.target = transform.position;
 		temp.initialTime = 1;
 		temp.time = 1;
+		deform (rad/3, -.5f*smashDepth);
 		//platformCharge = 0;
 		smashCharge = 0;
 		platformCharge = -platformCoolTime;
@@ -236,7 +238,7 @@ public class Earth : MonoBehaviour {
 			Debug.Log (smashCharge.ToString ()+", "+platformCharge.ToString ());
 		}
 	}
-	void deform (float radius){
+	void deform (float radius, float defHeight){
 		float x = transform.position.x-terr.transform.position.x;
 		float y = transform.position.z-terr.transform.position.z;
 
@@ -278,16 +280,10 @@ public class Earth : MonoBehaviour {
 					t= (t*Mathf.PI)/(radius);
 					t = Mathf.Cos (t);
 					t *= .02f;
-					//Debug.Log (t.ToString());
-				
 
-					//heights[i,j] *= 1-t;
-					//heights[i,j]-=.2f;
-					//heights[i,j] *= 1-(.03f*(((tR-t)/tR)*(tR-t)/tR));
-					heights[i,j] *= 1-(smashDepth*(((tR-t)/tR)*(tR-t)/tR));
+					heights[i,j] *= 1-(defHeight*(((tR-t)/tR)*(tR-t)/tR));
 				}
-				//heights[i,j] -= .01f;
-				//Debug.Log (temp.ToString ()+", "+p.ToString ()+": "+Vector2.Distance (temp,p).ToString());
+
 			}
 		}
 		//Debug.Log("min = "+min.ToString ());
@@ -301,12 +297,11 @@ public class Earth : MonoBehaviour {
 	}
 	public void Sleep(){
 		//called before deactivating script
-		isAwake = false;
-		
+
 	}
 	public void UnSleep(){
 		//called when activating the script
-		isAwake = true;
+
 	}
 
 	void OnGUI(){

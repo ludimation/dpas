@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class General : MonoBehaviour {
 	public static bool dbgMode;
 	public bool debugMode = true;
@@ -82,6 +83,7 @@ public class General : MonoBehaviour {
 		Water = 4,
 		None = 5
 	};
+	
 	// Use this for initialization
 	void Start () {
 
@@ -163,8 +165,8 @@ public class General : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		manageMenu();
-		Debug.Log ("checkjoints = "+checkJoints().ToString());
-		Debug.Log (Vector2.Distance (lHandLoc, rHandLoc).ToString ());
+		//Debug.Log ("checkjoints = "+checkJoints().ToString());
+		//Debug.Log (Vector2.Distance (lHandLoc, rHandLoc).ToString ());
 		//Debug.Log(playerSize.ToString()+", "+General.playerSize.ToString());
 
 
