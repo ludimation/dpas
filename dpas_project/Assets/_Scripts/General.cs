@@ -9,6 +9,9 @@ public class General : MonoBehaviour {
 	public static bool kinectControl;
 	public static ScreenShake screenShake;
 	public ScreenShake screenShaker;
+	public GameObject player;
+	public GameObject avatarController;
+	public GameObject camera;
 
 	public bool controlByKinect = true;
 	//public static bool keyControlOnly;
@@ -87,16 +90,15 @@ public class General : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		if(!destroyOnReload){
-			DontDestroyOnLoad(gameObject);
-		}
+		/*
 		Gestures.lHand = lHand;
 		Gestures.rHand = rHand;
 		Gestures.lElbow = lElbow;
 		Gestures.rElbow = rElbow;
 		Gestures.lShoulder = lShoulder;
 		Gestures.rShoulder = rShoulder;
-
+*/
+		InitializeGestures();
 		g = this;
 
 		screenShake = screenShaker;
@@ -160,6 +162,15 @@ public class General : MonoBehaviour {
 		changeElement(startingElement);
 		currentMenu = startScreen;
 		activeImage = currentMenu;
+
+		if(!destroyOnReload){
+			DontDestroyOnLoad(gameObject);
+			DontDestroyOnLoad(camera);
+			DontDestroyOnLoad(screenShaker);
+			DontDestroyOnLoad(player);
+			DontDestroyOnLoad(avatarController);
+
+		}
 	}
 	
 	// Update is called once per frame
@@ -198,6 +209,11 @@ public class General : MonoBehaviour {
 			if(Input.GetKeyUp (KeyCode.KeypadEnter)){
 				//kMngr.RecalibratePlayer1();
 				//kMngr.ClearKinectUsers();
+				//Application.LoadLevel("Level1");
+
+			}
+			if(Input.GetKeyUp (KeyCode.L)){
+				Application.LoadLevel("Level1");
 
 			}
 			if(Input.GetKeyUp (KeyCode.F)){
@@ -301,6 +317,16 @@ public class General : MonoBehaviour {
 
 		}
 	}
+	void InitializeGestures(){
+		
+		Gestures.lHand = lHand;
+		Gestures.rHand = rHand;
+		Gestures.lElbow = lElbow;
+		Gestures.rElbow = rElbow;
+		Gestures.lShoulder = lShoulder;
+		Gestures.rShoulder = rShoulder;
+
+	}
 	public void pause(bool p){
 		if (p){
 			paused = true;
@@ -371,10 +397,10 @@ public class General : MonoBehaviour {
 		if(e != Element.Water){
 			foreach (GameObject g in waterObjects){
 				if(!g){
-					if(General.dbgMode){
+					/*if(General.dbgMode){
 						Debug.LogWarning ("water avatar object has been destroyed, cannot deactivate");
 				
-					}
+					}*/
 				}
 				else if(g.particleSystem){
 					g.particleSystem.enableEmission = false;
@@ -495,6 +521,12 @@ public class General : MonoBehaviour {
 		//Debug.Log (msg);
 
 		return playerSize;
+	}
+	void OnLevelWasLoaded(){
+		playerSize = 1;
+		availableEnergy = 100;
+		pause(true);
+		changeElement(Element.Fire);
 	}
 	void OnGUI(){
 

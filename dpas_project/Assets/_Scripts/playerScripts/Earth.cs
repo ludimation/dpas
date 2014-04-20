@@ -312,6 +312,8 @@ public class Earth : MonoBehaviour {
 		//terr.enabled= true;
 	}
 	public void Sleep(){
+		lPrimed = false;
+		rPrimed = false;
 		//called before deactivating script
 
 	}
@@ -319,7 +321,29 @@ public class Earth : MonoBehaviour {
 		//called when activating the script
 
 	}
-
+	
+	void OnLevelWasLoaded(){
+		terrOrig = GameObject.FindGameObjectWithTag("BaseTerrain").GetComponent<Terrain>();
+		terr = GameObject.FindGameObjectWithTag ("ActiveTerrain").GetComponent<Terrain>();
+		reset();
+		boulderT = boulderWait;
+		
+		terrXratio = terr.terrainData.heightmapWidth/terr.terrainData.size.x;
+		terrYratio = terr.terrainData.heightmapHeight/terr.terrainData.size.z;
+		//Debug.Log (terrXratio.ToString ());
+		
+		//terr.enabled = true;
+		terr.gameObject.SetActive (true);
+		//terrOrig.enabled = false;
+		terrOrig.gameObject.SetActive (false);
+		//Debug.Log ("terr.enabled = "+ terr.enabled.ToString());
+		terrXBound = terr.terrainData.heightmapWidth;
+		terrYBound = terr.terrainData.heightmapHeight;
+		
+		terrRes = terr.terrainData.detailResolution;
+		smashCharge = 0;
+		platformCharge = 0;
+	}
 	void OnGUI(){
 		if(smashCharge < 0){
 			GUI.DrawTexture (new Rect(0, 0, 128, 128), smashIcon);

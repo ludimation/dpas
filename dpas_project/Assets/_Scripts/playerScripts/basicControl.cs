@@ -128,6 +128,11 @@ public class basicControl : MonoBehaviour {
 
 		}
 	}
+	void OnLevelWasLoaded(){
+		//transform.position = new Vector3(100,100,100);
+
+		transform.position = GameObject.Find ("PlayerStartPos").transform.position;
+	}
 	void OnGUI(){
 		
 		if(General.dbgMode){

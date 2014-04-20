@@ -12,4 +12,7 @@ public class EarthAttack : MonoBehaviour {
 	void Update () {
 	
 	}
+	void OnCollisionEnter(Collision col){
+		gameObject.layer = 0;
+	}
 }
