@@ -33,60 +33,50 @@ public class basicControl : MonoBehaviour {
 
 
 			move = (inPut.getDiff());
-			if(General.element == General.Element.Air){
-				if(Gestures.OneArmUp ()||Gestures.ArmsDown ()){
-					//Debug.Log ("one arm is up");
-					move = Vector3.zero;
-				}
-				else if(Gestures.ArmsTogether()/* && !Gestures.ArmsDown()*/){
-					move.y = -downforce;
-					move *= windSlowFactor;
-				}
-				else {
-					move.y = -downforce;
-				}
-			}
-			else{
-				move.y = 0;
-			}
-			if((General.element == General.Element.Fire && !cha.isGrounded)||(General.element == General.Element.Air&&!Gestures.OneArmUp ())){
-				//move -= (Gestures.LArmDir ()+Gestures.RArmDir ()).normalized;
-				move -= (Gestures.LArmDir ()+Gestures.RArmDir ());
-			}
+
+			//Debug.Log (move.ToString());
 
 			//move.Scale (Vector3.right+Vector3.forward);
 			rot = inPut.getRot ();
-			/*if(General.element != General.Element.Earth && Gestures.LArmStraight () && Gestures.RArmStraight ()){
-				if(Vector3.Angle (Gestures.LArmDir(), Vector3.down) >30 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) >30){
-					if ((Vector3.Angle (Gestures.LArmDir(), Vector3.down) <60 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <60) || (General.element == General.Element.Air && (Vector3.Angle (Gestures.LArmDir(), Vector3.down) <135 && Vector3.Angle (Gestures.RArmDir(), Vector3.down) <135))){
-						move += Vector3.Scale (Gestures.LArmDir ()+ Gestures.RArmDir (), new Vector3(-1,-1,-1));
-					}
-				}
-			}*/
-			/*if(Genreal.element == General.Element.Air){
-				if (Gestures.LArmStraight () && Gestures.RArmStraight ()){
-					if(
-				}
-			}*/
-			//Debug.Log ("cut = "+ posCutoff.ToString ()+", mag = "+inPut.getMagnitudeRaw ().ToString ());
-			if(inPut.getMagnitudeRaw()>posCutoff*2){
+
+			if(inPut.getMagnitudeRaw()>hardCutoff){
 				move = Vector3.zero;
 				rot = Vector3.zero;
-				//Debug.Log ("cuttoff")
+				Debug.Log ("hardcuttoff");
 			}
 			else if(inPut.getMagnitudeRaw()>posCutoff){
 				move.Normalize();
-				move *= .5f;
-				//Debug.Log ("cuttoff")
+				move *= posCutoff;
+				Debug.Log ("cuttoff");
 			}
 			//deadzone stuff
 			//Debug.Log ("dz = "+ deadzone.ToString ()+ ", mag = "+move.magnitude.ToString ()+", move = "+move.ToString ());
-			if (move.magnitude < deadzone){
+			else if (move.magnitude < deadzone){
+				Debug.Log ("deadzone, move = "+move.magnitude.ToString ()+", dz = "+deadzone.ToString ());
 				move = Vector3.zero;
 			}
 			else{
 				move -= (deadzone * move.normalized);
 
+			}
+			if(General.element == General.Element.Air){
+				move -= (Gestures.LArmDir ()+Gestures.RArmDir ());
+				if(Gestures.OneArmUp ()||Gestures.ArmsDown ()){
+					move = Vector3.zero;
+				}
+				else if(Gestures.ArmsTogether()){
+					move.y = -downforce;
+					move *= windSlowFactor;
+				}
+				else {
+					move.y -= downforce;
+				}
+			}
+			else{
+				move.y = 0;
+			}
+			if(General.element == General.Element.Fire && !cha.isGrounded){
+				move -= (Gestures.LArmDir ()+Gestures.RArmDir ());
 			}
 
 			if(Mathf.Abs (rot.x) < rotDeadzone.x){
