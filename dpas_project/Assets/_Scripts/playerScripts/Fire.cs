@@ -27,9 +27,9 @@ public class Fire : MonoBehaviour {
 	public FireAttack flamethrower;
 	public float flamethrowerCost = 1f;
 	public float flamethrowerWait = 0;
-	float flamethrowerT;
+	float flamethrowerT = 0f;
 	public List<AudioClip> flamethrowerSounds;
-	public float flamethrowerSpeed;
+	public float flamethrowerSpeed = 1f;
 	//public float fireballCost = 1f;
 
 	public bool enableRocketJump = true;
@@ -37,9 +37,9 @@ public class Fire : MonoBehaviour {
 	public GameObject explosionPrefab;
 	public float rocketJumpCost = 1f;
 	public float rocketJumpWait = 0;
-	float rocketJumpT;
+	float rocketJumpT = 0;
 	public List<AudioClip> rocketJumpSounds;
-	public float rocketJumpSpeed;
+	public float rocketJumpSpeed = 1;
 
 	Vector3 lHandOld;
 	Vector3 rHandOld;
@@ -53,7 +53,17 @@ public class Fire : MonoBehaviour {
 	public List<ParticleSystem> flames;
 	public CharacterMotor charMotor;
 	public CharacterController charCol;
-
+	public Texture2D leftThrowIcon;
+	public Texture2D rightThrowIcon;
+	public Texture2D leftReadyIcon;
+	public Texture2D rightReadyIcon;
+	public Texture2D leftPrepIcon;
+	public Texture2D rightPrepIcon;
+	public Texture2D rocketIcon;
+	public Texture2D rocketActivatedIcon;
+	public Texture2D flamethrowerIcon;
+	public Texture2D flamethrowerActivatedIcon;
+	public float iconSize = 64;
 	//public FireAttack fireBlast;
 
 	//public float size;
@@ -214,6 +224,8 @@ public class Fire : MonoBehaviour {
 		}
 	}
 	public void Sleep(){
+		lPrimed = false;
+		rPrimed = false;
 		//called before deactivating script
 		//isAwake = false;
 
@@ -222,9 +234,36 @@ public class Fire : MonoBehaviour {
 		//called when activating the script
 		//isAwake = true;
 	}
+	//void OnLevelWasLoaded(){
 
 
-	/*void OnGUI(){
-		GUI.Box(new Rect(100, 100, Screen.width-200, 200), (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir())).ToString());
-	}*/
+	void OnGUI(){
+		if(!lPrimed){
+			GUI.DrawTexture (new Rect(0,0, iconSize, iconSize), leftPrepIcon);
+		}
+		else{
+			GUI.DrawTexture (new Rect (0,0, iconSize, iconSize), leftReadyIcon);
+			GUI.DrawTexture (new Rect (0, iconSize, iconSize, iconSize), leftThrowIcon);
+		}
+		if(!rPrimed){
+			GUI.DrawTexture (new Rect (iconSize, 0, iconSize, iconSize), rightPrepIcon);
+		}
+		else{
+			GUI.DrawTexture (new Rect (iconSize,0, iconSize, iconSize), rightReadyIcon);
+			GUI.DrawTexture (new Rect (iconSize, iconSize, iconSize, iconSize), rightThrowIcon);
+		}
+		if(flamethrowerT < 0){
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerIcon);
+		}
+		else{
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerActivatedIcon);
+		}
+		
+		if(rocketJumpT < 0){
+			GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketIcon);
+		}
+		else{
+			GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketActivatedIcon);
+		}
+	}
 }

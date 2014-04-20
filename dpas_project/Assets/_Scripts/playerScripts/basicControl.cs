@@ -19,6 +19,7 @@ public class basicControl : MonoBehaviour {
 	public Texture2D debugCircle;
 	public Texture2D debugPoint;
 	public float downforce = .5f;
+	public float windSlowFactor = .1f;
 	// Use this for initialization
 	void Start () {
 		motor = cha.GetComponent<CharacterMotor>();
@@ -33,13 +34,13 @@ public class basicControl : MonoBehaviour {
 
 			move = (inPut.getDiff());
 			if(General.element == General.Element.Air){
-				if(Gestures.OneArmUp ()){
-					Debug.Log ("one arm is up");
+				if(Gestures.OneArmUp ()||Gestures.ArmsDown ()){
+					//Debug.Log ("one arm is up");
 					move = Vector3.zero;
 				}
-				else if(Gestures.ArmsTogether() && !Gestures.ArmsDown()){
+				else if(Gestures.ArmsTogether()/* && !Gestures.ArmsDown()*/){
 					move.y = -downforce;
-					move *= .25f;
+					move *= windSlowFactor;
 				}
 				else {
 					move.y = -downforce;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Earth : MonoBehaviour {
 
+	public float iconSize = 64;
 	public float rad = 15;
 	public float smashDepth = .02f;
 	public Transform lHand;
@@ -41,13 +42,24 @@ public class Earth : MonoBehaviour {
 	float terrXratio;
 	float terrYratio;
 
-	public Texture2D smashIcon;
-	public List<Texture2D> indicator1;
-	int indicator1Level = 0;
-	public Texture2D platformIcon;
-	public List<Texture2D> indicator2;
-	int indicator2Level = 0;
-
+	//public Texture2D smashIcon;
+	//public List<Texture2D> indicator1;
+	//int indicator1Level = 0;
+	//public Texture2D platformIcon;
+	//public List<Texture2D> indicator2;
+	//int indicator2Level = 0;
+	public Texture2D armsOutIcon;
+	public Texture2D armsUpIcon;
+	public Texture2D armsOutChargeIcon;
+	public Texture2D armsUpChargeIcon;
+	//public Texture2D armsOutFinalIcon;
+	//public Texture2D armsUpFinalIcon;
+	public Texture2D leftThrowIcon;
+	public Texture2D rightThrowIcon;
+	public Texture2D leftReadyIcon;
+	public Texture2D rightReadyIcon;
+	public Texture2D leftPrepIcon;
+	public Texture2D rightPrepIcon;
 	//public GameObject earthEffect;
 	public List<GameObject> effects;
 	//public Texture2D heightMap;
@@ -102,17 +114,17 @@ public class Earth : MonoBehaviour {
 		if(!General.kinectControl){
 
 			if(Input.GetKey(KeyCode.Alpha1)){
-				indicator1Level = 2;
-				indicator2Level = 0;
+				//indicator1Level = 2;
+				//indicator2Level = 0;
 			}
 
 			else if(Input.GetKey(KeyCode.Alpha2)){
-				indicator1Level = 0;
-				indicator2Level = 2;
+				//indicator1Level = 0;
+				//indicator2Level = 2;
 			}
 			else{
-				indicator1Level = 1;
-				indicator2Level = 1;
+				//indicator1Level = 1;
+				//indicator2Level = 1;
 				
 			}
 
@@ -168,6 +180,8 @@ public class Earth : MonoBehaviour {
 			rHand.localScale = Vector3.one;
 		}
 		if(Gestures.ArmsUp ()){
+			lPrimed = false;
+			rPrimed = false;
 			if(platformCharge > platformChargeTime){
 			
 				Platform();
@@ -175,13 +189,15 @@ public class Earth : MonoBehaviour {
 			}
 			//if(platformCharge <0){
 			smashCharge += Time.deltaTime;
-			indicator2Level = 0;
-			indicator1Level = 2;
+			//indicator2Level = 0;
+			//indicator1Level = 2;
 			//}
 		}
 			//highEnergy += Time.deltaTime;
 
-		else if(Gestures.ArmsDown()){
+		else if(Gestures.ArmsOut()){
+			lPrimed = false;
+			rPrimed = false;
 			if(smashCharge > smashChargeTime){
 			
 				Smash();
@@ -189,8 +205,8 @@ public class Earth : MonoBehaviour {
 			}
 			//if(smashCharge < 0){
 			platformCharge += Time.deltaTime;
-			indicator2Level = 2;
-			indicator1Level = 0;
+			//indicator2Level = 2;
+			//indicator1Level = 0;
 			//}
 
 
@@ -214,8 +230,8 @@ public class Earth : MonoBehaviour {
 				smashCharge = Mathf.Min (1.5f, smashCharge);
 			}
 			
-			indicator2Level = 1;
-			indicator1Level = 1;
+			//indicator2Level = 1;
+			//indicator1Level = 1;
 		}
 	
 	}
@@ -345,7 +361,57 @@ public class Earth : MonoBehaviour {
 		platformCharge = 0;
 	}
 	void OnGUI(){
-		if(smashCharge < 0){
+		/*public Texture2D armsOutIcon;
+		public Texture2D armsUpIcon;
+		public Texture2D armsOutChargeIcon;
+		public Texture2D armsUpChargeIcon;
+		public Texture2D armsOutFinalIcon;
+		public Texture2D armsUpFinalIcon;
+		public Texture2D leftThrowIcon;
+		public Texture2D rightThrowIcon;
+		public Texture2D leftReadyIcon;
+		public Texture2D rightReadyIcon;
+		public Texture2D leftPrepIcon;
+		public Texture2D rightPrepIcon;*/
+		if(!lPrimed){
+			GUI.DrawTexture (new Rect(0,0, iconSize, iconSize), leftPrepIcon);
+		}
+		else{
+			GUI.DrawTexture (new Rect (0,0, iconSize, iconSize), leftReadyIcon);
+			GUI.DrawTexture (new Rect (0, iconSize, iconSize, iconSize), leftThrowIcon);
+		}
+		if(!rPrimed){
+			GUI.DrawTexture (new Rect (iconSize, 0, iconSize, iconSize), rightPrepIcon);
+		}
+		else{
+			GUI.DrawTexture (new Rect (iconSize,0, iconSize, iconSize), rightReadyIcon);
+			GUI.DrawTexture (new Rect (iconSize, iconSize, iconSize, iconSize), rightThrowIcon);
+		}
+		float pC = platformCharge/platformChargeTime;
+		pC = Mathf.Max (pC, 0);
+		pC = Mathf.Min (pC, 1);
+
+		GUI.DrawTexture (new Rect (iconSize*2, 0, iconSize, iconSize), armsOutIcon);
+		GUI.DrawTexture (new Rect (iconSize*2, 0, iconSize, (iconSize* (pC))), armsOutChargeIcon); 
+
+		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*2, 0, iconSize, (iconSize* (pC))), armsOutChargeIcon, new Rect(0,1-pC,1,1));
+		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*2, iconSize* (pC), iconSize, iconSize-(iconSize* (pC))), armsOutIcon, new Rect(0,pC,1,1-pC)); 
+		if(platformCharge > 0){
+			GUI.DrawTexture (new Rect(iconSize*2, iconSize, iconSize, iconSize), armsUpIcon);
+		}
+		float sC = smashCharge/smashChargeTime;
+		sC = Mathf.Max (sC, 0);
+		sC = Mathf.Min (sC, 1);
+
+		GUI.DrawTexture (new Rect (iconSize*3, 0, iconSize, iconSize), armsUpIcon);
+		GUI.DrawTexture (new Rect (iconSize*3, 0, iconSize, (iconSize* (sC))), armsUpChargeIcon); 
+
+		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*3, 0, iconSize, (iconSize* (sC))), armsUpChargeIcon, new Rect(0,0,1,1));
+		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*3, iconSize* (sC), iconSize, iconSize-(iconSize* (sC))), armsUpIcon, new Rect(0,0,1,1)); 
+		if(smashCharge > 0){
+			GUI.DrawTexture (new Rect(iconSize*3, iconSize, iconSize, iconSize), armsOutIcon);
+		}
+		/*if(smashCharge < 0){
 			GUI.DrawTexture (new Rect(0, 0, 128, 128), smashIcon);
 		}
 		else{
@@ -363,7 +429,7 @@ public class Earth : MonoBehaviour {
 				//GUI.Box (new Rect(128, i*128, 128, 128), indicator2[i]);
 				GUI.DrawTexture (new Rect(128, i*128, 128, 128), indicator2[i]);
 			}
-		}
+		}*/
 		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
 		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
 

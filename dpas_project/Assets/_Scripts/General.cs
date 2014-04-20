@@ -46,6 +46,7 @@ public class General : MonoBehaviour {
 	bool menu = false;
 	bool instructions = false;
 	public Texture2D selector;
+	public Texture2D notCalibrated;
 	Vector2 rHandLoc;
 	Vector2 lHandLoc;
 	public float maxSelectDistance = 20;
@@ -63,6 +64,7 @@ public class General : MonoBehaviour {
 	Texture2D currentMenu;
 	Texture2D activeImage;
 	public bool destroyOnReload = true;
+	//public AudioSource audSrc;
 	//float magnitude = 0;
 	//public float controlCuttoff = 1;
 	KinectManager kMngr;
@@ -89,6 +91,7 @@ public class General : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+
 
 		/*
 		Gestures.lHand = lHand;
@@ -175,6 +178,9 @@ public class General : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!kMngr.IsPlayerCalibrated(1)){
+			Debug.Log ("player 1 not calibrated");
+		}
 		manageMenu();
 		//Debug.Log ("checkjoints = "+checkJoints().ToString());
 		//Debug.Log (Vector2.Distance (lHandLoc, rHandLoc).ToString ());
@@ -206,9 +212,9 @@ public class General : MonoBehaviour {
 
 		}
 		if(!kinectControl){
-			if(Input.GetKeyUp (KeyCode.KeypadEnter)){
+			if(Input.GetKeyUp (KeyCode.Return)){
 				//kMngr.RecalibratePlayer1();
-				//kMngr.ClearKinectUsers();
+				kMngr.ClearKinectUsers();
 				//Application.LoadLevel("Level1");
 
 			}
@@ -547,6 +553,9 @@ public class General : MonoBehaviour {
 		}
 		if (instructions){
 			GUI.DrawTexture(new Rect(Screen.width-75, 0, 75, Screen.height), instructionIndicator);
+		}
+		if(!kMngr.IsPlayerCalibrated(1)){
+			//GUI.DrawTexture (new Rect (0,0, Screen.width, Screen.height), notCalibrated);
 		}
 
 	}

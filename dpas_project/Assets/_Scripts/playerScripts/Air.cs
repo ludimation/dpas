@@ -48,6 +48,12 @@ public class Air : MonoBehaviour {
 	float lightningT;
 	float lightningCost; //dos nothing for now
 
+	public Texture2D windIcon;
+	public Texture2D windActivatedIcon;
+	public Texture2D lightningIcon;
+	public Texture2D lightningActivatedIcon;
+	public Texture2D rainIcon;
+	public Texture2D rainActivatedIcon;
 
 	// Use this for initialization
 	void Start () {
