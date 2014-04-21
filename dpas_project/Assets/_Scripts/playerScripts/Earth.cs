@@ -261,6 +261,7 @@ public class Earth : MonoBehaviour {
 		temp.target = transform.position;
 		temp.initialTime = 1;
 		temp.time = 1;
+		temp.source = transform;
 		deform (rad/3, -.5f*smashDepth);
 		//platformCharge = 0;
 		smashCharge = 0;

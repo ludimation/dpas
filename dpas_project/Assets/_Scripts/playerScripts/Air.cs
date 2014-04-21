@@ -42,40 +42,49 @@ public class Air : MonoBehaviour {
 	public float gustCost = 0; //does nothing for now
 	public float minThrowSpeed = 2.5f;//does nothing I think for now
 
+	public bool enableRain = true;
+	public List<AudioClip> rainSounds;
+	public float rainWait = 0;
+	float rainT;
+	public float rainCost = 0;
+
 	public bool enableLightning = true;
 	public List<AudioClip> lightningSounds;
 	public float lightningWait = 0;
 	float lightningT;
-	float lightningCost; //dos nothing for now
+	public float lightningCost; //dos nothing for now
 
-	public Texture2D windIcon;
-	public Texture2D windActivatedIcon;
+	public Texture2D gustIcon;
+	public Texture2D gustActivatedIcon;
 	public Texture2D lightningIcon;
 	public Texture2D lightningActivatedIcon;
 	public Texture2D rainIcon;
 	public Texture2D rainActivatedIcon;
+	public float iconSize = 64;
 
 	// Use this for initialization
 	void Start () {
 		gustT = gustWait;
 		lightningT = lightningWait;
+		rainT = rainWait;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		gustT -= Time.deltaTime;
 		lightningT -= Time.deltaTime;
+		rainT -= Time.deltaTime;
 
 		if (Gestures.ArmsUp ()){
-			General.screenShake.NewImpact ();
-			cF.Rain(Time.deltaTime);
+			//General.screenShake.NewImpact ();
+			Rain();
 		}
 		else if(Gestures.ArmsTogether() && !Gestures.ArmsDown()){
 			WindGust(.5f*(lHand.position +rHand.position), transform.rotation*Gestures.CommonDir ());
 		}
 		//Debug.Log ("lArmStraight = "+Gestures.LArmStraight ().ToString ()+", LArmDirAngle = " + Vector3.Angle(Gestures.LArmDir(), Vector3.up));
 		if(Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45&&Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)>60){
-			General.screenShake.NewImpact ();
+			//General.screenShake.NewImpact ();
 			rightStrike.gameObject.SetActive (true);
 			//rightStrike.enabled = true;
 		}
@@ -84,7 +93,7 @@ public class Air : MonoBehaviour {
 			//rightStrike.enabled = false;
 		}
 		if(Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)<45&&Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)>60){
-			General.screenShake.NewImpact ();
+			//General.screenShake.NewImpact ();
 			leftStrike.gameObject.SetActive (true);
 			//leftStrike.enabled = true;
 		}
@@ -112,8 +121,9 @@ public class Air : MonoBehaviour {
 				General.changeSize(-3*Time.deltaTime, 100, 0);
 			}
 			if (Input.GetKey (KeyCode.R)){
-				General.screenShake.NewImpact ();
-				cF.Rain (Time.deltaTime);
+				//General.screenShake.NewImpact ();
+				//cF.Rain (Time.deltaTime);
+				Rain();
 			}
 
 
@@ -172,11 +182,26 @@ public class Air : MonoBehaviour {
 
 		}
 	}
-	public void CastLightning(){
+	public bool CastLightning(){
 		if(enableLightning && lightningT< 0){
 			lightningT = lightningWait;
 			General.screenShake.NewImpact ();
 			audSrc.PlayOneShot (lightningSounds[Random.Range(0, lightningSounds.Count)]);
+			cF.Rain (Time.deltaTime);
+			return true;
+
+		}
+		else{
+			return false;
+		}
+	}
+	public void Rain(){
+		if(enableRain && rainT<0){
+			rainT = rainWait;
+			General.screenShake.NewImpact();
+			if(rainSounds.Count>0){
+				audSrc.PlayOneShot (rainSounds[Random.Range (0,rainSounds.Count)]);
+			}
 		}
 	}
 	public void Sleep(){
@@ -217,6 +242,27 @@ public class Air : MonoBehaviour {
 					General.playerSize = 1f;
 				}
 			}
+		}
+	}
+	void OnGUI(){
+		if(gustT < 0){
+			GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustIcon);
+		}
+		else{
+			GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustActivatedIcon);
+		}
+		
+		if(lightningT < 0){
+			GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningIcon);
+		}
+		else{
+			GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningActivatedIcon);
+		}
+		if(rainT < 0){
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainIcon);
+		}
+		else{
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainActivatedIcon);
 		}
 	}
 

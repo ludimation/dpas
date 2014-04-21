@@ -6,6 +6,7 @@ public class Platform : MonoBehaviour {
 	public Vector3 start = Vector3.zero;
 	public float initialTime = 1f;
 	public float time;
+	public Transform source;
 
 	void Start () {
 		start = transform.position;
@@ -22,6 +23,9 @@ public class Platform : MonoBehaviour {
 			//Debug.Log ((time/initialTime).ToString ());
 			transform.position = Vector3.Lerp(start, target, 1-(time/initialTime));
 			time -= Time.deltaTime;
+			if(source){
+				source.Translate (new Vector3(0, transform.position.y +( .51f * transform.localScale.y)-source.position.y, 0));
+			}
 		}
 	
 	}

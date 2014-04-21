@@ -12,6 +12,7 @@ public class General : MonoBehaviour {
 	public GameObject player;
 	public GameObject avatarController;
 	public GameObject camera;
+	public GameObject music;
 
 	public bool controlByKinect = true;
 	//public static bool keyControlOnly;
@@ -39,7 +40,8 @@ public class General : MonoBehaviour {
 
 
 	public static float playerSize = 1;
-	public static float availableEnergy = 10;
+	public float startingEnergy = 100;
+	static float availableEnergy = 100;
 	public static General g;
 
 	bool quitting = false;
@@ -64,6 +66,15 @@ public class General : MonoBehaviour {
 	Texture2D currentMenu;
 	Texture2D activeImage;
 	public bool destroyOnReload = true;
+	int selectedLevel = 0;
+	int currentLevel = 0;
+	
+	public Texture2D lvl0;
+	public Texture2D lvl0Selected;
+	public Texture2D lvl1;
+	public Texture2D lvl1Selected;
+	public Texture2D lvl2;
+	public Texture2D lvl2Selected;
 	//public AudioSource audSrc;
 	//float magnitude = 0;
 	//public float controlCuttoff = 1;
@@ -91,7 +102,7 @@ public class General : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-
+		availableEnergy = startingEnergy;
 
 		/*
 		Gestures.lHand = lHand;
@@ -172,6 +183,7 @@ public class General : MonoBehaviour {
 			DontDestroyOnLoad(screenShaker);
 			DontDestroyOnLoad(player);
 			DontDestroyOnLoad(avatarController);
+			DontDestroyOnLoad(music);
 
 		}
 	}
@@ -179,7 +191,7 @@ public class General : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!kMngr.IsPlayerCalibrated(1)){
-			Debug.Log ("player 1 not calibrated");
+			//Debug.Log ("player 1 not calibrated");
 		}
 		manageMenu();
 		//Debug.Log ("checkjoints = "+checkJoints().ToString());
@@ -204,10 +216,24 @@ public class General : MonoBehaviour {
 			//kMngr.
 			rHandLoc = new Vector2(Gestures.RArmDir().x, -Gestures.RArmDir().y);
 			lHandLoc = new Vector2(Gestures.LArmDir().x, -Gestures.LArmDir().y);
+			float rHandAngle = Vector2.Angle (rHandLoc, Vector2.up);
 			rHandLoc.Scale (new Vector2(Screen.width, Screen.height));
 			lHandLoc.Scale (new Vector2(Screen.width, Screen.height));
-			if(Vector2.Distance (lHandLoc, rHandLoc)<maxSelectDistance){
-				pause(false);
+			//if(Vector2.Distance (lHandLoc, rHandLoc)<maxSelectDistance){
+			//	pause(false);
+			//}
+			if(rHandAngle <45){
+				selectedLevel = 2;
+			}
+			else if(rHandAngle <135){
+				selectedLevel = 1;
+			}
+			else{
+				selectedLevel = 0;
+			}
+			if (Gestures.LArmStraight()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45){
+				LoadLevel(selectedLevel);
+
 			}
 
 		}
@@ -219,7 +245,7 @@ public class General : MonoBehaviour {
 
 			}
 			if(Input.GetKeyUp (KeyCode.L)){
-				Application.LoadLevel("Level1");
+				LoadLevel(2);
 
 			}
 			if(Input.GetKeyUp (KeyCode.F)){
@@ -259,14 +285,6 @@ public class General : MonoBehaviour {
 		if(Input.GetKeyUp (KeyCode.Escape)){
 			Application.Quit ();
 		}
-		/*if(Input.GetKeyUp (KeyCode.Tab)){
-			kMngr.RecalibratePlayer1();
-			pause(true);
-
-		}*/
-		
-		//Debug.Log (Vector3.Angle (lElbow.position-lShoulder.position, Vector3.up).ToString ()+", "+ Vector3.Angle(lHand.position-lElbow.position, Vector3.right).ToString());
-		//if(Vector3.Angle(lElbow.position-lShoulder.position, Vector3.up) < 60 && Vector3.Angle (lHand.position-lElbow.position, Vector3.right) < 45){
 		if(Gestures.MenuGesture() && !paused){
 			menu = true;
 		}
@@ -276,42 +294,16 @@ public class General : MonoBehaviour {
 		//if (menu && ((Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45)||(!General.kinectControl&&Input.GetKey(KeyCode.P)))){
 		if(menu){
 			if (Vector3.Angle (rElbow.position-rShoulder.position, Vector3.right) <45){
-				//if (Vector3.Angle (rHand.position-rElbow.position, Vector3.up)<45){
 				if(Gestures.PauseGesture()){
 					pause(true);
 					currentMenu = menuScreen;
 				}
-				/*else if (Vector3.Angle (rHand.position-rElbow.position, Vector3.right)<45){
-					pause(false);
-				}*/
 			}
 
 		}
 			
 		if (paused){
-			//if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up) < 60 && Vector3.Angle (rHand.position-rElbow.position, Vector3.left) < 45){
-				//quitting = true;
-				//if(Vector3.Angle (lElbow.position-lShoulder.position, Vector3.left) <45 && Vector3.Angle (lHand.position-lElbow.position, Vector3.left)<45){
-					//Application.Quit();
-					//currentMenu = endScreen;
-					//activeImage = currentMenu;
-				//}
-			//}
-			//else{
-			//	quitting = false;
-			//}
-			/*if(Vector3.Angle (lElbow.position - lShoulder.position, Vector3.left)<45 && Vector3.Angle(lHand.position - lElbow.position, Vector3.up)<45){
-				instructions = true;
-				if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.right)<45){
-					activeImage = currentInstructions;
-				}
-				if(Vector3.Angle(rElbow.position-rShoulder.position, Vector3.up)<45){
-					activeImage = currentMenu;
-				}
-			}
-			else{
-				instructions = false;
-			}*/
+
 			if(Input.GetKeyUp (KeyCode.T)){
 				activeImage = currentInstructions;
 			}
@@ -352,18 +344,10 @@ public class General : MonoBehaviour {
 		}
 		element = e;
 
-		//if(airControl.enabled){
-			airControl.Sleep();
-		//}
-		//if(earthControl.enabled){
-			earthControl.Sleep ();
-		//}
-		//if(fireControl.enabled){
-			fireControl.Sleep();
-		//}
-		//if(waterControl.enabled){
-			waterControl.Sleep ();
-		//}
+		airControl.Sleep();
+		earthControl.Sleep ();
+		fireControl.Sleep();
+		waterControl.Sleep ();
 
 		airControl.enabled = false;
 		earthControl.enabled = false;
@@ -402,13 +386,8 @@ public class General : MonoBehaviour {
 		}
 		if(e != Element.Water){
 			foreach (GameObject g in waterObjects){
-				if(!g){
-					/*if(General.dbgMode){
-						Debug.LogWarning ("water avatar object has been destroyed, cannot deactivate");
-				
-					}*/
-				}
-				else if(g.particleSystem){
+
+				if(g.particleSystem){
 					g.particleSystem.enableEmission = false;
 				}
 				else{
@@ -416,15 +395,7 @@ public class General : MonoBehaviour {
 				}
 			}
 		}
-		/*foreach (GameObject g in earthObjects){
-			g.SetActive (false);
-		}
-		foreach (GameObject g in fireObjects){
-			g.SetActive (false);
-		}
-		foreach (GameObject g in waterObjects){
-			g.SetActive (false);
-		}*/
+
 		if (element == Element.Air){
 			airControl.enabled = true;
 			airControl.UnSleep();
@@ -456,9 +427,7 @@ public class General : MonoBehaviour {
 			fireControl.UnSleep();
 			currentInstructions = fireInstructions;
 			foreach (GameObject g in fireObjects){
-				//Debug.Log ("found fire object");
 				if(g.particleSystem){
-					//Debug.Log ("with paprticle system");
 					g.particleSystem.enableEmission = true;
 				}
 				else{
@@ -472,7 +441,7 @@ public class General : MonoBehaviour {
 			currentInstructions = waterInstructions;
 			foreach (GameObject g in waterObjects){
 				if(!g&&General.dbgMode){
-					Debug.LogWarning ("water avatar object has been destroyed, cannot reactivate");
+					//Debug.LogWarning ("water avatar object has been destroyed, cannot reactivate");
 				}
 				else if(g.particleSystem){
 					g.particleSystem.enableEmission = true;
@@ -483,7 +452,13 @@ public class General : MonoBehaviour {
 			}
 		}
 	}
+	public void LoadLevel(int lvl){
+		if(lvl!= currentLevel){
+			currentLevel = lvl;
+			Application.LoadLevel( lvl);
+		}
 
+	}
 	public static void printJointPos(Transform root){
 		string msg = "";
 		msg += root.name + ": "+root.position.ToString();
@@ -496,34 +471,37 @@ public class General : MonoBehaviour {
 		}
 
 	}
-	/*public static float increaseSize(float amount, float limit){
-		if (playerSize > limit){
-			return playerSize;
+	public static float pullEnergy(float amount){
+		if (amount > availableEnergy){
+			amount = availableEnergy;
+			availableEnergy = 0;
+			return amount;
 		}
-		playerSize += amount;
-		playerSize = Mathf.Min (playerSize, limit);
-		return playerSize;
+		else{
+			availableEnergy -= amount;
+			return amount;
+		}
 
-	}*/
+	}
+	public static void pushEnergy(float amount){
+		availableEnergy += amount;
+	}
 	public static float changeSize(float amount, float upperLimit, float lowerLimit){
-		string msg = "pSize = "+playerSize.ToString ()+"; ";
-		//Debug.Log (msg);
 		if (playerSize + amount > upperLimit){
-			msg += "greater than upper; ";
+			//msg += "greater than upper; ";
 			playerSize = Mathf.Max (playerSize, upperLimit);
 			//return playerSize;
 		}
 		else if (playerSize + amount < lowerLimit){
-			msg += "less than lower; ";
+			//msg += "less than lower; ";
 			playerSize = Mathf.Min (playerSize, lowerLimit);
-			//return playerSize;
 		}
 		else{
 			playerSize += amount;
 		}
 		playerSize = Mathf.Max (playerSize, 0);
 		playerSize = Mathf.Min (playerSize, 100);
-		msg +="amount " + amount.ToString () +", t: "+Time.frameCount.ToString ()+", pSize = "+playerSize.ToString ();
+		//msg +="amount " + amount.ToString () +", t: "+Time.frameCount.ToString ()+", pSize = "+playerSize.ToString ();
 		//Debug.Log (msg);
 
 		return playerSize;
@@ -531,14 +509,34 @@ public class General : MonoBehaviour {
 	void OnLevelWasLoaded(){
 		playerSize = 1;
 		availableEnergy = 100;
-		pause(true);
-		changeElement(Element.Fire);
+		pause(false);
+		changeElement(Element.Air);
 	}
 	void OnGUI(){
 
 		if (paused){
 
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), activeImage);
+			if(selectedLevel == 0){
+				GUI.DrawTexture (new Rect(Screen.width - 128, 0, 128, 128), lvl0Selected);
+
+			}
+			else{
+
+				GUI.DrawTexture (new Rect(Screen.width - 128, 0, 128, 128), lvl0);
+			}
+			if(selectedLevel == 1){
+				GUI.DrawTexture (new Rect(Screen.width - 128, Screen.height/2, 128, 128), lvl1Selected);
+			}
+			else{
+				GUI.DrawTexture (new Rect(Screen.width - 128, Screen.height/2, 128, 128), lvl1);
+			}
+			if(selectedLevel == 2){
+				GUI.DrawTexture (new Rect(Screen.width - 128, Screen.height-128, 128, 128), lvl2Selected);
+			}
+			else{
+				GUI.DrawTexture (new Rect(Screen.width - 128, Screen.height-128, 128, 128), lvl2);
+			}
 			//GUI.DrawTexture (new Rect((Screen.width/2)+(1000*Gestures.RArmDir().x), (Screen.height/2)-(1000*Gestures.RArmDir().y), 64,64), selector);
 			GUI.DrawTexture (new Rect(lHandLoc.x+(Screen.width/2), lHandLoc.y+(Screen.height/2), 64,64), selector);
 			GUI.DrawTexture (new Rect(rHandLoc.x+(Screen.width/2), rHandLoc.y+(Screen.height/2), 64,64), selector);
@@ -555,7 +553,7 @@ public class General : MonoBehaviour {
 			GUI.DrawTexture(new Rect(Screen.width-75, 0, 75, Screen.height), instructionIndicator);
 		}
 		if(!kMngr.IsPlayerCalibrated(1)){
-			//GUI.DrawTexture (new Rect (0,0, Screen.width, Screen.height), notCalibrated);
+			GUI.DrawTexture (new Rect (0,0, Screen.width/4, Screen.height/4), notCalibrated);
 		}
 
 	}

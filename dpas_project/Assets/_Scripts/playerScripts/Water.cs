@@ -16,7 +16,8 @@ public class Water : MonoBehaviour {
 	public WaterAttack wave;
 	public float waveCost = 0;
 	public float waveWait = 0;
-	public float waveT = 0;
+	public float wave1T = 0;
+	public float wave2T = 0;
 	public List<AudioClip> waveSounds;
 	public float waveSpeed = 1;
 	
@@ -60,7 +61,8 @@ public class Water : MonoBehaviour {
 		//	audSrc = gameObject.GetComponent<audSrc>();
 		//}
 		jetT = jetWait;
-		waveT = waveWait;
+		wave1T = waveWait;
+		wave2T = waveWait;
 		geyserT = geyserWait;
 		if (!charMotor){
 			charMotor = gameObject.GetComponent<CharacterMotor>();
@@ -77,7 +79,8 @@ public class Water : MonoBehaviour {
 				General.g.changeElement (General.Element.Air);
 			}
 			jetT -= Time.deltaTime;
-			waveT -= Time.deltaTime;
+			wave1T -= Time.deltaTime;
+			wave2T -= Time.deltaTime;
 			geyserT -= Time.deltaTime;
 			//Debug.DrawRay (transform.position, Gestures.flatShoulderRot()*Vector3.forward);
 			if(Gestures.ArmsTogether ()&&!Gestures.ArmsDown ()){
@@ -131,7 +134,7 @@ public class Water : MonoBehaviour {
 					//General.changeSize (waveCost/Time.deltaTime);
 					//temp.strength = General.playerSize;*/
 					
-					Wave(lHand.position, transform.rotation*Gestures.LArmDir());
+					Wave1(lHand.position, transform.rotation*Gestures.LArmDir());
 					
 					
 				}
@@ -150,7 +153,7 @@ public class Water : MonoBehaviour {
 					foo.AddForce (waveSpeed*(transform.rotation*Gestures.RArmDir()), ForceMode.VelocityChange);
 					//General.changeSize (waveCost/Time.deltaTime);
 					//temp.strength = General.playerSize;*/
-					Wave(rHand.position, transform.rotation*Gestures.RArmDir());
+					Wave2(rHand.position, transform.rotation*Gestures.RArmDir());
 					
 				}
 			}
@@ -160,7 +163,7 @@ public class Water : MonoBehaviour {
 			
 			if(!General.kinectControl){
 				if(Input.GetKeyDown (KeyCode.E)){
-					Wave(rHand.position, transform.forward);
+					Wave2(rHand.position, transform.forward);
 				}
 				if(Input.GetKeyDown (KeyCode.Q)){
 					/*General.screenShake.NewImpact ();
@@ -168,7 +171,7 @@ public class Water : MonoBehaviour {
 					General.changeSize (-temp.size*waveCost, 100, 0);
 					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
 					foo.AddForce (waveSpeed*transform.forward, ForceMode.VelocityChange);*/
-					Wave(lHand.position, transform.forward);
+					Wave1(lHand.position, transform.forward);
 
 					
 				}
@@ -186,9 +189,9 @@ public class Water : MonoBehaviour {
 			}
 		}
 	}
-	void Wave(Vector3 pos, Vector3 dir){
-		if(enableWave && waveT<0){
-			waveT = waveWait;
+	void Wave1(Vector3 pos, Vector3 dir){
+		if(enableWave && wave1T<0){
+			wave1T = waveWait;
 			General.screenShake.NewImpact ();
 			WaterAttack temp = (WaterAttack)Instantiate(wave, pos, Quaternion.identity);
 			General.changeSize (-temp.size*waveCost, 100, 0);
@@ -197,7 +200,20 @@ public class Water : MonoBehaviour {
 				audSrc.PlayOneShot(waveSounds[Random.Range (0, waveSounds.Count)]);
 			}
 		}
-
+		
+	}
+	void Wave2(Vector3 pos, Vector3 dir){
+		if(enableWave && wave2T<0){
+			wave2T = waveWait;
+			General.screenShake.NewImpact ();
+			WaterAttack temp = (WaterAttack)Instantiate(wave, pos, Quaternion.identity);
+			General.changeSize (-temp.size*waveCost, 100, 0);
+			temp.rigidbody.AddForce (waveSpeed*dir, ForceMode.VelocityChange);
+			if(waveSounds.Count > 0){
+				audSrc.PlayOneShot(waveSounds[Random.Range (0, waveSounds.Count)]);
+			}
+		}
+		
 	}
 
 	void Jet(Vector3 pos, Vector3 dir){
@@ -242,6 +258,18 @@ public class Water : MonoBehaviour {
 
 	//}
 	void OnGUI(){
+		if(wave1T <0){
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), leftPrepIcon);
+		}
+		else{
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), leftThrowIcon);
+		}
+		if(wave2T <0){
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rightPrepIcon);
+		}
+		else{
+			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rightThrowIcon);
+		}
 		if(jetT < 0){
 			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), waterJetIcon);
 		}
