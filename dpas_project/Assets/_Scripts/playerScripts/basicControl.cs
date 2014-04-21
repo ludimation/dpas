@@ -52,7 +52,7 @@ public class basicControl : MonoBehaviour {
 			//deadzone stuff
 			//Debug.Log ("dz = "+ deadzone.ToString ()+ ", mag = "+move.magnitude.ToString ()+", move = "+move.ToString ());
 			else if (move.magnitude < deadzone){
-				Debug.Log ("deadzone, move = "+move.magnitude.ToString ()+", dz = "+deadzone.ToString ());
+				//Debug.Log ("deadzone, move = "+move.magnitude.ToString ()+", dz = "+deadzone.ToString ());
 				move = Vector3.zero;
 			}
 			else{

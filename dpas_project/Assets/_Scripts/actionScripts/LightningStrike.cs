@@ -23,6 +23,7 @@ public class LightningStrike : MonoBehaviour {
 		}
 		line.SetVertexCount (3);
 		boltOrigin = source.transform;
+		line.enabled = false;
 		//strikes = new List<Shrubbery>();
 		//rigidbody.AddForce (-15 * Vector3.up, ForceMode.VelocityChange);
 
@@ -50,18 +51,20 @@ public class LightningStrike : MonoBehaviour {
 		//Debug.Log ("Lstrike entering");
 		Shrubbery shrub = targ.GetComponent<Shrubbery>();
 		if(shrub!=null){
-			General.screenShake.NewImpact ();
+			//General.screenShake.NewImpact ();
 			Cloud temp = source.cF.Nearest ();
 			if (!temp){
 				Debug.Log ("no cloud found");
 				boltOrigin = source.transform;
+				line.enabled = false;
 			}
-			else{
+			else if (source.CastLightning ()){
 				boltOrigin = temp.transform;
 				shrub.Ignite ();
 				//source.audSrc.PlayOneShot(thunder);
-				source.CastLightning();
+				//source.CastLightning();
 				target = targ.transform;
+				line.enabled = true;
 			}
 
 
