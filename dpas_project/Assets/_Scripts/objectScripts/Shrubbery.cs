@@ -4,46 +4,91 @@ using System.Collections.Generic;
 
 public class Shrubbery : MonoBehaviour {
 
-	public float fuel = 0;
-	public float fuelLimitFactor = 10;
-	public float resistanceFactor = 1;
+	public float fuelAmount = 0;
+	public float flameAmount = 0;
+	public float waterAmount = 0;
+
+	//public float waterThreshold = 3;
+	public float waterLimit = 7;
+	//float waterToGrow;
+
+	//public float fuelLimitFactor = 10;
+	//public float resistanceFactor = 1;
+	public float resistance = 0;
 	public float burnRate = .1f;
-	public bool burning = false;
-	public bool dead = false;
+	public float absorbRate = 1;
+
+	public int state = 0;
+
 	public float growRate = .01f;
 	public float growScaleFactor = 10;
 
-	public List<GameObject> liveModels;
-	public List<GameObject> deadModels;
-	public List<GameObject> burnModels;
+	//public List<GameObject> liveModels;
+	//public List<GameObject> deadModels;
+	//public List<GameObject> burnModels;
+	public GameObject liveModel;
+	public GameObject deadModel;
+	public GameObject burnModel;
+
 	GameObject currentModel;
-	public float flameAmount;
+
+	public ParticleSystem flame;
 
 	public Cloud cloudPrefab;
 	public Vector3 cloudOffset = Vector3.up;
 	Cloud cloud;
 	//Vector3 currentScale = Vector3.one;
 
-	public float waterAmount = 0;
-	public float waterThreshold = 3;
-	public float waterLimit = 7;
-	float waterToGrow;
 
-	public int currentSize = 0;
+	//public int currentSize = 1;
 
 
 	// Use this for initialization
 	void Start () {
-		waterToGrow = waterThreshold;
-		if (burnModels.Count != deadModels.Count || deadModels.Count != liveModels.Count){
-			Debug.LogWarning ("improper number of tree models");
-		}
+
+		//waterToGrow = waterThreshold;
+		//if (burnModels.Count != deadModels.Count || deadModels.Count != liveModels.Count){
+		//	Debug.LogWarning ("improper number of tree models");
+		//}
+		ModelChange();
 
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log ("state = " + state.ToString ()+ ", wff = "+new Vector3(waterAmount, fuelAmount, flameAmount).ToString());
+		if(state == 1){
+			if(waterAmount <= 0){
+				++state;
+				waterAmount = 0;
+				ModelChange();
+			}
+			else{
+				waterAmount -= growRate*Time.deltaTime;
+				fuelAmount += growRate*Time.deltaTime;
+			}
+			
+		}
+
+		if(state == 3){
+			if (fuelAmount <=0){
+				++state;
+				ModelChange();
+
+			}
+			else{
+				flameAmount += burnRate * Time.deltaTime;
+				fuelAmount -= burnRate * Time.deltaTime;
+			}
+		}
+		if(state == 4){
+			if(flameAmount<=0){
+				state = 0;
+				flameAmount = fuelAmount = waterAmount = 0;
+			}
+		}
+		/*
 		if(fuel<=0&&flameAmount<=0&&waterAmount<=0){
 			currentSize = 0;
 			dead = false;
@@ -78,10 +123,10 @@ public class Shrubbery : MonoBehaviour {
 		}
 		transform.localScale = (1 + fuel) * Vector3.one;
 		Debug.Log ("wa = "+waterAmount.ToString ()+", fu = "+fuel.ToString ()+", fl = "+flameAmount.ToString()+", dead = "+dead.ToString ()+", burning = "+burning.ToString ()+", size = "+currentSize.ToString()+", wtg = "+waterToGrow.ToString());
-	
+	*/
 	}
-	void ModelChange(int newSize){
-		if(burning){
+	void ModelChange(){
+		/*if(burning){
 			Destroy(currentModel);
 			currentModel = (GameObject)Instantiate(burnModels[newSize], transform.position, transform.rotation);
 		}
@@ -92,14 +137,42 @@ public class Shrubbery : MonoBehaviour {
 		else{
 			Destroy(currentModel);
 			currentModel = (GameObject)Instantiate(liveModels[newSize],transform.position, transform.rotation);
+		}*/
+		if(state == 0){
+			Destroy(currentModel);
+			flame.enableEmission = false;
 		}
-		currentModel.transform.parent = transform;
+		if(state == 1){
+			Destroy(currentModel);
+			currentModel = (GameObject)Instantiate(liveModel, transform.position, transform.rotation);
+			flame.enableEmission = false;
+			currentModel.transform.parent = transform;
+			currentModel.transform.localScale = Vector3.one;
+		}
+		if(state == 2){
+			Destroy(currentModel);
+			currentModel = (GameObject)Instantiate(deadModel, transform.position, transform.rotation);
+			flame.enableEmission = false;
+			currentModel.transform.parent = transform;
+			currentModel.transform.localScale = Vector3.one;
+		}
+		if(state == 3){
+			Destroy(currentModel);
+			currentModel = (GameObject)Instantiate(burnModel, transform.position, transform.rotation);
+			flame.enableEmission = true;
+			currentModel.transform.parent = transform;
+			currentModel.transform.localScale = Vector3.one;
 
-		//currentModel.transform.localScale = currentScale;
-	}
+		}
+		if(state == 4){
+			
+			Destroy(currentModel);
+			flame.enableEmission = true;
+		}
+		}
 	void MakeCloud(float s){
 		if(!cloud){
-			cloud = (Cloud)Instantiate(cloudPrefab, transform.position+(cloudOffset*(Mathf.Max (Mathf.Max (waterAmount, fuel), flameAmount))), transform.rotation);
+			cloud = (Cloud)Instantiate(cloudPrefab, transform.position+cloudOffset, transform.rotation);
 			cloud.size = s;
 		}
 		else{
@@ -107,8 +180,56 @@ public class Shrubbery : MonoBehaviour {
 		}
 	}
 	public void AddWater(float w){
+		if(state == 0){
+			++state;
+			ModelChange();
+			waterAmount += w;
+			if(waterAmount > waterLimit){
+				General.pushEnergy (waterAmount - waterLimit);
+				waterAmount = waterLimit;
+			}
+		}
+		else if(state == 1){
+			waterAmount += w;
+			if(waterAmount > waterLimit){
+				General.pushEnergy (waterAmount - waterLimit);
+				waterAmount = waterLimit;
+			}
+		}
+		else if(state == 2){
+			--state;
+			ModelChange();
+			waterAmount += w;
+			if(waterAmount > waterLimit){
+				General.pushEnergy (waterAmount - waterLimit);
+				waterAmount = waterLimit;
+			}
+		}
+		else if(state == 3){
+			if(w > flameAmount){
+				--state;
+				ModelChange();
+			}
+			else{
+				flameAmount -= w;
+				MakeCloud(2*w);
+			}
+		}
+		else if(state == 4){
+			if(w > flameAmount){
+				General.pushEnergy (w - flameAmount);
+				MakeCloud(2*flameAmount);
 
-		if(!burning){
+				state = 0;
+				ModelChange();
+			}
+			else{
+				flameAmount -= w;
+				MakeCloud(2*w);
+			}
+
+		}
+		/*if(!burning){
 			waterAmount += w;
 			waterToGrow -= w;
 			waterAmount = Mathf.Min (waterLimit, waterAmount);
@@ -116,19 +237,85 @@ public class Shrubbery : MonoBehaviour {
 		else{
 			flameAmount -= w;
 			MakeCloud (2*w);
-		}
+		}*/
 	}
 
 
 
-	public void Ignite(){
-		burning = true;
+	public void Ignite(float f){
+		if(f == -1){
+			if(state == 0){
+			}
+			else if (state == 1){
+				state = 3;
+				ModelChange();
+				General.pushEnergy(waterAmount);
+			}
+			else if (state == 2){
+				state = 3;
+				ModelChange();
+			}
+			else if (state == 3){
+			}
+			else if (state == 4){
+			}
+			/*General.pushEnergy (waterAmount);
+			if(state == 2 || state == 1){
+				state = 3;
+				ModelChange();
+			}*/
+		}
+		else{
+			if(state == 0){
+			}
+			else if (state == 1){
+				if(f > waterAmount){
+					//General.pushEnergy(f-waterAmount);
+					fuelAmount += waterAmount;
+
+					flameAmount += f - waterAmount;
+					waterAmount = 0;
+					state = 3;
+					ModelChange();
+				}
+				else{
+					waterAmount -= f;
+					fuelAmount += f;
+				}
+			}
+			else if (state == 2){
+				flameAmount += f;
+				state = 3;
+				ModelChange();
+				
+			}
+			else if (state == 3){
+				flameAmount += f;
+			}
+			else if (state == 4){
+				flameAmount += f;
+			}
+			/*if(state == 2){
+				if(f > waterAmount){
+					//General.pushEnergy(f-waterAmount);
+					fuelAmount += waterAmount;
+					flameAmount += f;
+				}
+				else{
+					waterAmount -= f;
+					fuelAmount += f;
+				}
+			}*/
+
+
+		}
+		/*burning = true;
 		dead = true;
 		ModelChange(currentSize);
-
+		*/
 		
 	}
-	public void UnIgnite(){
+	/*public void UnIgnite(){
 		burning = false;
 		Destroy(currentModel);
 		//currentModel = (GameObject)Instantiate (deadModels[currentSize], transform.position, transform.rotation);
@@ -140,7 +327,7 @@ public class Shrubbery : MonoBehaviour {
 		//if(fuel<0){
 		//	MakeCloud(fuel);
 		//}
-	}
+	}*/
 
 	void OnTriggerEnter (Collider other){
 		//Debug.Log ("foo");
@@ -157,18 +344,19 @@ public class Shrubbery : MonoBehaviour {
 		//if (source != null == true){
 		if(fA){
 			//Debug.Log ("firea attack strength: "+fA.strength.ToString ());
-			waterAmount -= fA.strength;
+			//waterAmount -= fA.strength;
 			//fuel+= fA.strength;
-			if (waterAmount<=0){
+			//if (waterAmount<=0){
 				//Debug.Log("shrub trigger entered");
-				Ignite();
+				//Ignite();
 				//burning = true;
 				//flame.enableEmission = true;
-			}
-			else{
-				MakeCloud(2*fA.strength);
+			//}
+			////else{
+			//	MakeCloud(2*fA.strength);
 
-			}
+			//}
+			Ignite(fA.strength);
 			Destroy(fA.gameObject);
 			return;
 		}
@@ -177,24 +365,34 @@ public class Shrubbery : MonoBehaviour {
 		WaterAttack wat = other.GetComponent<WaterAttack>();
 		if (wat){
 			AddWater(wat.size);
+			Destroy(wat);
 			//Debug.Log("wat, new size = " + waterAmount.ToString ());
 		}
 
 	}
 	void OnTriggerStay(Collider other){
 		Fire fireElemental = other.GetComponent<Fire>();
-		if (burning && fireElemental != null && fireElemental.enabled){
-			General.changeSize(flameAmount*Time.deltaTime+.1f, 100, 0);
-			flameAmount -= flameAmount*Time.deltaTime+.1f;
-			//General.playerSize += fuel;
-			//fuel -= (fuel+fuelLimit)*Time.deltaTime;
+		//if (burning && fireElemental != null && fireElemental.enabled){
+		if(fireElemental && fireElemental.enabled){
+			if(state == 1){
+				waterAmount -= absorbRate * growRate;
+				fuelAmount += absorbRate * growRate;
+			}
+			else if(state == 2){
+				Ignite(absorbRate);
+			}
+			else if (state > 2){
+				flameAmount -= absorbRate*Time.deltaTime;
+				General.changeSize (absorbRate*Time.deltaTime, 100, 0);
+			}
 			return;
 		}
 		Water waterElemental = other.GetComponent<Water>();
-		if(burning&&waterElemental&&waterElemental.enabled){
-			General.changeSize(.5f*flameAmount*Time.deltaTime, 100, 0);
-			AddWater(.5f*flameAmount*Time.deltaTime);
-
+		if(waterElemental&&waterElemental.enabled){
+			//General.changeSize(.5f*flameAmount*Time.deltaTime, 100, 0);
+			//AddWater(.5f*flameAmount*Time.deltaTime);
+			AddWater(absorbRate*Time.deltaTime);
+			General.changeSize (-absorbRate*Time.deltaTime, 100, 0);
 		}
 	}
 }

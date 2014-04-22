@@ -25,8 +25,12 @@ public class WaterAttack : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		time -= Time.deltaTime;
-		if (time < 0 || size <=0){
+		if(size<0){
 			Destroy(gameObject);
+		}
+		if (time < 0){
+			//Destroy(gameObject);
+			Streamify();
 		}
 		if(cloud){
 			cloud.rigidbody.AddForce(transform.position - cloud.transform.position, ForceMode.Acceleration);
@@ -35,8 +39,16 @@ public class WaterAttack : MonoBehaviour {
 			Destroy(spring);
 			spring = null;
 		}
+		if(gameObject.layer == 0 && Time.deltaTime > .2f && Random.Range(0.0f,1.0f)<Time.deltaTime){
+			Streamify();
+		}
 		//rigidbody.AddForce (size*(Random.rotationUniform*Vector3.up),ForceMode.VelocityChange);
 	
+	}
+	void Streamify(){
+		Stream temp = (Stream)Instantiate(streamPrefab, transform.position+.5f*Vector3.up, Quaternion.identity);
+		temp.size = size;
+		Destroy(gameObject);
 	}
 	void OnCollisionEnter(Collision col){
 		//gameObject.GetComponent<ParticleSystem>().enableEmission = false;
@@ -70,26 +82,27 @@ public class WaterAttack : MonoBehaviour {
 				spring.minDistance = 2f;
 				spring.maxDistance = 7f;
 			}
-			else if(time < 5){
-				Instantiate(streamPrefab, transform.position+.5f*Vector3.up, Quaternion.identity);
+			//else if(time < 5){
+				/*Instantiate(streamPrefab, transform.position+.5f*Vector3.up, Quaternion.identity);
 				Destroy(other.gameObject);
 				//Destroy(spring.connectedBody.gameObject);
-				Destroy(gameObject);
-			}
+				Destroy(gameObject);*/
+			//}
 
 		}
 		Shrubbery shrub = other.gameObject.GetComponent<Shrubbery>();
-		if (shrub&&shrub.burning){
-			shrub.UnIgnite ();
+		//if (shrub&&shrub.burning){
+		if(shrub){
+			//shrub.UnIgnite ();
 			shrub.AddWater (size);
-			if(!cloud){
-				cloud = (Cloud)Instantiate(cloudPrefab, transform.position + 5*Vector3.up, Quaternion.identity);
-				cloud.size = 2*Mathf.Min (shrub.fuel, size);
-			}
-			else{
-				cloud.size += 2*Mathf.Min (shrub.fuel, size);
-			}
-			size -= Mathf.Min (shrub.fuel, size);
+			//if(!cloud){
+			//	cloud = (Cloud)Instantiate(cloudPrefab, transform.position + 5*Vector3.up, Quaternion.identity);
+			//	cloud.size = 2*Mathf.Min (shrub.fuel, size);
+			//}
+			//else{
+			//	cloud.size += 2*Mathf.Min (shrub.fuel, size);
+			//}
+			//size -= Mathf.Min (shrub.fuel, size);
 		}
 
 	}

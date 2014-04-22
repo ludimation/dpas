@@ -9,24 +9,37 @@ public class Cloud : MonoBehaviour {
 	float rainT = .3f;
 	public bool obstacle = false;
 	float rainAmnt;
+	public float priority;
 	void Start () {
-	
+		priority = Random.Range (float.MaxValue, float.MinValue);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (obstacle&&size <= 0){
-			Destroy(gameObject);
-		}
-		if (!General.isPaused && rainAmnt >0){
-			if(rainT<0){
-				Instantiate(raindrop, transform.position + size*2*(Random.rotation*Vector3.up), Quaternion.identity);
-				size -= Time.deltaTime;
-				rainAmnt -= Time.deltaTime;
-				rainT = rainWait;
+		if(!General.isPaused){
+			if (!obstacle&&size <= 0){
+				Destroy(gameObject);
 			}
+			if(obstacle&&rainAmnt > 0){
+				if(General.pullEnergy(raindrop.size)>0){
+					if(rainT<0){
+						Instantiate(raindrop, transform.position + size*2*(Random.rotation*Vector3.up), Quaternion.identity);
+						//size -= raindrop.size;
+						rainAmnt -= raindrop.size;
+						rainT = rainWait;
+					}
+				}
+			}
+			else if (rainAmnt >0){
+				if(rainT<0){
+					Instantiate(raindrop, transform.position + size*2*(Random.rotation*Vector3.up), Quaternion.identity);
+					size -= raindrop.size;
+					rainAmnt -= raindrop.size;
+					rainT = rainWait;
+				}
+			}
+			rainT -= Time.deltaTime;
 		}
-		rainT -= Time.deltaTime;
 	
 	}
 	public void Rain (float amnt){
@@ -41,6 +54,12 @@ public class Cloud : MonoBehaviour {
 		if(aA){
 			Debug.Log ("air attack detected");
 			rigidbody.AddForce (col.rigidbody.velocity, ForceMode.Impulse);
+			return;
+		}
+		Cloud c = col.gameObject.GetComponent<Cloud>();
+		if(c && priority > c.priority){
+			size += c.size;
+			Destroy(c.gameObject);
 		}
 	}
 }

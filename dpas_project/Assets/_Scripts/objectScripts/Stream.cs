@@ -21,7 +21,7 @@ public class Stream : MonoBehaviour {
 
 			Destroy(gameObject);
 		}
-		if (!obstacle&&emit < 0){
+		if (!obstacle&&emit < 0 &&Time.deltaTime < .1f){
 			emit = emissionWait;
 			WaterAttack temp = (WaterAttack)Instantiate (watAtk, transform.position, Quaternion.identity);
 			temp.size = Mathf.Min (size, .5f);
@@ -33,15 +33,20 @@ public class Stream : MonoBehaviour {
 	}
 
 	void OnTriggerStay (Collider other){
+		WaterAttack w = other.GetComponent<WaterAttack>();
+		if(w){
+			size += w.size;
+			Destroy(w);
+		}
 		Water waterElemental = other.GetComponent<Water>();
-		if(waterElemental){
+		if(waterElemental && waterElemental.enabled){
 			//Debug.Log ("water elemental, "+obstacle.ToString ()+", "+Time.frameCount.ToString ());
 			if(!obstacle){
 				General.changeSize(Time.deltaTime, 100, 0);
 				size -= Time.deltaTime;
 			}
 			else{
-				General.changeSize (Time.deltaTime, 10, 0);
+				General.changeSize (General.pullEnergy(Time.deltaTime), 100, 0);
 			}
 
 		}

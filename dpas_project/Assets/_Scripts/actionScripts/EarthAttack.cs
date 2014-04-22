@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class EarthAttack : MonoBehaviour {
-
+	public float size = 0;
+	public float time = 5;
 	// Use this for initialization
 	void Start () {
 	
@@ -10,6 +11,11 @@ public class EarthAttack : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		time -= Time.deltaTime;
+		if(time <=0){
+			General.pushEnergy (size);
+			Destroy(gameObject);
+		}
 	
 	}
 	void OnCollisionEnter(Collision col){

@@ -208,7 +208,7 @@ public class Fire : MonoBehaviour {
 	void FireRocket (Vector3 pos, Vector3 dir){
 		if(enableRocketJump && rocketJumpT<0){
 			rocketJumpT = rocketJumpWait;
-			General.screenShake.NewImpact ();
+			//General.screenShake.NewImpact ();
 			General.changeSize (-Time.deltaTime * rocketJumpCost, 100, 0);
 			FireAttack temp = (FireAttack)Instantiate(fireball, .5f*(lHand.position+rHand.position), transform.rotation);
 			AudSrc.PlayOneShot (rocketJumpSounds[Random.Range(0,rocketJumpSounds.Count)]);
@@ -238,32 +238,34 @@ public class Fire : MonoBehaviour {
 
 
 	void OnGUI(){
-		if(!lPrimed){
-			GUI.DrawTexture (new Rect(0,0, iconSize, iconSize), leftPrepIcon);
-		}
-		else{
-			GUI.DrawTexture (new Rect (0,0, iconSize, iconSize), leftReadyIcon);
-			GUI.DrawTexture (new Rect (0, iconSize, iconSize, iconSize), leftThrowIcon);
-		}
-		if(!rPrimed){
-			GUI.DrawTexture (new Rect (iconSize, 0, iconSize, iconSize), rightPrepIcon);
-		}
-		else{
-			GUI.DrawTexture (new Rect (iconSize,0, iconSize, iconSize), rightReadyIcon);
-			GUI.DrawTexture (new Rect (iconSize, iconSize, iconSize, iconSize), rightThrowIcon);
-		}
-		if(flamethrowerT < 0){
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerActivatedIcon);
-		}
-		
-		if(rocketJumpT < 0){
-			GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketActivatedIcon);
+		if(General.icons){
+			if(!lPrimed){
+				GUI.DrawTexture (new Rect(0,0, iconSize, iconSize), leftPrepIcon);
+			}
+			else{
+				GUI.DrawTexture (new Rect (0,0, iconSize, iconSize), leftReadyIcon);
+				GUI.DrawTexture (new Rect (0, iconSize, iconSize, iconSize), leftThrowIcon);
+			}
+			if(!rPrimed){
+				GUI.DrawTexture (new Rect (iconSize, 0, iconSize, iconSize), rightPrepIcon);
+			}
+			else{
+				GUI.DrawTexture (new Rect (iconSize,0, iconSize, iconSize), rightReadyIcon);
+				GUI.DrawTexture (new Rect (iconSize, iconSize, iconSize, iconSize), rightThrowIcon);
+			}
+			if(flamethrowerT < 0){
+				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerActivatedIcon);
+			}
+			
+			if(rocketJumpT < 0){
+				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketActivatedIcon);
+			}
 		}
 	}
 }

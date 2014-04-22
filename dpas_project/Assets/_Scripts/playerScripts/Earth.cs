@@ -374,65 +374,46 @@ public class Earth : MonoBehaviour {
 		public Texture2D rightReadyIcon;
 		public Texture2D leftPrepIcon;
 		public Texture2D rightPrepIcon;*/
-		if(!lPrimed){
-			GUI.DrawTexture (new Rect(0,0, iconSize, iconSize), leftPrepIcon);
-		}
-		else{
-			GUI.DrawTexture (new Rect (0,0, iconSize, iconSize), leftReadyIcon);
-			GUI.DrawTexture (new Rect (0, iconSize, iconSize, iconSize), leftThrowIcon);
-		}
-		if(!rPrimed){
-			GUI.DrawTexture (new Rect (iconSize, 0, iconSize, iconSize), rightPrepIcon);
-		}
-		else{
-			GUI.DrawTexture (new Rect (iconSize,0, iconSize, iconSize), rightReadyIcon);
-			GUI.DrawTexture (new Rect (iconSize, iconSize, iconSize, iconSize), rightThrowIcon);
-		}
-		float pC = platformCharge/platformChargeTime;
-		pC = Mathf.Max (pC, 0);
-		pC = Mathf.Min (pC, 1);
-
-		GUI.DrawTexture (new Rect (iconSize*2, 0, iconSize, iconSize), armsOutIcon);
-		GUI.DrawTexture (new Rect (iconSize*2, 0, iconSize, (iconSize* (pC))), armsOutChargeIcon); 
-
-		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*2, 0, iconSize, (iconSize* (pC))), armsOutChargeIcon, new Rect(0,1-pC,1,1));
-		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*2, iconSize* (pC), iconSize, iconSize-(iconSize* (pC))), armsOutIcon, new Rect(0,pC,1,1-pC)); 
-		if(platformCharge > 0){
-			GUI.DrawTexture (new Rect(iconSize*2, iconSize, iconSize, iconSize), armsUpIcon);
-		}
-		float sC = smashCharge/smashChargeTime;
-		sC = Mathf.Max (sC, 0);
-		sC = Mathf.Min (sC, 1);
-
-		GUI.DrawTexture (new Rect (iconSize*3, 0, iconSize, iconSize), armsUpIcon);
-		GUI.DrawTexture (new Rect (iconSize*3, 0, iconSize, (iconSize* (sC))), armsUpChargeIcon); 
-
-		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*3, 0, iconSize, (iconSize* (sC))), armsUpChargeIcon, new Rect(0,0,1,1));
-		//GUI.DrawTextureWithTexCoords (new Rect (iconSize*3, iconSize* (sC), iconSize, iconSize-(iconSize* (sC))), armsUpIcon, new Rect(0,0,1,1)); 
-		if(smashCharge > 0){
-			GUI.DrawTexture (new Rect(iconSize*3, iconSize, iconSize, iconSize), armsOutIcon);
-		}
-		/*if(smashCharge < 0){
-			GUI.DrawTexture (new Rect(0, 0, 128, 128), smashIcon);
-		}
-		else{
-			for (int i = 0; i<Mathf.Min(indicator1.Count, indicator1Level); ++i){
-				//GUI.Box (new Rect(0, i*128, 128, 128), indicator1[i]);
-				GUI.DrawTexture (new Rect(0, i*128, 128, 128), indicator1[i]);
+		if(General.icons){
+			if(!lPrimed){
+				GUI.DrawTexture (new Rect(0,0, iconSize, iconSize), leftPrepIcon);
 			}
-		}
-		if(platformCharge <0){
-			GUI.DrawTexture (new Rect(128, 0, 128, 128), platformIcon);
-
-		}
-		else{
-			for (int i = 0; i<Mathf.Min(indicator2.Count, indicator2Level); ++i){
-				//GUI.Box (new Rect(128, i*128, 128, 128), indicator2[i]);
-				GUI.DrawTexture (new Rect(128, i*128, 128, 128), indicator2[i]);
+			else{
+				GUI.DrawTexture (new Rect (0,0, iconSize, iconSize), leftReadyIcon);
+				GUI.DrawTexture (new Rect (0, iconSize, iconSize, iconSize), leftThrowIcon);
 			}
-		}*/
-		//GUI.Box (new Rect(0,0,Screen.width*highEnergy, 75), "Energy");
-		//GUI.Box (new Rect(0,Screen.height-75,Screen.width*lowEnergy, 75), "Energy");
+			if(!rPrimed){
+				GUI.DrawTexture (new Rect (iconSize, 0, iconSize, iconSize), rightPrepIcon);
+			}
+			else{
+				GUI.DrawTexture (new Rect (iconSize,0, iconSize, iconSize), rightReadyIcon);
+				GUI.DrawTexture (new Rect (iconSize, iconSize, iconSize, iconSize), rightThrowIcon);
+			}
+			float pC = platformCharge/platformChargeTime;
+			pC = Mathf.Max (pC, 0);
+			pC = Mathf.Min (pC, 1);
 
+			GUI.DrawTexture (new Rect (iconSize*2, 0, iconSize, iconSize), armsOutIcon);
+			GUI.DrawTexture (new Rect (iconSize*2, 0, iconSize, (iconSize* (pC))), armsOutChargeIcon); 
+
+			//GUI.DrawTextureWithTexCoords (new Rect (iconSize*2, 0, iconSize, (iconSize* (pC))), armsOutChargeIcon, new Rect(0,1-pC,1,1));
+			//GUI.DrawTextureWithTexCoords (new Rect (iconSize*2, iconSize* (pC), iconSize, iconSize-(iconSize* (pC))), armsOutIcon, new Rect(0,pC,1,1-pC)); 
+			if(platformCharge > 0){
+				GUI.DrawTexture (new Rect(iconSize*2, iconSize, iconSize, iconSize), armsUpIcon);
+			}
+			float sC = smashCharge/smashChargeTime;
+			sC = Mathf.Max (sC, 0);
+			sC = Mathf.Min (sC, 1);
+
+			GUI.DrawTexture (new Rect (iconSize*3, 0, iconSize, iconSize), armsUpIcon);
+			GUI.DrawTexture (new Rect (iconSize*3, 0, iconSize, (iconSize* (sC))), armsUpChargeIcon); 
+
+			//GUI.DrawTextureWithTexCoords (new Rect (iconSize*3, 0, iconSize, (iconSize* (sC))), armsUpChargeIcon, new Rect(0,0,1,1));
+			//GUI.DrawTextureWithTexCoords (new Rect (iconSize*3, iconSize* (sC), iconSize, iconSize-(iconSize* (sC))), armsUpIcon, new Rect(0,0,1,1)); 
+			if(smashCharge > 0){
+				GUI.DrawTexture (new Rect(iconSize*3, iconSize, iconSize, iconSize), armsOutIcon);
+			}
+
+		}
 	}
 }

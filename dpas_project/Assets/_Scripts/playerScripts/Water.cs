@@ -233,7 +233,7 @@ public class Water : MonoBehaviour {
 	void Geyser(Vector3 pos, Vector3 dir){
 		if(enableGeyser && geyserT < 0){
 			geyserT = geyserWait;
-			General.screenShake.NewImpact ();
+			//General.screenShake.NewImpact ();
 			WaterAttack temp = (WaterAttack)Instantiate(geyser, pos, transform.rotation);
 			General.changeSize (-temp.size*geyserCost, 100, 0);
 			temp.rigidbody.AddForce (dir*geyserSpeed, ForceMode.VelocityChange);
@@ -258,30 +258,32 @@ public class Water : MonoBehaviour {
 
 	//}
 	void OnGUI(){
-		if(wave1T <0){
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), leftPrepIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), leftThrowIcon);
-		}
-		if(wave2T <0){
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rightPrepIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rightThrowIcon);
-		}
-		if(jetT < 0){
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), waterJetIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), waterJetActivatedIcon);
-		}
-		
-		if(geyserT < 0){
-			GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), geyserIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), geyserActivatedIcon);
+		if(General.icons){
+			if(wave1T <0){
+				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), leftPrepIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), leftThrowIcon);
+			}
+			if(wave2T <0){
+				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), rightPrepIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), rightThrowIcon);
+			}
+			if(jetT < 0){
+				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), waterJetIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), waterJetActivatedIcon);
+			}
+			
+			if(geyserT < 0){
+				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), geyserIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), geyserActivatedIcon);
+			}
 		}
 	}
 }

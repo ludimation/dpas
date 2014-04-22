@@ -17,9 +17,11 @@ public class FireAttack : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		strength -=  fadeRate * Time.deltaTime;
+		General.pushEnergy (fadeRate * Time.deltaTime);
 		time -= Time.deltaTime;
 		if (strength <= 0 || time < 0 ){
 			GameObject.Destroy (gameObject);
+
 		}
 	
 	}

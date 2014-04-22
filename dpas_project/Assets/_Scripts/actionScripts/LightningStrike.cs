@@ -60,7 +60,7 @@ public class LightningStrike : MonoBehaviour {
 			}
 			else if (source.CastLightning ()){
 				boltOrigin = temp.transform;
-				shrub.Ignite ();
+				shrub.Ignite (-1);
 				//source.audSrc.PlayOneShot(thunder);
 				//source.CastLightning();
 				target = targ.transform;

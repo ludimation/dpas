@@ -7,6 +7,9 @@ public class General : MonoBehaviour {
 	public static bool dbgMode;
 	public bool debugMode = true;
 	public static bool kinectControl;
+	public bool controlByKinect = true;
+	public static bool icons = true;
+	public bool showIcons = true;
 	public static ScreenShake screenShake;
 	public ScreenShake screenShaker;
 	public GameObject player;
@@ -14,7 +17,7 @@ public class General : MonoBehaviour {
 	public GameObject camera;
 	public GameObject music;
 
-	public bool controlByKinect = true;
+	public SmoothFollow cameraFollow;
 	//public static bool keyControlOnly;
 	//public bool keyboardOnly = false;
 
@@ -120,6 +123,7 @@ public class General : MonoBehaviour {
 		//DontDestroyOnLoad(gameObject);
 		General.kinectControl = controlByKinect;
 		General.dbgMode = debugMode;
+		General.icons = showIcons;
 
 		airControl = GameObject.FindObjectOfType<Air>();
 		earthControl = GameObject.FindObjectOfType<Earth>();
@@ -194,6 +198,7 @@ public class General : MonoBehaviour {
 			//Debug.Log ("player 1 not calibrated");
 		}
 		manageMenu();
+		cameraFollow.distance = 3 + Mathf.Sqrt (playerSize);
 		//Debug.Log ("checkjoints = "+checkJoints().ToString());
 		//Debug.Log (Vector2.Distance (lHandLoc, rHandLoc).ToString ());
 		//Debug.Log(playerSize.ToString()+", "+General.playerSize.ToString());

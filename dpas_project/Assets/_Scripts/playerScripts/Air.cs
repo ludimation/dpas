@@ -219,51 +219,52 @@ public class Air : MonoBehaviour {
 	}
 	void OnTriggerStay(Collider other){
 		if (enabled){
-			if(Gestures.ArmsOut ()){
-				FireAttack fA = other.GetComponent<FireAttack>();
-				if(fA){
-					General.g.changeElement(General.Element.Fire);
-					General.playerSize = 1f;
-				}
-				Shrubbery shrub = other.GetComponent<Shrubbery>();
-				if(shrub&&shrub.burning){
-					Debug.Log ("shrubbery encountered, changing form");
-					General.g.changeElement(General.Element.Fire);
-					General.playerSize = 1f;
-				}
-				WaterAttack wA = other.GetComponent<WaterAttack>();
-				if(wA){
-					General.g.changeElement(General.Element.Water);
-					General.playerSize = 1f;
-				}
-				Stream strm = other.GetComponent<Stream>();
-				if(strm){
-					General.g.changeElement(General.Element.Water);
-					General.playerSize = 1f;
-				}
+
+			FireAttack fA = other.GetComponent<FireAttack>();
+			if(fA){
+				General.g.changeElement(General.Element.Fire);
+				General.playerSize = 1f;
+			}
+			Shrubbery shrub = other.GetComponent<Shrubbery>();
+			if(shrub&&shrub.state>2){
+				Debug.Log ("shrubbery encountered, changing form");
+				General.g.changeElement(General.Element.Fire);
+				General.playerSize = 1f;
+			}
+			WaterAttack wA = other.GetComponent<WaterAttack>();
+			if(wA){
+				General.g.changeElement(General.Element.Water);
+				General.playerSize = 1f;
+			}
+			Stream strm = other.GetComponent<Stream>();
+			if(strm){
+				General.g.changeElement(General.Element.Water);
+				General.playerSize = 1f;
+			}
+		}
+
+	}
+	void OnGUI(){
+		if(General.icons){
+			if(gustT < 0){
+				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustActivatedIcon);
+			}
+			
+			if(lightningT < 0){
+				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningActivatedIcon);
+			}
+			if(rainT < 0){
+				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainIcon);
+			}
+			else{
+				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainActivatedIcon);
 			}
 		}
 	}
-	void OnGUI(){
-		if(gustT < 0){
-			GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustActivatedIcon);
-		}
-		
-		if(lightningT < 0){
-			GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningActivatedIcon);
-		}
-		if(rainT < 0){
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainIcon);
-		}
-		else{
-			GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainActivatedIcon);
-		}
-	}
-
 }
