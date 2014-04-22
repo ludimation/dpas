@@ -31,13 +31,17 @@ public class Stream : MonoBehaviour {
 		emit -= Time.deltaTime;
 	
 	}
-
-	void OnTriggerStay (Collider other){
+	void OnTriggerEnter(Collider other){
 		WaterAttack w = other.GetComponent<WaterAttack>();
 		if(w){
+			Debug.Log ("waterAttack found");
 			size += w.size;
-			Destroy(w);
+			Destroy(w.gameObject);
+			return;
 		}
+	}
+	void OnTriggerStay (Collider other){
+
 		Water waterElemental = other.GetComponent<Water>();
 		if(waterElemental && waterElemental.enabled){
 			//Debug.Log ("water elemental, "+obstacle.ToString ()+", "+Time.frameCount.ToString ());
@@ -48,6 +52,7 @@ public class Stream : MonoBehaviour {
 			else{
 				General.changeSize (General.pullEnergy(Time.deltaTime), 100, 0);
 			}
+			return;
 
 		}
 
