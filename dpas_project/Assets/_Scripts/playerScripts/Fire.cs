@@ -116,7 +116,7 @@ public class Fire : MonoBehaviour {
 				lPrimed = true;
 			}
 			if (lPrimed && Gestures.LArmStraight ()){
-				ThrowFireball(lHand.position, Gestures.LArmDir ());
+				ThrowFireball(lHand.position, transform.rotation*Gestures.LArmDir ());
 				lPrimed = false;
 				//lHand.localScale = Vector3.one;
 			}
@@ -125,14 +125,15 @@ public class Fire : MonoBehaviour {
 				//rHand.localScale = 2*Vector3.one;
 			}
 			if (rPrimed && Gestures.RArmStraight ()){
-				ThrowFireball(rHand.position, Gestures.RArmDir ());
+				ThrowFireball(rHand.position, transform.rotation*Gestures.RArmDir ());
 				rPrimed = false;
 				rHand.localScale = Vector3.one;
 			}
 
 			if(Gestures.ArmsTogether () && !Gestures.ArmsDown()){
 
-				ShootFlamethrower(transform.position+(2*transform.forward)+Vector3.up, transform.forward);
+				//ShootFlamethrower(transform.position+(2*transform.forward)+Vector3.up, transform.forward);
+				ShootFlamethrower(.5f*(lHand.position + rHand.position), transform.rotation*Gestures.CommonDir ());
 
 				
 			}

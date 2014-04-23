@@ -71,102 +71,103 @@ public class Air : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		gustT -= Time.deltaTime;
-		lightningT -= Time.deltaTime;
-		rainT -= Time.deltaTime;
+		if(!General.isPaused){
+			gustT -= Time.deltaTime;
+			lightningT -= Time.deltaTime;
+			rainT -= Time.deltaTime;
 
-		if (Gestures.ArmsUp ()){
-			//General.screenShake.NewImpact ();
-			Rain();
-		}
-		else if(Gestures.ArmsTogether() && !Gestures.ArmsDown()){
-			WindGust(.5f*(lHand.position +rHand.position), transform.rotation*Gestures.CommonDir ());
-		}
-		//Debug.Log ("lArmStraight = "+Gestures.LArmStraight ().ToString ()+", LArmDirAngle = " + Vector3.Angle(Gestures.LArmDir(), Vector3.up));
-		if(Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45&&Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)>60){
-			//General.screenShake.NewImpact ();
-			rightStrike.gameObject.SetActive (true);
-			//rightStrike.enabled = true;
-		}
-		else{
-			rightStrike.gameObject.SetActive(false);
-			//rightStrike.enabled = false;
-		}
-		if(Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)<45&&Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)>60){
-			//General.screenShake.NewImpact ();
-			leftStrike.gameObject.SetActive (true);
-			//leftStrike.enabled = true;
-		}
-		else{
-			leftStrike.gameObject.SetActive(false);
-			//leftStrike.enabled = false;
-		}
-		if(General.dbgMode){
-//			Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
-		}
-
-
-
-		lHandOld = Gestures.LArmDir();
-		rHandOld = Gestures.RArmDir();
-		
-
-		if(!General.kinectControl){
-			
-			if (Input.GetKey(KeyCode.Space)){
-				General.changeSize(3*Time.deltaTime, 100, 0);
-			}
-
-			if(Input.GetKey (KeyCode.B)){
-				General.changeSize(-3*Time.deltaTime, 100, 0);
-			}
-			if (Input.GetKey (KeyCode.R)){
+			if (Gestures.ArmsUp ()){
 				//General.screenShake.NewImpact ();
-				//cF.Rain (Time.deltaTime);
 				Rain();
 			}
-
-
-			if(Input.GetKeyDown (KeyCode.E)){
-				/*General.screenShake.NewImpact ();
-				AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
-				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);*/
-				WindGust(rHand.position, transform.forward);
-
-				
+			else if(Gestures.ArmsTogether() && !Gestures.ArmsDown()){
+				WindGust(.5f*(lHand.position +rHand.position), transform.rotation*Gestures.CommonDir ());
 			}
-
-
-			if(Input.GetKeyDown (KeyCode.Q)){
-				/*General.screenShake.NewImpact ();
-				AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
-				Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);*/
-				WindGust(lHand.position, transform.forward);
-				
-			}
-
-			if(Input.GetKey(KeyCode.Alpha1)){
+			//Debug.Log ("lArmStraight = "+Gestures.LArmStraight ().ToString ()+", LArmDirAngle = " + Vector3.Angle(Gestures.LArmDir(), Vector3.up));
+			if(Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45&&Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)>60){
+				//General.screenShake.NewImpact ();
 				rightStrike.gameObject.SetActive (true);
 				//rightStrike.enabled = true;
 			}
-			if(Input.GetKeyUp (KeyCode.Alpha1)){
-				//rightStrike.gameObject.SetActive (false);
+			else{
+				rightStrike.gameObject.SetActive(false);
 				//rightStrike.enabled = false;
 			}
-
-			if(Input.GetKey (KeyCode.Alpha3)){
+			if(Gestures.RArmStraight ()&&Vector3.Angle (Gestures.RArmDir(), Vector3.up)<45&&Gestures.LArmStraight ()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)>60){
+				//General.screenShake.NewImpact ();
 				leftStrike.gameObject.SetActive (true);
 				//leftStrike.enabled = true;
 			}
-			if(Input.GetKeyUp (KeyCode.Alpha3)){
-				//leftStrike.gameObject.SetActive (false);
+			else{
+				leftStrike.gameObject.SetActive(false);
 				//leftStrike.enabled = false;
 			}
+			if(General.dbgMode){
+	//			Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
+			}
 
+
+
+			lHandOld = Gestures.LArmDir();
+			rHandOld = Gestures.RArmDir();
+			
+
+			if(!General.kinectControl){
+				
+				if (Input.GetKey(KeyCode.Space)){
+					General.changeSize(3*Time.deltaTime, 100, 0);
+				}
+
+				if(Input.GetKey (KeyCode.B)){
+					General.changeSize(-3*Time.deltaTime, 100, 0);
+				}
+				if (Input.GetKey (KeyCode.R)){
+					//General.screenShake.NewImpact ();
+					//cF.Rain (Time.deltaTime);
+					Rain();
+				}
+
+
+				if(Input.GetKeyDown (KeyCode.E)){
+					/*General.screenShake.NewImpact ();
+					AirAttack temp = (AirAttack)Instantiate(gust, rHand.position, Quaternion.identity);
+					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
+					foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);*/
+					WindGust(rHand.position, transform.forward);
+
+					
+				}
+
+
+				if(Input.GetKeyDown (KeyCode.Q)){
+					/*General.screenShake.NewImpact ();
+					AirAttack temp = (AirAttack)Instantiate(gust, lHand.position, Quaternion.identity);
+					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
+					foo.AddForce (gustSpeed*transform.forward, ForceMode.VelocityChange);*/
+					WindGust(lHand.position, transform.forward);
+					
+				}
+
+				if(Input.GetKey(KeyCode.Alpha1)){
+					rightStrike.gameObject.SetActive (true);
+					//rightStrike.enabled = true;
+				}
+				if(Input.GetKeyUp (KeyCode.Alpha1)){
+					//rightStrike.gameObject.SetActive (false);
+					//rightStrike.enabled = false;
+				}
+
+				if(Input.GetKey (KeyCode.Alpha3)){
+					leftStrike.gameObject.SetActive (true);
+					//leftStrike.enabled = true;
+				}
+				if(Input.GetKeyUp (KeyCode.Alpha3)){
+					//leftStrike.gameObject.SetActive (false);
+					//leftStrike.enabled = false;
+				}
+
+			}
 		}
-
 	}
 
 	void WindGust(Vector3 pos, Vector3 dir){

@@ -147,21 +147,21 @@ public class Shrubbery : MonoBehaviour {
 			currentModel = (GameObject)Instantiate(liveModel, transform.position, transform.rotation);
 			flame.enableEmission = false;
 			currentModel.transform.parent = transform;
-			currentModel.transform.localScale = Vector3.one;
+			//currentModel.transform.localScale = Vector3.one;
 		}
 		if(state == 2){
 			Destroy(currentModel);
 			currentModel = (GameObject)Instantiate(deadModel, transform.position, transform.rotation);
 			flame.enableEmission = false;
 			currentModel.transform.parent = transform;
-			currentModel.transform.localScale = Vector3.one;
+			//currentModel.transform.localScale = Vector3.one;
 		}
 		if(state == 3){
 			Destroy(currentModel);
 			currentModel = (GameObject)Instantiate(burnModel, transform.position, transform.rotation);
 			flame.enableEmission = true;
 			currentModel.transform.parent = transform;
-			currentModel.transform.localScale = Vector3.one;
+			//currentModel.transform.localScale = Vector3.one;
 
 		}
 		if(state == 4){

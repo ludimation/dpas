@@ -46,9 +46,15 @@ public class WaterAttack : MonoBehaviour {
 	
 	}
 	void Streamify(){
-		Stream temp = (Stream)Instantiate(streamPrefab, transform.position+.5f*Vector3.up, Quaternion.identity);
-		temp.size = size;
-		Destroy(gameObject);
+		if(!streamPrefab){
+			General.pushEnergy(size);
+			Destroy(gameObject);
+		}
+		else{
+			Stream temp = (Stream)Instantiate(streamPrefab, transform.position+.5f*Vector3.up, Quaternion.identity);
+			temp.size = size;
+			Destroy(gameObject);
+		}
 	}
 	void OnCollisionEnter(Collision col){
 		//gameObject.GetComponent<ParticleSystem>().enableEmission = false;

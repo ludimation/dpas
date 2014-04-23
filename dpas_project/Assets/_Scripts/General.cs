@@ -18,6 +18,8 @@ public class General : MonoBehaviour {
 	public GameObject music;
 
 	public SmoothFollow cameraFollow;
+
+	public List<AudioClip> songs;
 	//public static bool keyControlOnly;
 	//public bool keyboardOnly = false;
 
@@ -71,13 +73,16 @@ public class General : MonoBehaviour {
 	public bool destroyOnReload = true;
 	int selectedLevel = 0;
 	int currentLevel = 0;
-	
-	public Texture2D lvl0;
+
+	public List<Texture2D> levelGUIs;
+	public List<Texture2D> selectedLevelGUIs;
+
+	/*public Texture2D lvl0;
 	public Texture2D lvl0Selected;
 	public Texture2D lvl1;
 	public Texture2D lvl1Selected;
 	public Texture2D lvl2;
-	public Texture2D lvl2Selected;
+	public Texture2D lvl2Selected;*/
 	//public AudioSource audSrc;
 	//float magnitude = 0;
 	//public float controlCuttoff = 1;
@@ -227,7 +232,7 @@ public class General : MonoBehaviour {
 			//if(Vector2.Distance (lHandLoc, rHandLoc)<maxSelectDistance){
 			//	pause(false);
 			//}
-			if(rHandAngle <45){
+			/*if(rHandAngle <45){
 				selectedLevel = 2;
 			}
 			else if(rHandAngle <135){
@@ -235,7 +240,8 @@ public class General : MonoBehaviour {
 			}
 			else{
 				selectedLevel = 0;
-			}
+			}*/
+			selectedLevel = (int)(1f+((rHandAngle)/(180f/((float)levelGUIs.Count))));
 			if (Gestures.LArmStraight()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45){
 				LoadLevel(selectedLevel);
 
@@ -460,9 +466,15 @@ public class General : MonoBehaviour {
 	public void LoadLevel(int lvl){
 		if(lvl!= currentLevel){
 			currentLevel = lvl;
+			if(songs.Count>lvl){
+				music.audio.clip = songs[lvl];
+				music.audio.Play();
+			}
 			Application.LoadLevel( lvl);
 		}
-
+		else{
+			pause(false);
+		}
 	}
 	public static void printJointPos(Transform root){
 		string msg = "";
@@ -520,9 +532,18 @@ public class General : MonoBehaviour {
 	void OnGUI(){
 
 		if (paused){
-
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), activeImage);
-			if(selectedLevel == 0){
+			if(true||currentLevel !=0){
+				for (int i = 0; i<levelGUIs.Count; ++i){
+					if(selectedLevel == i+1){
+						GUI.DrawTexture (new Rect(Screen.width - 128, i*128, 128, 128), selectedLevelGUIs[i]);
+					}
+					else{
+						GUI.DrawTexture (new Rect(Screen.width - 128, i*128, 128, 128), levelGUIs[i]);
+					}
+				}
+			}
+			/*if(selectedLevel == 0){
 				GUI.DrawTexture (new Rect(Screen.width - 128, 0, 128, 128), lvl0Selected);
 
 			}
@@ -541,7 +562,7 @@ public class General : MonoBehaviour {
 			}
 			else{
 				GUI.DrawTexture (new Rect(Screen.width - 128, Screen.height-128, 128, 128), lvl2);
-			}
+			}*/
 			//GUI.DrawTexture (new Rect((Screen.width/2)+(1000*Gestures.RArmDir().x), (Screen.height/2)-(1000*Gestures.RArmDir().y), 64,64), selector);
 			GUI.DrawTexture (new Rect(lHandLoc.x+(Screen.width/2), lHandLoc.y+(Screen.height/2), 64,64), selector);
 			GUI.DrawTexture (new Rect(rHandLoc.x+(Screen.width/2), rHandLoc.y+(Screen.height/2), 64,64), selector);
