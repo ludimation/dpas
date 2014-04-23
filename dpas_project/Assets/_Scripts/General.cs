@@ -257,9 +257,20 @@ public class General : MonoBehaviour {
 				//Application.LoadLevel("Level1");
 
 			}
-			if(Input.GetKeyUp (KeyCode.L)){
+			if(Input.GetKeyUp(KeyCode.K)){
 				LoadLevel(1);
-
+			}
+			if(Input.GetKeyUp (KeyCode.L)){
+				LoadLevel(2);
+				
+			}
+			if(Input.GetKeyUp (KeyCode.Semicolon)){
+				LoadLevel(3);
+				
+			}
+			if(Input.GetKeyUp (KeyCode.Quote)){
+				LoadLevel(4);
+				
 			}
 			if(Input.GetKeyUp (KeyCode.F)){
 				
@@ -469,7 +480,7 @@ public class General : MonoBehaviour {
 		if(currentLevel == 0){
 			lvl = 1;
 		}
-		if(lvl!= currentLevel){
+		if(true||lvl!= currentLevel){
 			currentLevel = lvl;
 			if(songs.Count>lvl){
 				music.audio.clip = songs[lvl];
