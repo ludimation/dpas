@@ -76,6 +76,8 @@ public class General : MonoBehaviour {
 
 	public List<Texture2D> levelGUIs;
 	public List<Texture2D> selectedLevelGUIs;
+	public float selectionWidth = 100;
+	public float selectionHeight = 100;
 
 	/*public Texture2D lvl0;
 	public Texture2D lvl0Selected;
@@ -226,7 +228,7 @@ public class General : MonoBehaviour {
 			//kMngr.
 			rHandLoc = new Vector2(Gestures.RArmDir().x, -Gestures.RArmDir().y);
 			lHandLoc = new Vector2(Gestures.LArmDir().x, -Gestures.LArmDir().y);
-			float rHandAngle = Vector2.Angle (rHandLoc, Vector2.up);
+			float rHandAngle = Vector2.Angle (rHandLoc, -1*Vector2.up);
 			rHandLoc.Scale (new Vector2(Screen.width, Screen.height));
 			lHandLoc.Scale (new Vector2(Screen.width, Screen.height));
 			//if(Vector2.Distance (lHandLoc, rHandLoc)<maxSelectDistance){
@@ -256,7 +258,7 @@ public class General : MonoBehaviour {
 
 			}
 			if(Input.GetKeyUp (KeyCode.L)){
-				LoadLevel(2);
+				LoadLevel(1);
 
 			}
 			if(Input.GetKeyUp (KeyCode.F)){
@@ -464,6 +466,9 @@ public class General : MonoBehaviour {
 		}
 	}
 	public void LoadLevel(int lvl){
+		if(currentLevel == 0){
+			lvl = 1;
+		}
 		if(lvl!= currentLevel){
 			currentLevel = lvl;
 			if(songs.Count>lvl){
@@ -525,7 +530,7 @@ public class General : MonoBehaviour {
 	}
 	void OnLevelWasLoaded(){
 		playerSize = 1;
-		availableEnergy = 100;
+		availableEnergy = startingEnergy;
 		pause(false);
 		changeElement(Element.Air);
 	}
@@ -536,10 +541,10 @@ public class General : MonoBehaviour {
 			if(true||currentLevel !=0){
 				for (int i = 0; i<levelGUIs.Count; ++i){
 					if(selectedLevel == i+1){
-						GUI.DrawTexture (new Rect(Screen.width - 128, i*128, 128, 128), selectedLevelGUIs[i]);
+						GUI.DrawTexture (new Rect(Screen.width - selectionWidth, i*selectionHeight, selectionWidth, selectionHeight), selectedLevelGUIs[i]);
 					}
 					else{
-						GUI.DrawTexture (new Rect(Screen.width - 128, i*128, 128, 128), levelGUIs[i]);
+						GUI.DrawTexture (new Rect(Screen.width - selectionWidth, i*selectionHeight, selectionWidth, selectionHeight), levelGUIs[i]);
 					}
 				}
 			}
