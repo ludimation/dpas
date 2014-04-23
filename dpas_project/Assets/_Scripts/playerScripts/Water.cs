@@ -57,6 +57,8 @@ public class Water : MonoBehaviour {
 	public Texture2D waterJetActivatedIcon;
 	public float iconSize = 64;
 
+	public float oldY;
+
 	// Use this for initialization
 	void Start () {
 		if (!charCol){

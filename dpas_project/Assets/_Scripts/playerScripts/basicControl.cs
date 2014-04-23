@@ -15,11 +15,13 @@ public class basicControl : MonoBehaviour {
 	public CharacterMotor motor;
 	public bool fly = false;
 	Vector3 move;
+	Vector3 flightMove;
 	Vector3 rot;
 	public Texture2D debugCircle;
 	public Texture2D debugPoint;
 	public float downforce = .5f;
 	public float windSlowFactor = .1f;
+	//float oldY = 0;
 	// Use this for initialization
 	void Start () {
 		motor = cha.GetComponent<CharacterMotor>();
@@ -28,6 +30,7 @@ public class basicControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!General.isPaused){
+			transform.localScale = (1+(.1f*General.playerSize))*Vector3.one;
 
 
 
@@ -60,25 +63,27 @@ public class basicControl : MonoBehaviour {
 
 			}
 			if(General.element == General.Element.Air){
-				move -= (Gestures.LArmDir ()+Gestures.RArmDir ());
-				if(Gestures.OneArmUp ()||Gestures.ArmsDown ()){
-					move = Vector3.zero;
+				flightMove = - (Gestures.LArmDir ()+Gestures.RArmDir ());
+				if(Gestures.OneArmUp ()){
+					flightMove = Vector3.zero;
 				}
-				else if(Gestures.ArmsTogether()){
-					move.y = -downforce;
-					move *= windSlowFactor;
+				else if(Gestures.ArmsDown ()){
+					flightMove = downforce*Vector3.down;
+				}
+				else if(Gestures.ArmsTogether()&&Gestures.CommonDir().z>0){
+					flightMove.y = -downforce;
+					flightMove *= windSlowFactor;
 				}
 				else {
-					move.y -= downforce;
+					flightMove.y -= downforce;
 				}
 			}
+			else if(General.element == General.Element.Fire && !cha.isGrounded){
+				flightMove -= (Gestures.LArmDir ()+Gestures.RArmDir ());
+			}
 			else{
-				move.y = 0;
+				flightMove = Vector3.zero;
 			}
-			if(General.element == General.Element.Fire && !cha.isGrounded){
-				move -= (Gestures.LArmDir ()+Gestures.RArmDir ());
-			}
-
 			if(Mathf.Abs (rot.x) < rotDeadzone.x){
 				rot.x = 0;
 			}
@@ -107,13 +112,19 @@ public class basicControl : MonoBehaviour {
 			rot.Scale (Time.deltaTime*rotSensetivity);
 			if(fly){
 				//transform.Translate (move);
-				cha.Move (transform.rotation*move);
+				cha.Move (transform.rotation*(move+flightMove));
 
 			}
 
 			else{
 				motor.inputMoveDirection = transform.rotation*Vector3.Scale(move, new Vector3(1,0,1));
 			}
+			/*if(!cha.isGrounded){
+				if(transform.position.y<oldY){
+					motor.inputJump = false;
+				}
+			}
+			oldY = transform.position.y;*/
 			//Debug.Log (move.ToString());
 			transform.Rotate (rot);
 

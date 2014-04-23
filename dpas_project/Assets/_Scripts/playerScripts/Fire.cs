@@ -66,6 +66,8 @@ public class Fire : MonoBehaviour {
 	public float iconSize = 64;
 	//public FireAttack fireBlast;
 
+	float oldY = 0;
+
 	//public float size;
 	// Use this for initialization
 	void Start () {

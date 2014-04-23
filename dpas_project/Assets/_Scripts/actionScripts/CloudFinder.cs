@@ -38,7 +38,9 @@ public class CloudFinder : MonoBehaviour {
 			c.Rain(amnt);
 		}
 	}
-
+	void OnLevelWasLoaded(){
+		clouds = new List<Cloud>();
+	}
 	void OnTriggerEnter(Collider other){
 		Cloud c = other.GetComponent<Cloud>();
 		if (c != null){

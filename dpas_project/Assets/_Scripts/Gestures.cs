@@ -131,6 +131,10 @@ public static class Gestures : object {
 		}
 		return false;
 	}
+
+	public static Vector3 RForearm(){
+		return rHand.position-rElbow.position;
+	}
 	/*void OnGUI(){
 		if(dbg){
 			if(HandsUp()){
