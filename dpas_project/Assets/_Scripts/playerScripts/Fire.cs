@@ -146,6 +146,7 @@ public class Fire : MonoBehaviour {
 				//if(charMotor.grounded){
 				if(charCol.isGrounded){
 					Instantiate(explosionPrefab, transform.position, transform.rotation);
+
 				}
 				charMotor.inputJump = true;
 

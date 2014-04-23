@@ -23,6 +23,7 @@ public class Water : MonoBehaviour {
 	
 	public bool enableGeyser = true;
 	public WaterAttack geyser;
+	public GameObject geyserStartPrefab;
 	public float geyserCost = 0;
 	public float geyserWait = 0;
 	public float geyserT = 0;
@@ -41,6 +42,7 @@ public class Water : MonoBehaviour {
 	Vector3 lHandOld;
 	Vector3 rHandOld;
 	public CharacterMotor charMotor;
+	public CharacterController charCol;
 	public AudioSource audSrc;
 
 	public Texture2D leftThrowIcon;
@@ -57,6 +59,9 @@ public class Water : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		if (!charCol){
+			charCol = gameObject.GetComponent<CharacterController>();
+		}
 		//if(!audSrc){
 		//	audSrc = gameObject.GetComponent<audSrc>();
 		//}
@@ -100,40 +105,25 @@ public class Water : MonoBehaviour {
 				
 			}
 			if (Vector3.Angle (Gestures.LArmDir(), new Vector3(-1,-1,-1))<45 && Vector3.Angle (Gestures.RArmDir(), new Vector3(1,-1,-1))<45){
-				//General.screenShake.NewImpact ();
-				//jetT = jetWait;
-				//if(jetT < 0 ){
-					/*WaterAttack temp = (WaterAttack)Instantiate(wave, .5f*(lHand.position+rHand.position), transform.rotation);
-				//Physics.IgnoreCollision (temp.collider, collider);
-					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-				//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-					foo.AddForce (transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()), ForceMode.VelocityChange);
-					jetT = jetWait;*/
-				Geyser(.5f*(lHand.position+rHand.position), transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()));
-				//}
-				//General.changeSize (rocketJumpCost/Time.deltaTime);
-				//temp.strength = General.playerSize;
+				if(charCol.isGrounded){
+					GeyserStart();
+					
+				}
+				else{
+					Geyser(.5f*(lHand.position+rHand.position), transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()));
+				}
 				charMotor.inputJump = true;
-				//gameObject.GetComponent<CharacterMotor>().inputJump = true;
+
+
 			}
 			else {
 				charMotor.inputJump = false;
 			}
 
 			if(Vector3.Angle (lHandOld - Gestures.LArmDir(), lHandOld)>60){
-				//Debug.Log ("L wave");
+
 				if(Vector3.Distance (lHandOld, Gestures.LArmDir ())> minThrowSpeed*Time.deltaTime){
-					/*General.screenShake.NewImpact ();
-					//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-					WaterAttack temp = (WaterAttack)Instantiate(wave, lHand.position, Quaternion.identity);
-					General.changeSize (-temp.size*waveCost, 100, 0);
-					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-					//foo.AddForce (waveSpeed*(transform.rotation*(Gestures.LArmDir()-lHandOld)), ForceMode.VelocityChange);
-					foo.AddForce (waveSpeed*(transform.rotation*Gestures.LArmDir()), ForceMode.VelocityChange);
-					//foo.AddForce (waveSpeed*Gestures.LArmDir(), ForceMode.VelocityChange);
-					//General.changeSize (waveCost/Time.deltaTime);
-					//temp.strength = General.playerSize;*/
-					
+
 					Wave1(lHand.position, transform.rotation*Gestures.LArmDir());
 					
 					
@@ -142,22 +132,12 @@ public class Water : MonoBehaviour {
 			if(Vector3.Angle (rHandOld - Gestures.RArmDir(), rHandOld)>60){
 				//Debug.Log ("R wave");
 				if(Vector3.Distance (rHandOld, Gestures.RArmDir ())> minThrowSpeed*Time.deltaTime){
-					/*
-					General.screenShake.NewImpact ();
-					//AudSrc.PlayOneShot (launchSounds[Random.Range(0,launchSounds.Count)]);
-					WaterAttack temp = (WaterAttack)Instantiate(wave, rHand.position, Quaternion.identity);
-					General.changeSize (-temp.size*waveCost, 100, 0);
-					//WaterAttack temp = (WaterAttack)Instantiate(wave, transform.position+(transform.rotation*(RArmDir()-rHandOld)), Quaternion.identity);
-					Rigidbody foo = temp.gameObject.GetComponent<Rigidbody>();
-					//foo.AddForce (waveSpeed*(transform.rotation*(Gestures.RArmDir()-rHandOld)), ForceMode.VelocityChange);
-					foo.AddForce (waveSpeed*(transform.rotation*Gestures.RArmDir()), ForceMode.VelocityChange);
-					//General.changeSize (waveCost/Time.deltaTime);
-					//temp.strength = General.playerSize;*/
+
 					Wave2(rHand.position, transform.rotation*Gestures.RArmDir());
 					
 				}
 			}
-			//Debug.Log ((Vector3.Distance (lHandOld, Gestures.LArmDir())/Time.deltaTime).ToString ()+", "+(Vector3.Distance (rHandOld, Gestures.RArmDir())/Time.deltaTime).ToString ());
+
 			lHandOld = Gestures.LArmDir();
 			rHandOld = Gestures.RArmDir();
 			
@@ -176,13 +156,18 @@ public class Water : MonoBehaviour {
 					
 				}
 				if(Input.GetKey(KeyCode.LeftShift)){
-					if(jetT < 0){
+					//if(jetT < 0){
+					if(charCol.isGrounded){
+						GeyserStart();
+					}	
+					else{
 						Geyser(.5f*(lHand.position+rHand.position), transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()));
 					}
 					charMotor.inputJump = true;
-					}
 
-				if(jetT < 0 && Input.GetKey (KeyCode.X)){
+				}
+
+				if(Input.GetKey (KeyCode.X)){
 					Jet(.5f*(lHand.position+rHand.position), transform.rotation*(Gestures.LArmDir()+Gestures.RArmDir()));
 
 				}
@@ -237,9 +222,15 @@ public class Water : MonoBehaviour {
 			WaterAttack temp = (WaterAttack)Instantiate(geyser, pos, transform.rotation);
 			General.changeSize (-temp.size*geyserCost, 100, 0);
 			temp.rigidbody.AddForce (dir*geyserSpeed, ForceMode.VelocityChange);
-			if(geyserSounds.Count > 0){
+			/*if(geyserSounds.Count > 0){
 				audSrc.PlayOneShot(geyserSounds[Random.Range (0, geyserSounds.Count)]);
-			}
+			}*/
+		}
+	}
+	void GeyserStart(){
+		if(geyserSounds.Count > 0){
+			Instantiate(geyserStartPrefab, transform.position, transform.rotation);
+			audSrc.PlayOneShot(geyserSounds[Random.Range (0, geyserSounds.Count)]);
 		}
 	}
 	public void Sleep(){

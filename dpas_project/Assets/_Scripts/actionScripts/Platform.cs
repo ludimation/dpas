@@ -34,7 +34,10 @@ public class Platform : MonoBehaviour {
 			//time -= Time.deltaTime;
 			if(source){
 				rigidbody.AddForce(source.transform.position - transform.position, ForceMode.Acceleration);
-				source.Translate (new Vector3(0, transform.position.y +( .51f * transform.localScale.y)-source.position.y, 0));
+				//source.Translate (new Vector3(0, transform.position.y +( .51f * transform.localScale.y)-source.position.y, 0));
+				if(source.position.y<transform.position.y +( .51f * transform.localScale.y)){
+					source.Translate (new Vector3(0, transform.position.y +( .51f * transform.localScale.y)-source.position.y, 0));
+				}
 			}
 		}
 	
