@@ -110,6 +110,9 @@ public class Earth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(General.isPaused){
+			return;
+		}
 		boulderT -= Time.deltaTime;
 		if(!General.kinectControl){
 
