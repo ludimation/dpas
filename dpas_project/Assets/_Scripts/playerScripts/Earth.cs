@@ -364,6 +364,13 @@ public class Earth : MonoBehaviour {
 		smashCharge = 0;
 		platformCharge = 0;
 	}
+	/*Void OnTriggerEnter(Collider other){
+		RockThing r = other.GetComponent<RockThing>();
+		if(r){
+			General.g.changeElement(General.Element.Air);
+			//General.playerSize = 1
+		}
+	}*/
 	void OnGUI(){
 		/*public Texture2D armsOutIcon;
 		public Texture2D armsUpIcon;

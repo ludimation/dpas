@@ -81,7 +81,7 @@ public class Water : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!General.isPaused){
-			transform.localScale = (1+(.1f*General.playerSize))*Vector3.one;
+			//transform.localScale = (1+(.1f*General.playerSize))*Vector3.one;
 			if (General.playerSize <.01f){
 				General.g.changeElement (General.Element.Air);
 			}
@@ -250,6 +250,13 @@ public class Water : MonoBehaviour {
 	//void OnCollisionStay(){
 
 	//}
+	/*Void OnTriggerEnter(Collider other){
+	RockThing r = other.GetComponent<RockThing>();
+		if(r){
+			General.g.changeElement(General.Element.Air);
+			//General.playerSize = 1
+		}
+	}*/
 	void OnGUI(){
 		if(General.icons){
 			if(wave1T <0){

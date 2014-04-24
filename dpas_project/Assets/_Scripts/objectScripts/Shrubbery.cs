@@ -57,7 +57,7 @@ public class Shrubbery : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log ("state = " + state.ToString ()+ ", wff = "+new Vector3(waterAmount, fuelAmount, flameAmount).ToString());
+		//Debug.Log ("state = " + state.ToString ()+ ", wff = "+new Vector3(waterAmount, fuelAmount, flameAmount).ToString());
 		if(state == 1){
 			if(waterAmount <= 0){
 				++state;

@@ -220,7 +220,14 @@ public class Air : MonoBehaviour {
 	}
 	void OnTriggerStay(Collider other){
 		if (enabled){
-
+			//Void OnTriggerEnter(Collider other){
+			RockThing r = other.GetComponent<RockThing>();
+			if(r){
+				General.g.changeElement(General.Element.Earth);
+				//General.playerSize = 1
+				return;
+			}
+			//}
 			FireAttack fA = other.GetComponent<FireAttack>();
 			if(fA){
 				General.g.changeElement(General.Element.Fire);
@@ -231,16 +238,19 @@ public class Air : MonoBehaviour {
 				Debug.Log ("shrubbery encountered, changing form");
 				General.g.changeElement(General.Element.Fire);
 				General.playerSize = 1f;
+				return;
 			}
 			WaterAttack wA = other.GetComponent<WaterAttack>();
 			if(wA){
 				General.g.changeElement(General.Element.Water);
 				General.playerSize = 1f;
+				return;
 			}
 			Stream strm = other.GetComponent<Stream>();
 			if(strm){
 				General.g.changeElement(General.Element.Water);
 				General.playerSize = 1f;
+				return;
 			}
 		}
 

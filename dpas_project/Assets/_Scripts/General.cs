@@ -16,6 +16,9 @@ public class General : MonoBehaviour {
 	public GameObject avatarController;
 	public GameObject camera;
 	public GameObject music;
+	public List<CutScene> cutScenes;
+	CutScene cS;
+	//public static CutScene cS;
 
 	public SmoothFollow cameraFollow;
 
@@ -480,17 +483,23 @@ public class General : MonoBehaviour {
 		if(currentLevel == 0){
 			lvl = 1;
 		}
-		if(true||lvl!= currentLevel){
-			currentLevel = lvl;
-			if(songs.Count>lvl){
-				music.audio.clip = songs[lvl];
-				music.audio.Play();
-			}
-			Application.LoadLevel( lvl);
+		//if(true||lvl!= currentLevel){
+		currentLevel = lvl;
+		if(songs.Count>lvl){
+			music.audio.clip = songs[lvl];
+			music.audio.Play();
+		}
+		if(cutScenes.Count>lvl-1){
+			cS = cutScenes[lvl-1];
 		}
 		else{
-			pause(false);
+			cS = null;
 		}
+		Application.LoadLevel( lvl);
+		//}
+		//else{
+		//	pause(false);
+		//}
 	}
 	public static void printJointPos(Transform root){
 		string msg = "";
@@ -544,10 +553,13 @@ public class General : MonoBehaviour {
 		availableEnergy = startingEnergy;
 		pause(false);
 		changeElement(Element.Air);
+		//cS = GameObject.Find ("PlayerStartPos").GetComponent<CutScene>();
 	}
 	void OnGUI(){
-
-		if (paused){
+		if(cS){
+			//Debug.Log ("we have a cutscene");
+		}
+		else if (paused){
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), activeImage);
 			if(true||currentLevel !=0){
 				for (int i = 0; i<levelGUIs.Count; ++i){
