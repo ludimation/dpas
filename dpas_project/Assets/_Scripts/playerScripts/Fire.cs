@@ -166,7 +166,7 @@ public class Fire : MonoBehaviour {
 					ThrowFireball(rHand.position, transform.forward);
 				}
 				if (Input.GetKey (KeyCode.X)){
-					ShootFlamethrower(transform.position+(2*transform.forward)+Vector3.up, transform.forward);
+					ShootFlamethrower(.5f*(rHand.position+lHand.position), transform.forward);
 				}
 				if(Input.GetKey (KeyCode.LeftShift)){
 					FireRocket(.5f*(lHand.position+rHand.position), transform.rotation*Gestures.CommonDir ());

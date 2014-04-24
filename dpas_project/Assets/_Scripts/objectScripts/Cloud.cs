@@ -22,7 +22,12 @@ public class Cloud : MonoBehaviour {
 			mask = new LayerMask();
 			mask.value = 1 << 11;
 		}
-		priority = Random.Range (float.MaxValue, float.MinValue);
+		if(obstacle){
+			priority = float.MaxValue;
+		}
+		else{
+			priority = Random.Range (float.MaxValue, float.MinValue);
+		}
 	}
 	
 	// Update is called once per frame
@@ -57,7 +62,7 @@ public class Cloud : MonoBehaviour {
 			}
 			rainT -= Time.deltaTime;
 		}
-	
+		Debug.Log ("t = "+rainT.ToString()+", amnt = " +rainAmnt.ToString ());
 	}
 	public void Rain (float amnt){
 		Debug.Log ("raining: "+amnt.ToString ());

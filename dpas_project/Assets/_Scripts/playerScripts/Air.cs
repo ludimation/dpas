@@ -188,7 +188,7 @@ public class Air : MonoBehaviour {
 			lightningT = lightningWait;
 			General.screenShake.NewImpact ();
 			audSrc.PlayOneShot (lightningSounds[Random.Range(0, lightningSounds.Count)]);
-			cF.Rain (Time.deltaTime);
+			//cF.Rain (Time.deltaTime);
 			return true;
 
 		}
@@ -200,6 +200,7 @@ public class Air : MonoBehaviour {
 		if(enableRain && rainT<0){
 			rainT = rainWait;
 			General.screenShake.NewImpact();
+			cF.Rain (Time.deltaTime);
 			if(rainSounds.Count>0){
 				audSrc.PlayOneShot (rainSounds[Random.Range (0,rainSounds.Count)]);
 			}

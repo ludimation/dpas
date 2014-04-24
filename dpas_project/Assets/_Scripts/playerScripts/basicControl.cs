@@ -132,8 +132,9 @@ public class basicControl : MonoBehaviour {
 	}
 	void OnLevelWasLoaded(){
 		//transform.position = new Vector3(100,100,100);
-
-		transform.position = GameObject.Find ("PlayerStartPos").transform.position;
+		Transform spawn = GameObject.Find ("PlayerStartPos").transform;
+		transform.position = spawn.position;
+		transform.rotation = spawn.rotation;
 	}
 	void OnGUI(){
 		
