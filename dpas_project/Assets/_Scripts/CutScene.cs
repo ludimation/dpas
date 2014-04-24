@@ -12,6 +12,8 @@ public class CutScene : MonoBehaviour {
 	Rect spot;
 	Rect spot2;
 	Rect screenRect;
+	public float widthFraction = .5f;
+	public float heightFraction = .75f;
 	float t = 0;
 	//public List<Vector3> dirs;
 	// Use this for initialization
@@ -19,7 +21,7 @@ public class CutScene : MonoBehaviour {
 	Vector2 flatArm;
 	void Start () {
 		//General.cS = this;
-		spot = new Rect(0,0, .5f * Screen.width, .75f * Screen.height);
+		spot = new Rect(0,0, widthFraction * Screen.width, heightFraction * Screen.height);
 		//spot2 = new Rect(0,0, Screen.width/2, Screen.height/2);
 		screenRect = new Rect(0,0, Screen.width, Screen.height);
 	
@@ -32,7 +34,7 @@ public class CutScene : MonoBehaviour {
 			//General.cS = null;
 			//Destroy(this);
 			currentPanel = 0;
-			//enabled = false;
+			enabled = false;
 		}
 		//t += Time.deltaTime;
 		if(!dbg){
@@ -48,7 +50,9 @@ public class CutScene : MonoBehaviour {
 		}
 		if(state == 0){
 			//spot.y = flatArm.y;
-			spot.y = 0;
+			spot.y = Mathf.Clamp (flatArm.y, 0, (1-heightFraction)*Screen.height);
+			//spot.y = (1-heightFraction)/2;
+			//spot.y = 0;
 			spot.x = Screen.width/2;
 
 			//spot2.y = flatArm.y;
@@ -56,14 +60,15 @@ public class CutScene : MonoBehaviour {
 			//string wtf = 
 			//Debug.Log (flatArm.ToString ()+", "+ (.25f * Screen.width).ToString ());
 			//if(Vector3.Angle (rArm, Vector3.right)< 60 &&Vector3.Angle (rArm, Vector3.right) > 45){
-			if(flatArm.x > .25f * Screen.width){
+			if(flatArm.x > (1-(.5f*widthFraction)) * .5f * Screen.width){
 				++state;
 			}
 		}
 		if (state == 1){
 			//spot.x = (Screen.width/180)*(Vector3.Angle(rArm, Vector3.right));
-			spot.x = Mathf.Min (Screen.width/2, flatArm.x + Screen.height/2);
-			spot.y = flatArm.y;
+			spot.x = Mathf.Min (Screen.width*(1-widthFraction), flatArm.x + ((1 - widthFraction) * Screen.height*.5f));
+			//spot.y = flatArm.y;
+			spot.y = Mathf.Clamp (flatArm.y, 0, (1-heightFraction)*Screen.height);
 			//spot.y = Mathf.Clamp (spot.y,0,Screen.heght/foo);
 			//spot2.y = flatArm.y;
 			//spot2.x = (Screen.width/180)*(Vector3.Angle(rArm, Vector3.right)) - t*Screen.height/5;
@@ -84,26 +89,33 @@ public class CutScene : MonoBehaviour {
 		//else{
 		//	Debug.LogError("invalid state in cutscene");
 		//}
-		Debug.Log ("rArm = "+rArm.ToString ()+", flat = "+flatArm.ToString ()+", state = "+state.ToString ());
+		//Debug.Log ("rArm = "+rArm.ToString ()+", flat = "+flatArm.ToString ()+", state = "+state.ToString ());
+		Debug.Log (spot.ToString ());
+	}
+	public void Reset(){
+		state = currentPanel = 0;
+		enabled = true;
 	}
 	void OnGUI(){
 		//Debug.Log (spot.ToString ()+",  "+spot2.ToString());
-		GUI.DrawTexture (screenRect, background);
-		if(currentPanel == 0){
-			GUI.DrawTexture (spot, textures[0]);
+		if(General.isPaused){
+			GUI.DrawTexture (screenRect, background);
+			if(currentPanel == 0){
+				GUI.DrawTexture (spot, textures[0]);
 
-		}
-		else if(currentPanel == textures.Count){
-			//GUI.DrawTexture (spot2, textures[currentPanel-1]);
+			}
+			else if(currentPanel == textures.Count){
+				//GUI.DrawTexture (spot2, textures[currentPanel-1]);
 
-		}
-		else if (currentPanel > textures.Count){
-			//Destroy(this);
-		}
-		else{
-			//GUI.DrawTexture (spot2, textures[currentPanel-1]);
-			GUI.DrawTexture (spot, textures[currentPanel]);
+			}
+			else if (currentPanel > textures.Count){
+				//Destroy(this);
+			}
+			else{
+				//GUI.DrawTexture (spot2, textures[currentPanel-1]);
+				GUI.DrawTexture (spot, textures[currentPanel]);
 
+			}
 		}
 		//GUI.Box (new Rect(Screen.width/2, Screen.height/2, flatArm.x, flatArm.y), state.ToString());
 	}

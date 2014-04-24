@@ -10,12 +10,29 @@ public class Cloud : MonoBehaviour {
 	public bool obstacle = false;
 	float rainAmnt;
 	public float priority;
+	public float floatHeight = 15;
+	public float floatSpeed = 2.5f;
+	Ray r;
+	public static LayerMask mask;
+	public static bool mSet = false;
 	void Start () {
+		r = new Ray(transform.position, Vector3.down);
+		if(!mSet){
+			mSet = true;
+			mask = new LayerMask();
+			mask.value = 1 << 11;
+		}
 		priority = Random.Range (float.MaxValue, float.MinValue);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		r.origin = transform.position;
+		Debug.DrawRay(transform.position, floatHeight * Vector3.down);
+		if(Physics.Raycast(r, floatHeight, mask)){
+			transform.Translate (Time.deltaTime*floatSpeed*Vector3.up);
+		}
+		//Debug.Log (LayerMask.LayerToName (11));
 		if(!General.isPaused){
 			if (!obstacle&&size <= 0){
 				Destroy(gameObject);

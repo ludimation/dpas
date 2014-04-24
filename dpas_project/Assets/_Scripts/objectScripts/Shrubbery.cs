@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Shrubbery : MonoBehaviour {
 
+	public bool randomizeFuel = false;
 	public float fuelAmount = 0;
 	public float flameAmount = 0;
 	public float waterAmount = 0;
@@ -45,7 +46,11 @@ public class Shrubbery : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		if(randomizeFuel){
+			float r = Random.Range (0.0f, 1.0f);
+			fuelAmount = waterLimit*r;
+			waterAmount = waterLimit*(1-r);
+		}
 		//waterToGrow = waterThreshold;
 		//if (burnModels.Count != deadModels.Count || deadModels.Count != liveModels.Count){
 		//	Debug.LogWarning ("improper number of tree models");

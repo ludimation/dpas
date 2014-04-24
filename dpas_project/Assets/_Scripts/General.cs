@@ -489,11 +489,19 @@ public class General : MonoBehaviour {
 			music.audio.clip = songs[lvl];
 			music.audio.Play();
 		}
+		if(cS){
+			cS.enabled = false;
+		}
 		if(cutScenes.Count>lvl-1){
 			cS = cutScenes[lvl-1];
+			cS.Reset ();
+			pause(true);
+			//cS.enabled = true;
+			//cS.cu
 		}
 		else{
 			cS = null;
+			pause(false);
 		}
 		Application.LoadLevel( lvl);
 		//}
@@ -551,7 +559,7 @@ public class General : MonoBehaviour {
 	void OnLevelWasLoaded(){
 		playerSize = 1;
 		availableEnergy = startingEnergy;
-		pause(false);
+		//pause(false);
 		changeElement(Element.Air);
 		//cS = GameObject.Find ("PlayerStartPos").GetComponent<CutScene>();
 	}
