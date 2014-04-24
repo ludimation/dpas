@@ -30,11 +30,13 @@ public class CutScene : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Debug.Log (
-		if(textures.Count == 0 || currentPanel > textures.Count){
+		if(textures.Count == 0 || currentPanel == textures.Count){
+			//Display instructions for unpausing?
 			//General.cS = null;
 			//Destroy(this);
 			currentPanel = 0;
 			enabled = false;
+			General.g.pause (false);
 		}
 		//t += Time.deltaTime;
 		if(!dbg){

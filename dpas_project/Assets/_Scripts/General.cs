@@ -18,6 +18,7 @@ public class General : MonoBehaviour {
 	public GameObject music;
 	public List<CutScene> cutScenes;
 	CutScene cS;
+	bool upLastFrame = false;
 	//public static CutScene cS;
 
 	public SmoothFollow cameraFollow;
@@ -247,11 +248,24 @@ public class General : MonoBehaviour {
 				selectedLevel = 0;
 			}*/
 			selectedLevel = (int)(1f+((rHandAngle)/(180f/((float)levelGUIs.Count))));
-			if (Gestures.LArmStraight()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45){
-				LoadLevel(selectedLevel);
+			//if(cS && cS.enabled && Gestures.LArmStraight()&&Vector3.Angle (Gestures.LArmDir(), Vector3.right)<44){
+				//cS.enabled = false;
+				//pause(false);
+			//}
+			if (!upLastFrame && Gestures.LArmStraight()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)<45){
+				upLastFrame = true;
+				if(cS && cS.enabled){
+					cS.enabled = false;
+					pause(false);
+				}
+				else{
+					LoadLevel(selectedLevel);
+				}
 
 			}
-
+			else if(Gestures.LArmStraight()&&Vector3.Angle (Gestures.LArmDir(), Vector3.up)>60){
+				upLastFrame = false;
+			}
 		}
 		if(!kinectControl){
 			if(Input.GetKeyUp (KeyCode.Return)){
@@ -480,9 +494,9 @@ public class General : MonoBehaviour {
 		}
 	}
 	public void LoadLevel(int lvl){
-		if(currentLevel == 0){
+		/*if(currentLevel == 0){
 			lvl = 1;
-		}
+		}*/
 		//if(true||lvl!= currentLevel){
 		currentLevel = lvl;
 		if(songs.Count>lvl){
@@ -564,7 +578,7 @@ public class General : MonoBehaviour {
 		//cS = GameObject.Find ("PlayerStartPos").GetComponent<CutScene>();
 	}
 	void OnGUI(){
-		if(cS){
+		if(cS&&cS.enabled){
 			//Debug.Log ("we have a cutscene");
 		}
 		else if (paused){
