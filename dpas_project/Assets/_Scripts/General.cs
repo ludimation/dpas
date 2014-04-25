@@ -57,6 +57,7 @@ public class General : MonoBehaviour {
 	bool menu = false;
 	bool instructions = false;
 	public Texture2D selector;
+	//public ParticleSystem2D selector1;
 	public Texture2D notCalibrated;
 	Vector2 rHandLoc;
 	Vector2 lHandLoc;
