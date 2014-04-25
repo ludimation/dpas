@@ -257,25 +257,26 @@ public class Air : MonoBehaviour {
 
 	}
 	void OnGUI(){
+
 		if(General.icons){
 			if(gustT < 0){
-				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustIcon);
+				GUI.DrawTexture(new Rect(0, Screen.height - iconSize, iconSize, iconSize), gustIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), gustActivatedIcon);
+				GUI.DrawTexture(new Rect(0, Screen.height - iconSize, iconSize, iconSize), gustActivatedIcon);
 			}
 			
 			if(lightningT < 0){
-				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningIcon);
+				GUI.DrawTexture(new Rect(iconSize, Screen.height - iconSize, iconSize, iconSize), lightningIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), lightningActivatedIcon);
+				GUI.DrawTexture(new Rect(iconSize, Screen.height - iconSize, iconSize, iconSize), lightningActivatedIcon);
 			}
 			if(rainT < 0){
-				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainIcon);
+				GUI.DrawTexture(new Rect(iconSize*2, Screen.height - iconSize, iconSize, iconSize), rainIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), rainActivatedIcon);
+				GUI.DrawTexture(new Rect(iconSize*2, Screen.height - iconSize, iconSize, iconSize), rainActivatedIcon);
 			}
 		}
 	}
