@@ -269,29 +269,29 @@ public class Water : MonoBehaviour {
 	void OnGUI(){
 		if(General.icons){
 			if(wave1T <0){
-				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), leftPrepIcon);
+				GUI.DrawTexture(new Rect(0, Screen.height - iconSize, iconSize, iconSize), leftPrepIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(0, 0, iconSize, iconSize), leftThrowIcon);
+				GUI.DrawTexture(new Rect(0, Screen.height - iconSize, iconSize, iconSize), leftThrowIcon);
 			}
 			if(wave2T <0){
-				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), rightPrepIcon);
+				GUI.DrawTexture(new Rect(iconSize, Screen.height - iconSize, iconSize, iconSize), rightPrepIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(iconSize, 0, iconSize, iconSize), rightThrowIcon);
+				GUI.DrawTexture(new Rect(iconSize, Screen.height - iconSize, iconSize, iconSize), rightThrowIcon);
 			}
 			if(jetT < 0){
-				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), waterJetIcon);
+				GUI.DrawTexture(new Rect(iconSize*2, Screen.height - iconSize, iconSize, iconSize), waterJetIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), waterJetActivatedIcon);
+				GUI.DrawTexture(new Rect(iconSize*2, Screen.height - iconSize, iconSize, iconSize), waterJetActivatedIcon);
 			}
 			
 			if(geyserT < 0){
-				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), geyserIcon);
+				GUI.DrawTexture(new Rect(iconSize*3, Screen.height - iconSize, iconSize, iconSize), geyserIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), geyserActivatedIcon);
+				GUI.DrawTexture(new Rect(iconSize*3, Screen.height - iconSize, iconSize, iconSize), geyserActivatedIcon);
 			}
 		}
 	}

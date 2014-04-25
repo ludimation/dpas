@@ -244,31 +244,31 @@ public class Fire : MonoBehaviour {
 	void OnGUI(){
 		if(General.icons){
 			if(!lPrimed){
-				GUI.DrawTexture (new Rect(0,0, iconSize, iconSize), leftPrepIcon);
+				GUI.DrawTexture (new Rect(0,Screen.height - iconSize, iconSize, iconSize), leftPrepIcon);
 			}
 			else{
-				GUI.DrawTexture (new Rect (0,0, iconSize, iconSize), leftReadyIcon);
-				GUI.DrawTexture (new Rect (0, iconSize, iconSize, iconSize), leftThrowIcon);
+				GUI.DrawTexture (new Rect (0,Screen.height - iconSize, iconSize, iconSize), leftReadyIcon);
+				GUI.DrawTexture (new Rect (0, Screen.height - (2*iconSize), iconSize, iconSize), leftThrowIcon);
 			}
 			if(!rPrimed){
-				GUI.DrawTexture (new Rect (iconSize, 0, iconSize, iconSize), rightPrepIcon);
+				GUI.DrawTexture (new Rect (iconSize, Screen.height - iconSize, iconSize, iconSize), rightPrepIcon);
 			}
 			else{
-				GUI.DrawTexture (new Rect (iconSize,0, iconSize, iconSize), rightReadyIcon);
-				GUI.DrawTexture (new Rect (iconSize, iconSize, iconSize, iconSize), rightThrowIcon);
+				GUI.DrawTexture (new Rect (iconSize,Screen.height - iconSize, iconSize, iconSize), rightReadyIcon);
+				GUI.DrawTexture (new Rect (iconSize, Screen.height - (2*iconSize), iconSize, iconSize), rightThrowIcon);
 			}
 			if(flamethrowerT < 0){
-				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerIcon);
+				GUI.DrawTexture(new Rect(iconSize*2, Screen.height - iconSize, iconSize, iconSize), flamethrowerIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(iconSize*2, 0, iconSize, iconSize), flamethrowerActivatedIcon);
+				GUI.DrawTexture(new Rect(iconSize*2, Screen.height - iconSize, iconSize, iconSize), flamethrowerActivatedIcon);
 			}
 			
 			if(rocketJumpT < 0){
-				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketIcon);
+				GUI.DrawTexture(new Rect(iconSize*3, Screen.height - iconSize, iconSize, iconSize), rocketIcon);
 			}
 			else{
-				GUI.DrawTexture(new Rect(iconSize*3, 0, iconSize, iconSize), rocketActivatedIcon);
+				GUI.DrawTexture(new Rect(iconSize*3, Screen.height - iconSize, iconSize, iconSize), rocketActivatedIcon);
 			}
 		}
 	}
