@@ -20,7 +20,7 @@ public class Earth : MonoBehaviour {
 	public float smashChargeTime = 1;
 	public float smashCharge = 0;
 	public float smashCoolTime = .25f;
-	public AudioClip smash;
+	public List<AudioClip> smashSounds;
 	public float platformChargeTime = 1;
 	public float platformCharge = 0;
 	public float platformCoolTime = .25f;
@@ -248,7 +248,7 @@ public class Earth : MonoBehaviour {
 	void Smash(){
 		General.screenShake.NewImpact ();
 		deform(rad, smashDepth);
-		audSrc.PlayOneShot (smash);
+		audSrc.PlayOneShot (smashSounds[Random.Range(0, smashSounds.Count)]);
 		smashCharge = -smashCoolTime;
 		platformCharge = 0;
 	}
