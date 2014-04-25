@@ -21,7 +21,7 @@ public class Fire : MonoBehaviour {
 	//public FireAttack fireBlast;
 	public Transform lHand;
 	public Transform rHand;
-	public List<GameObject> effects;
+	//public List<GameObject> effects;
 
 	public bool enableFlamethrower = true;
 	public FireAttack flamethrower;

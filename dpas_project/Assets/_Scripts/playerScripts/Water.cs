@@ -6,7 +6,7 @@ public class Water : MonoBehaviour {
 
 	//public GameObject effect;
 	//public List<Transform>
-	public List<GameObject> effects;
+	//public List<GameObject> effects;
 	public Transform lHand;
 	public Transform rHand;
 	public float minThrowSpeed = 2.5f;
@@ -144,6 +144,15 @@ public class Water : MonoBehaviour {
 			rHandOld = Gestures.RArmDir();
 			
 			if(!General.kinectControl){
+				if (Input.GetKey(KeyCode.Space)){
+					//General.playerSize += Time.deltaTime;
+					General.changeSize(Time.deltaTime, 100, 0);
+					
+				}
+				if(Input.GetKey (KeyCode.B)){
+					General.changeSize(-Time.deltaTime, 100, 0);
+					//General.playerSize -= Time.deltaTime;
+				}
 				if(Input.GetKeyDown (KeyCode.E)){
 					Wave2(rHand.position, transform.forward);
 				}

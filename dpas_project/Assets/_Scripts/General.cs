@@ -82,6 +82,11 @@ public class General : MonoBehaviour {
 	public List<Texture2D> selectedLevelGUIs;
 	public float selectionWidth = 100;
 	public float selectionHeight = 100;
+	
+	//List<GameObject> Effects;
+	List<GameObject> earthEffects;
+	List<GameObject> fireEffects;
+	List<GameObject> waterEffects;
 
 	/*public Texture2D lvl0;
 	public Texture2D lvl0Selected;
@@ -147,33 +152,33 @@ public class General : MonoBehaviour {
 		}
 		//kMngr.
 		GameObject t;
-		//airControl.effects = new List<GameObject>();
-		earthControl.effects = new List<GameObject>();
-		fireControl.effects = new List<GameObject>();
-		waterControl.effects = new List<GameObject>();
+		//airEffects = new List<GameObject>();
+		earthEffects = new List<GameObject>();
+		fireEffects = new List<GameObject>();
+		waterEffects = new List<GameObject>();
 
 		foreach (Transform j in effectJoints){
 			//t = (GameObject)Instantiate(airEffect, j.position, Quaternion.identity);
 			//t.transform.parent = j;
 			//t.tag = "Air";
-			//airControl.effects.Add
+			//airEffects.Add
 
 			
 			t = (GameObject)Instantiate(earthEffect, j.position, Quaternion.identity);
 			t.transform.parent = j;
 			t.tag = "Earth";
-			earthControl.effects.Add (t);
+			earthEffects.Add (t);
 			
 			t = (GameObject)Instantiate(fireEffect, j.position, Quaternion.identity);
 			t.transform.parent = j;
 			t.tag = "Fire";
-			fireControl.effects.Add (t);
+			fireEffects.Add (t);
 
 			
 			t = (GameObject)Instantiate(waterEffect, j.position, Quaternion.identity);
 			t.transform.parent = j;
 			t.tag = "Water";
-			waterControl.effects.Add (t);
+			waterEffects.Add (t);
 
 		}
 		airObjects = GameObject.FindGameObjectsWithTag("Air");
@@ -201,6 +206,7 @@ public class General : MonoBehaviour {
 			DontDestroyOnLoad(music);
 
 		}
+		ManageEffects(playerSize);
 	}
 	
 	// Update is called once per frame
@@ -492,6 +498,7 @@ public class General : MonoBehaviour {
 				}
 			}
 		}
+		General.g.ManageEffects(playerSize);
 	}
 	public void LoadLevel(int lvl){
 		/*if(currentLevel == 0){
@@ -565,10 +572,36 @@ public class General : MonoBehaviour {
 		}
 		playerSize = Mathf.Max (playerSize, 0);
 		playerSize = Mathf.Min (playerSize, 100);
+		g.ManageEffects(playerSize);//player.transform.localScale = (1+(.1f*General.playerSize))*Vector3.one;
+
+
+
 		//msg +="amount " + amount.ToString () +", t: "+Time.frameCount.ToString ()+", pSize = "+playerSize.ToString ();
 		//Debug.Log (msg);
 
 		return playerSize;
+	}
+	void ManageEffects(float p){
+		
+		player.transform.localScale = (1+(.1f*p))*Vector3.one;
+		float s = .025f * Mathf.Sqrt(p);
+		if(element == Element.Fire){
+			foreach(GameObject f in fireEffects){
+				//f.particleSystem.startSize = .1f * Mathf.Sqrt (p);
+				//f.particleSystem.startSpeed = .1f * Mathf.Sqrt (p);
+				f.particleSystem.startSize = s;
+				f.particleSystem.startSpeed = 10*s;
+			}
+		}
+		if(element == Element.Water){
+			foreach(GameObject w in waterEffects){
+				//w.particleSystem.startSize = Mathf.Sqrt (p);
+				//w.particleSystem.startSpeed = .1f * Mathf.Sqrt (p);
+				w.particleSystem.startSize = 2*s;
+				//w.particleSystem.
+				w.particleSystem.startSpeed = 10*s;
+			}
+		}
 	}
 	void OnLevelWasLoaded(){
 		playerSize = 1;

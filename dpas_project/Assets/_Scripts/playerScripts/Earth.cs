@@ -61,7 +61,7 @@ public class Earth : MonoBehaviour {
 	public Texture2D leftPrepIcon;
 	public Texture2D rightPrepIcon;
 	//public GameObject earthEffect;
-	public List<GameObject> effects;
+	//public List<GameObject> effects;
 	//public Texture2D heightMap;
 	//int terrYRes;
 
@@ -116,19 +116,14 @@ public class Earth : MonoBehaviour {
 		boulderT -= Time.deltaTime;
 		if(!General.kinectControl){
 
-			if(Input.GetKey(KeyCode.Alpha1)){
-				//indicator1Level = 2;
-				//indicator2Level = 0;
-			}
-
-			else if(Input.GetKey(KeyCode.Alpha2)){
-				//indicator1Level = 0;
-				//indicator2Level = 2;
-			}
-			else{
-				//indicator1Level = 1;
-				//indicator2Level = 1;
+			if (Input.GetKey(KeyCode.Space)){
+				//General.playerSize += Time.deltaTime;
+				General.changeSize(Time.deltaTime, 100, 0);
 				
+			}
+			if(Input.GetKey (KeyCode.B)){
+				General.changeSize(-Time.deltaTime, 100, 0);
+				//General.playerSize -= Time.deltaTime;
 			}
 
 			if(Input.GetKeyDown (KeyCode.Q)){
