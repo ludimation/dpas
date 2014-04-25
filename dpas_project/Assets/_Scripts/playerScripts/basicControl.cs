@@ -30,7 +30,7 @@ public class basicControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!General.isPaused){
-			transform.localScale = (1+(.1f*General.playerSize))*Vector3.one;
+			//transform.localScale = (1+(.1f*General.playerSize))*Vector3.one;
 
 
 
