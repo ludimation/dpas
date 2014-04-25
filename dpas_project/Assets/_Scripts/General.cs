@@ -510,7 +510,7 @@ public class General : MonoBehaviour {
 		currentLevel = lvl;
 		if(songs.Count>lvl){
 			music.audio.clip = songs[lvl];
-			//music.audio.Play();
+			music.audio.Play();
 		}
 		if(cS){
 			cS.enabled = false;

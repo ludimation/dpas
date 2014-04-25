@@ -228,6 +228,7 @@ public class Air : MonoBehaviour {
 				//General.playerSize = 1
 				return;
 			}
+			//ElementChanger eC = other.GetComponent<Element
 			//}
 			FireAttack fA = other.GetComponent<FireAttack>();
 			if(fA){
