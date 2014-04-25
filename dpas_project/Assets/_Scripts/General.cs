@@ -448,6 +448,7 @@ public class General : MonoBehaviour {
 			airControl.enabled = true;
 			airControl.UnSleep();
 			currentInstructions = airInstructions;
+			//playerSize = 1;
 			foreach (GameObject g in airObjects){
 				if(g.particleSystem){
 					g.particleSystem.enableEmission = true;
@@ -579,7 +580,7 @@ public class General : MonoBehaviour {
 
 		//msg +="amount " + amount.ToString () +", t: "+Time.frameCount.ToString ()+", pSize = "+playerSize.ToString ();
 		//Debug.Log (msg);
-
+		//ManageEffects(1);
 		return playerSize;
 	}
 	void ManageEffects(float p){

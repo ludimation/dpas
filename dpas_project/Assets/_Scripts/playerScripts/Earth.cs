@@ -72,6 +72,10 @@ public class Earth : MonoBehaviour {
 	bool rPrimed = false;
 	// Use this for initialization
 	void Start () {
+		Debug.Log (General.playerSize.ToString());
+		if(General.playerSize <= .1f){
+			General.g.changeElement (General.Element.Air);
+		}
 		boulderT = boulderWait;
 
 		terrXratio = terr.terrainData.heightmapWidth/terr.terrainData.size.x;
@@ -240,7 +244,7 @@ public class Earth : MonoBehaviour {
 			b.rigidbody.AddForce (boulderSpeed*dir, ForceMode.VelocityChange);
 			audSrc.PlayOneShot (boulderSounds[Random.Range(0, boulderSounds.Count)]);
 			General.screenShake.NewImpact();
-			General.changeSize(boulderCost, 100, 0);
+			General.changeSize(-boulderCost, 100, 0);
 		}
 
 
