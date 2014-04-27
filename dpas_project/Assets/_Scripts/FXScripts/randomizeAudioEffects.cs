@@ -87,7 +87,7 @@ public class randomizeAudioEffects : MonoBehaviour {
 
 		for (int i = 0; i < filters.Length; i++)
 		{
-			if (!randomize || i == j || i == k || i == l || i == m || i == n || i == o)
+			if (randomize && (i == j || i == k || i == l || i == m || i == n || i == o))
 				filters[i].enabled = true;
 			else
 				filters[i].enabled = false;
