@@ -1,0 +1,21 @@
+1705774800	INFO      	Log	XnLog.cpp	349	New log started on 2014-04-27 16:25:47
+1705774817	INFO      	Log	XnLog.cpp	322	--- Filter Info --- Minimum Severity: VERBOSE
+1705774835	VERBOSE   	OniContext	OniContext.cpp	144	No override device in configuration file
+1705774851	VERBOSE   	OniContext	OniContext.cpp	155	Configuration has been read from '/Users/ludimation/Desktop/dpas/dpas_project/OpenNI.ini'
+1705774856	VERBOSE   	OniContext	OniContext.cpp	162	OpenNI 2.2.0 (Build 33)-MacOSX (Nov 12 2013 16:14:13)
+1705774860	VERBOSE   	OniContext	OniContext.cpp	170	Extending the driver path by '/Users/ludimation/Kinect/OpenNI-MacOSX-x64-2.2/Redist/OpenNI2/Drivers', as configured in file '/Users/ludimation/Desktop/dpas/dpas_project/OpenNI.ini'
+1705774865	VERBOSE   	OniContext	OniContext.cpp	184	Using '/Users/ludimation/Kinect/OpenNI-MacOSX-x64-2.2/Redist/OpenNI2/Drivers' as driver path
+1705774869	VERBOSE   	OniContext	OniContext.cpp	207	Looking for drivers in drivers repository '/Users/ludimation/Kinect/OpenNI-MacOSX-x64-2.2/Redist/OpenNI2/Drivers'
+1705868185	INFO      	OniDeviceDriver	OniDeviceDriver.cpp	139	Device connected: Microsoft Kinect (freenect://0)
+1705868211	INFO      	OniDeviceDriver	OniDeviceDriver.cpp	156	Device state changed: Microsoft Kinect (freenect://0) to 0
+1705896158	INFO      	Log	XnLog.cpp	349	New log started on 2014-04-27 16:25:47
+1705896178	INFO      	Log	XnLog.cpp	322	--- Filter Info --- Minimum Severity: VERBOSE
+1705896188	VERBOSE   	xnUSB	XnLinuxUSB.cpp	379	Initializing USB...
+1705897777	INFO      	xnUSB	XnLinuxUSB.cpp	407	USB is initialized.
+1705905607	INFO      	Log	XnLog.cpp	349	New log started on 2014-04-27 16:25:47
+1705905622	INFO      	Log	XnLog.cpp	322	--- Filter Info --- Minimum Severity: VERBOSE
+1705905632	VERBOSE   	xnUSB	XnLinuxUSB.cpp	379	Initializing USB...
+1705907209	INFO      	xnUSB	XnLinuxUSB.cpp	407	USB is initialized.
+1705907283	VERBOSE   	OniContext	OniContext.cpp	389	Trying to open device by URI '(NULL)'
+1705991317	VERBOSE   	OniContext	OniContext.cpp	56	Initialize: Already initialized
+1723210743	INFO      	OniContext	OniContext.cpp	286	Shutdown: still need 1 more shutdown calls (to match initializations)
