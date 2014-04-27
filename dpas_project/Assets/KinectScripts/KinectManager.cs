@@ -9,9 +9,6 @@ using System.Text;
 
 public class KinectManager : MonoBehaviour
 {
-	//for general stuff manager
-	//public General gen;
-
 	// Public Bool to determine how many players there are. Default of one user.
 	public bool TwoUsers = false;
 	
@@ -29,6 +26,14 @@ public class KinectManager : MonoBehaviour
 	
 	// Public Bool to determine whether to display color map on the GUI
 	public bool DisplayColorMap = false;
+	
+	// Public Floats to specify the width and height of the depth and color maps as % of the camera width and height
+	// if percents are zero, they are calculated based on actual Kinect image?s width and height
+	private float MapsPercentWidth = 0f;
+	private float MapsPercentHeight = 0f;
+	
+	// How high off the ground is the sensor (in meters)
+	public float SensorHeight = 1.0f;
 	
 	// Bools to keep track of who is currently calibrated.
 	bool Player1Calibrated = false;
@@ -48,13 +53,28 @@ public class KinectManager : MonoBehaviour
 	private List<AvatarController> Player1Controllers;
 	private List<AvatarController> Player2Controllers;
 	
-	// Variables needed to track the users.
-	private KinectWrapper.UserDelegate NewUser;
-	private KinectWrapper.UserDelegate CalibrationStarted;
-	private KinectWrapper.UserDelegate CalibrationFailed;
-    private KinectWrapper.UserDelegate CalibrationSuccess;
-    private KinectWrapper.UserDelegate UserLost;
+	// List of Gestures to be detected for each player
+	public List<KinectGestures.Gestures> Player1Gestures;
+	public List<KinectGestures.Gestures> Player2Gestures;
 
+	// Minimum time between gesture detections
+	public float MinTimeBetweenGestures = 0f;
+	
+	// List of Gesture Listeners. They must implement KinectGestures.GestureListenerInterface
+	public List<MonoBehaviour> GestureListeners;
+	
+	// GUI Text to show messages.
+	public GameObject CalibrationText;
+	
+	// GUI Texture to display the hand cursor for Player1
+	public GameObject HandCursor1;
+	
+	// GUI Texture to display the hand cursor for Player1
+	public GameObject HandCursor2;
+	
+	// Bool to specify whether Left/Right-hand-cursor and the Click-gesture control the mouse cursor and click
+	public bool ControlMouseCursor = false;
+	
 	private KinectWrapper.SkeletonJointTransformation jointTransform;
 	private KinectWrapper.SkeletonJointPosition jointPosition;
 	private KinectWrapper.SkeletonJointOrientation jointOrientation;
@@ -78,15 +98,24 @@ public class KinectManager : MonoBehaviour
 	// List of all users
 	private List<uint> allUsers;
 	
-	// GUI Text to show messages.
-	private GameObject CalibrationText;
-	
 	// Bool to keep track of whether OpenNI has been initialized
 	private bool KinectInitialized = false; 
 	
 	// The single instance of KinectManager
 	private static KinectManager instance;
 
+	private short[] oniUsers = new short[KinectWrapper.Constants.SkeletonCount];
+	private short[] oniStates = new short[KinectWrapper.Constants.SkeletonCount];
+	private Int32 oniUsersCount = 0;
+	
+	// gestures data and parameters
+	private List<KinectGestures.GestureData> player1Gestures = new List<KinectGestures.GestureData>();
+	private List<KinectGestures.GestureData> player2Gestures = new List<KinectGestures.GestureData>();
+	private float gestureTrackingAtTime1 = 0f, gestureTrackingAtTime2 = 0f;
+	
+	// List of Gesture Listeners. They must implement KinectGestures.GestureListenerInterface
+	public List<KinectGestures.GestureListenerInterface> gestureListeners;
+	
 	
 	// returns the single KinectManager instance
     public static KinectManager Instance
@@ -103,10 +132,22 @@ public class KinectManager : MonoBehaviour
 		return instance != null ? instance.KinectInitialized : false;
 	}
 	
+	// checks if Kinect is initialized and ready to use. If not, there was an error during Kinect-sensor initialization
+	public bool IsInitialized()
+	{
+		return KinectInitialized;
+	}
+	
 	// this function is used internally by AvatarController
 	public static bool IsCalibrationNeeded()
 	{
 		return true;
+	}
+	
+	// returns the raw depth/user data,if ComputeUserMap is true
+	public short[] GetUsersDepthMap()
+	{
+		return usersDepthMap;
 	}
 	
 	// returns the depth image/users histogram texture,if ComputeUserMap is true
@@ -155,7 +196,7 @@ public class KinectManager : MonoBehaviour
 	{
 		if(KinectWrapper.GetJointPosition(UserId, (int)KinectWrapper.SkeletonJoint.HIPS, ref jointPosition))
 		{
-			return new Vector3(jointPosition.x * 0.001f, jointPosition.y * 0.001f, jointPosition.z * 0.001f);
+			return new Vector3(jointPosition.x * 0.001f, jointPosition.y * 0.001f + SensorHeight, jointPosition.z * 0.001f);
 		}
 		
 		return Vector3.zero;
@@ -164,10 +205,13 @@ public class KinectManager : MonoBehaviour
 	// returns the User rotation, relative to the Kinect-sensor
 	public Quaternion GetUserOrientation(uint UserId, bool flip)
 	{
-		if(KinectWrapper.GetJointOrientation(UserId, (int)KinectWrapper.SkeletonJoint.HIPS, ref jointOrientation))
+		Quaternion rotUser = Quaternion.identity;
+		
+		if(KinectWrapper.GetSkeletonJointOrientation(UserId, (int)KinectWrapper.SkeletonJoint.HIPS, flip, ref rotUser))
 		{
-			Quaternion quat = ConvertMatrixToQuat(jointOrientation, (int)KinectWrapper.SkeletonJoint.HIPS, flip);
-			return quat;
+			//Quaternion quat = ConvertMatrixToQuat(jointOrientation, (int)KinectWrapper.SkeletonJoint.HIPS, flip);
+			//return quat;
+			return rotUser;
 		}
 		
 		return Quaternion.identity;
@@ -192,7 +236,7 @@ public class KinectManager : MonoBehaviour
 	{
 		if(KinectWrapper.GetJointPosition(UserId, joint, ref jointPosition))
 		{
-			return new Vector3(jointPosition.x * 0.001f, jointPosition.y * 0.001f, jointPosition.z * 0.001f);
+			return new Vector3(jointPosition.x * 0.001f, jointPosition.y * 0.001f + SensorHeight, jointPosition.z * 0.001f);
 		}
 
 		return Vector3.zero;
@@ -201,13 +245,336 @@ public class KinectManager : MonoBehaviour
 	// returns the joint rotation of the specified user, relative to the Kinect-sensor
 	public Quaternion GetJointOrientation(uint UserId, int joint, bool flip)
 	{
-		if(KinectWrapper.GetJointOrientation(UserId, joint, ref jointOrientation))
+		Quaternion rotJoint = Quaternion.identity;
+		
+		if(KinectWrapper.GetSkeletonJointOrientation(UserId, joint, flip, ref rotJoint))
 		{
-			Quaternion quat = ConvertMatrixToQuat(jointOrientation, joint, flip);
-			return quat;
+			//Quaternion quat = ConvertMatrixToQuat(jointOrientation, joint, flip);
+			//return quat;
+			return rotJoint;
 		}
 
 		return Quaternion.identity;
+	}
+	
+	// adds a gesture to the list of detected gestures for the specified user
+	public void DetectGesture(uint UserId, KinectGestures.Gestures gesture)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+		if(index >= 0)
+			DeleteGesture(UserId, gesture);
+		
+		KinectGestures.GestureData gestureData = new KinectGestures.GestureData();
+		
+		gestureData.userId = UserId;
+		gestureData.gesture = gesture;
+		gestureData.state = 0;
+		gestureData.joint = 0;
+		gestureData.progress = 0f;
+		gestureData.complete = false;
+		gestureData.cancelled = false;
+		
+		gestureData.checkForGestures = new List<KinectGestures.Gestures>();
+		switch(gesture)
+		{
+			case KinectGestures.Gestures.ZoomIn:
+				gestureData.checkForGestures.Add(KinectGestures.Gestures.ZoomOut);
+				gestureData.checkForGestures.Add(KinectGestures.Gestures.Wheel);			
+				break;
+
+			case KinectGestures.Gestures.ZoomOut:
+				gestureData.checkForGestures.Add(KinectGestures.Gestures.ZoomIn);
+				gestureData.checkForGestures.Add(KinectGestures.Gestures.Wheel);			
+				break;
+
+			case KinectGestures.Gestures.Wheel:
+				gestureData.checkForGestures.Add(KinectGestures.Gestures.ZoomIn);
+				gestureData.checkForGestures.Add(KinectGestures.Gestures.ZoomOut);			
+				break;
+			
+//			case KinectGestures.Gestures.Jump:
+//				gestureData.checkForGestures.Add(KinectGestures.Gestures.Squat);
+//				break;
+//				
+//			case KinectGestures.Gestures.Squat:
+//				gestureData.checkForGestures.Add(KinectGestures.Gestures.Jump);
+//				break;
+//				
+//			case KinectGestures.Gestures.Push:
+//				gestureData.checkForGestures.Add(KinectGestures.Gestures.Pull);
+//				break;
+//				
+//			case KinectGestures.Gestures.Pull:
+//				gestureData.checkForGestures.Add(KinectGestures.Gestures.Push);
+//				break;
+		}
+		
+		if(UserId == Player1ID)
+			player1Gestures.Add(gestureData);
+		else if(UserId == Player2ID)
+			player2Gestures.Add(gestureData);
+	}
+	
+	// resets the gesture-data state for the given gesture of the specified user
+	public bool ResetGesture(uint UserId, KinectGestures.Gestures gesture)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+		if(index < 0)
+			return false;
+		
+		KinectGestures.GestureData gestureData = (UserId == Player1ID) ? player1Gestures[index] : player2Gestures[index];
+		
+		gestureData.state = 0;
+		gestureData.joint = 0;
+		gestureData.progress = 0f;
+		gestureData.complete = false;
+		gestureData.cancelled = false;
+		gestureData.startTrackingAtTime = Time.realtimeSinceStartup + KinectWrapper.Constants.MinTimeBetweenSameGestures;
+
+		if(UserId == Player1ID)
+			player1Gestures[index] = gestureData;
+		else if(UserId == Player2ID)
+			player2Gestures[index] = gestureData;
+		
+		return true;
+	}
+	
+	// resets the gesture-data states for all detected gestures of the specified user
+	public void ResetPlayerGestures(uint UserId)
+	{
+		if(UserId == Player1ID)
+		{
+			int listSize = player1Gestures.Count;
+			
+			for(int i = 0; i < listSize; i++)
+			{
+				ResetGesture(UserId, player1Gestures[i].gesture);
+			}
+		}
+		else if(UserId == Player2ID)
+		{
+			int listSize = player2Gestures.Count;
+			
+			for(int i = 0; i < listSize; i++)
+			{
+				ResetGesture(UserId, player2Gestures[i].gesture);
+			}
+		}
+	}
+	
+	// deletes the given gesture from the list of detected gestures for the specified user
+	public bool DeleteGesture(uint UserId, KinectGestures.Gestures gesture)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+		if(index < 0)
+			return false;
+		
+		if(UserId == Player1ID)
+			player1Gestures.RemoveAt(index);
+		else if(UserId == Player2ID)
+			player2Gestures.RemoveAt(index);
+		
+		return true;
+	}
+	
+	// clears detected gestures list for the specified user
+	public void ClearGestures(uint UserId)
+	{
+		if(UserId == Player1ID)
+		{
+			player1Gestures.Clear();
+		}
+		else if(UserId == Player2ID)
+		{
+			player2Gestures.Clear();
+		}
+	}
+	
+	// returns the count of detected gestures in the list of detected gestures for the specified user
+	public int GetGesturesCount(uint UserId)
+	{
+		if(UserId == Player1ID)
+			return player1Gestures.Count;
+		else if(UserId == Player2ID)
+			return player2Gestures.Count;
+		
+		return 0;
+	}
+	
+	// returns the list of detected gestures for the specified user
+	public List<KinectGestures.Gestures> GetGesturesList(uint UserId)
+	{
+		List<KinectGestures.Gestures> list = new List<KinectGestures.Gestures>();
+
+		if(UserId == Player1ID)
+		{
+			foreach(KinectGestures.GestureData data in player1Gestures)
+				list.Add(data.gesture);
+		}
+		else if(UserId == Player2ID)
+		{
+			foreach(KinectGestures.GestureData data in player1Gestures)
+				list.Add(data.gesture);
+		}
+		
+		return list;
+	}
+	
+	// returns true, if the given gesture is in the list of detected gestures for the specified user
+	public bool IsGestureDetected(uint UserId, KinectGestures.Gestures gesture)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+		return index >= 0;
+	}
+	
+	// returns true, if the given gesture for the specified user is complete
+	public bool IsGestureComplete(uint UserId, KinectGestures.Gestures gesture, bool bResetOnComplete)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+
+		if(index >= 0)
+		{
+			if(UserId == Player1ID)
+			{
+				KinectGestures.GestureData gestureData = player1Gestures[index];
+				
+				if(bResetOnComplete && gestureData.complete)
+				{
+					ResetPlayerGestures(UserId);
+					return true;
+				}
+				
+				return gestureData.complete;
+			}
+			else if(UserId == Player2ID)
+			{
+				KinectGestures.GestureData gestureData = player2Gestures[index];
+
+				if(bResetOnComplete && gestureData.complete)
+				{
+					ResetPlayerGestures(UserId);
+					return true;
+				}
+				
+				return gestureData.complete;
+			}
+		}
+		
+		return false;
+	}
+	
+	// returns true, if the given gesture for the specified user is cancelled
+	public bool IsGestureCancelled(uint UserId, KinectGestures.Gestures gesture)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+
+		if(index >= 0)
+		{
+			if(UserId == Player1ID)
+			{
+				KinectGestures.GestureData gestureData = player1Gestures[index];
+				return gestureData.cancelled;
+			}
+			else if(UserId == Player2ID)
+			{
+				KinectGestures.GestureData gestureData = player2Gestures[index];
+				return gestureData.cancelled;
+			}
+		}
+		
+		return false;
+	}
+	
+	// returns the progress in range [0, 1] of the given gesture for the specified user
+	public float GetGestureProgress(uint UserId, KinectGestures.Gestures gesture)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+
+		if(index >= 0)
+		{
+			if(UserId == Player1ID)
+			{
+				KinectGestures.GestureData gestureData = player1Gestures[index];
+				return gestureData.progress;
+			}
+			else if(UserId == Player2ID)
+			{
+				KinectGestures.GestureData gestureData = player2Gestures[index];
+				return gestureData.progress;
+			}
+		}
+		
+		return 0f;
+	}
+	
+	// returns the current "screen position" of the given gesture for the specified user
+	public Vector3 GetGestureScreenPos(uint UserId, KinectGestures.Gestures gesture)
+	{
+		int index = GetGestureIndex(UserId, gesture);
+
+		if(index >= 0)
+		{
+			if(UserId == Player1ID)
+			{
+				KinectGestures.GestureData gestureData = player1Gestures[index];
+				return gestureData.screenPos;
+			}
+			else if(UserId == Player2ID)
+			{
+				KinectGestures.GestureData gestureData = player2Gestures[index];
+				return gestureData.screenPos;
+			}
+		}
+		
+		return Vector3.zero;
+	}
+	
+	// recreates and reinitializes the lists of avatar controllers, after the list of avatars for player 1/2 was changed
+	public void SetAvatarControllers()
+	{
+		if(Player1Avatars.Count == 0 && Player2Avatars.Count == 0)
+		{
+			AvatarController[] avatars = FindObjectsOfType(typeof(AvatarController)) as AvatarController[];
+			
+			foreach(AvatarController avatar in avatars)
+			{
+				Player1Avatars.Add(avatar.gameObject);
+			}
+		}
+		
+		if(Player1Controllers != null)
+		{
+			Player1Controllers.Clear();
+	
+			foreach(GameObject avatar in Player1Avatars)
+			{
+				if(avatar != null && avatar.activeInHierarchy)
+				{
+					AvatarController controller = avatar.GetComponent<AvatarController>();
+					controller.RotateToInitialPosition();
+					controller.Start();
+					
+					Player1Controllers.Add(controller);
+				}
+			}
+		}
+		
+		if(Player2Controllers != null)
+		{
+			Player2Controllers.Clear();
+			
+			foreach(GameObject avatar in Player2Avatars)
+			{
+				if(avatar != null && avatar.activeInHierarchy)
+				{
+					AvatarController controller = avatar.GetComponent<AvatarController>();
+					controller.RotateToInitialPosition();
+					controller.Start();
+					
+					Player2Controllers.Add(controller);
+				}
+			}
+		}
 	}
 	
 	// removes the currently detected kinect users, allowing a new detection/calibration process to start
@@ -231,7 +598,7 @@ public class KinectManager : MonoBehaviour
 
 	void Awake() 
 	{
-		CalibrationText = GameObject.Find("CalibrationText");
+		//CalibrationText = GameObject.Find("CalibrationText");
 		
 		try
 		{
@@ -244,8 +611,11 @@ public class KinectManager : MonoBehaviour
 		catch (Exception ex) 
 		{
 			Debug.LogError(ex.ToString());
+			
 			if(CalibrationText != null)
+			{
 				CalibrationText.guiText.text = ex.Message;
+			}
 		}
 		
 	}
@@ -261,13 +631,23 @@ public class KinectManager : MonoBehaviour
 	            throw new Exception(String.Format("Error initing OpenNI: {0}", Marshal.PtrToStringAnsi(KinectWrapper.GetLastErrorString())));
 	        }
 			
+			// get the main camera rectangle
+			Rect cameraRect = Camera.main.pixelRect;
+			
+			// calculate map width and height in percent, if needed
+			if(MapsPercentWidth == 0f)
+				MapsPercentWidth = (KinectWrapper.GetDepthWidth() / 2) / cameraRect.width;
+			if(MapsPercentHeight == 0f)
+				MapsPercentHeight = (KinectWrapper.GetDepthHeight() / 2) / cameraRect.height;
+			
 			if(ComputeUserMap)
 			{
 		        // Initialize depth & label map related stuff
 		        usersMapSize = KinectWrapper.GetDepthWidth() * KinectWrapper.GetDepthHeight();
 		        usersLblTex = new Texture2D(KinectWrapper.GetDepthWidth(), KinectWrapper.GetDepthHeight());
 		        usersMapColors = new Color[usersMapSize];
-		        usersMapRect = new Rect(Screen.width, Screen.height - usersLblTex.height / 2, -usersLblTex.width / 2, usersLblTex.height / 2);
+		        //usersMapRect = new Rect(Screen.width, Screen.height - usersLblTex.height / 2, -usersLblTex.width / 2, usersLblTex.height / 2);
+				usersMapRect = new Rect(cameraRect.width, cameraRect.height - cameraRect.height * MapsPercentHeight, -cameraRect.width * MapsPercentWidth, cameraRect.height * MapsPercentHeight);
 		        usersLabelMap = new short[usersMapSize];
 		        usersDepthMap = new short[usersMapSize];
 		        usersHistogramMap = new float[8192];
@@ -279,10 +659,11 @@ public class KinectManager : MonoBehaviour
 		        usersClrSize = KinectWrapper.GetColorWidth() * KinectWrapper.GetColorHeight();
 		        usersClrTex = new Texture2D(KinectWrapper.GetColorWidth(), KinectWrapper.GetColorHeight());
 		        usersClrColors = new Color32[usersClrSize];
-		        usersClrRect = new Rect(Screen.width, Screen.height - usersClrTex.height / 2, -usersClrTex.width / 2, usersClrTex.height / 2);
+		        //usersClrRect = new Rect(Screen.width, Screen.height - usersClrTex.height / 2, -usersClrTex.width / 2, usersClrTex.height / 2);
+				usersClrRect = new Rect(cameraRect.width, cameraRect.height - cameraRect.height * MapsPercentHeight, -cameraRect.width * MapsPercentWidth, cameraRect.height * MapsPercentHeight);
 				
 				if(ComputeUserMap)
-					usersMapRect.x -= usersClrTex.width / 2;
+					usersMapRect.x -= cameraRect.width * MapsPercentWidth; //usersClrTex.width / 2;
 
 				usersColorMap = new byte[usersClrSize * 3];
 			}
@@ -290,12 +671,23 @@ public class KinectManager : MonoBehaviour
 	        // Initialize user list to contain ALL users.
 	        allUsers = new List<uint>();
 	        
-	        // Initialize user callbacks.
-	        NewUser = new KinectWrapper.UserDelegate(OnNewUser);
-	        CalibrationStarted = new KinectWrapper.UserDelegate(OnCalibrationStarted);
-	        CalibrationFailed = new KinectWrapper.UserDelegate(OnCalibrationFailed);
-	        CalibrationSuccess = new KinectWrapper.UserDelegate(OnCalibrationSuccess);
-	        UserLost = new KinectWrapper.UserDelegate(OnUserLost);
+//	        // Initialize user callbacks.
+//	        NewUser = new KinectWrapper.UserDelegate(OnNewUser);
+//	        CalibrationStarted = new KinectWrapper.UserDelegate(OnCalibrationStarted);
+//	        CalibrationFailed = new KinectWrapper.UserDelegate(OnCalibrationFailed);
+//	        CalibrationSuccess = new KinectWrapper.UserDelegate(OnCalibrationSuccess);
+//	        UserLost = new KinectWrapper.UserDelegate(OnUserLost);
+			
+			// try to automatically find the available avatar controllers in the scene
+			if(Player1Avatars.Count == 0 && Player2Avatars.Count == 0)
+			{
+				AvatarController[] avatars = FindObjectsOfType(typeof(AvatarController)) as AvatarController[];
+				
+				foreach(AvatarController avatar in avatars)
+				{
+					Player1Avatars.Add(avatar.gameObject);
+				}
+			}
 			
 			// Pull the AvatarController from each of the players Avatars.
 			Player1Controllers = new List<AvatarController>();
@@ -312,6 +704,18 @@ public class KinectManager : MonoBehaviour
 				Player2Controllers.Add(avatar.GetComponent<AvatarController>());
 			}
 			
+			// create the list of gesture listeners
+			gestureListeners = new List<KinectGestures.GestureListenerInterface>();
+			
+			foreach(MonoBehaviour script in GestureListeners)
+			{
+				if(script && (script is KinectGestures.GestureListenerInterface))
+				{
+					KinectGestures.GestureListenerInterface listener = (KinectGestures.GestureListenerInterface)script;
+					gestureListeners.Add(listener);
+				}
+			}
+			
 			// GUI Text.
 			if(CalibrationText != null)
 			{
@@ -319,7 +723,8 @@ public class KinectManager : MonoBehaviour
 			}
 			
 	        // Start looking for users.
-	        KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);
+	        //KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);
+			KinectWrapper.StartLookingForUsers(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 			Debug.Log("Waiting for users to calibrate");
 			
 			// Set the default smoothing for the Kinect.
@@ -327,6 +732,8 @@ public class KinectManager : MonoBehaviour
 			
 			instance = this;
 			KinectInitialized = true;
+			
+			DontDestroyOnLoad(gameObject);
 		} 
 		catch(DllNotFoundException ex)
 		{
@@ -347,22 +754,58 @@ public class KinectManager : MonoBehaviour
 		if(KinectInitialized)
 		{
 	        // Update to the next frame.
-			KinectWrapper.Update();
+			oniUsersCount = oniUsers.Length;
+			KinectWrapper.Update(oniUsers, oniStates, ref oniUsersCount);
+			
+			// Process the new, lost and calibrated user(s)
+			if(oniUsersCount > 0)
+			{
+				for(int i = 0; i < oniUsersCount; i++)
+				{
+					uint userId = (uint)oniUsers[i];
+					short userState = oniStates[i];
+					
+					switch(userState)
+					{
+						case 1: // new user
+							OnNewUser(userId);
+							break;
+
+						case 2: // calibration started
+							OnCalibrationStarted(userId);
+							break;
+
+						case 3: // calibration succeeded
+							OnCalibrationSuccess(userId);
+							break;
+
+						case 4: // calibration failed
+							OnCalibrationFailed(userId);
+							break;
+
+						case 5: // user lost
+							OnUserLost(userId);
+							break;
+
+					}
+				}
+			}
 	
-	        // If the players aren't all calibrated yet, draw the user map.
+	        // Draw the user map
 			if(ComputeUserMap)
 			{
 	        	UpdateUserMap();
 			}
 			
+			// Draw the color map
 			if(ComputeColorMap)
 			{
 	        	UpdateColorMap();
 			}
 			
-			// Update player 1's models if he/she is calibrated and the model is active.
 			if(Player1Calibrated)
 			{
+				// Update player 1's models
 				foreach (AvatarController controller in Player1Controllers)
 				{
 					//if(controller.Active)
@@ -370,9 +813,70 @@ public class KinectManager : MonoBehaviour
 						controller.UpdateAvatar(Player1ID, NearMode);
 					}
 				}
+				
+				// Check for player 1's gestures
+				CheckForGestures(Player1ID, ref player1Gestures, ref gestureTrackingAtTime1);
+
+				// Check for complete gestures
+				foreach(KinectGestures.GestureData gestureData in player1Gestures)
+				{
+					if(gestureData.complete)
+					{
+						if(gestureData.gesture == KinectGestures.Gestures.Click)
+						{
+							if(ControlMouseCursor)
+							{
+								MouseControl.MouseClick();
+							}
+						}
+						
+						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+						{
+							if(listener.GestureCompleted(Player1ID, 0, gestureData.gesture, 
+								(KinectWrapper.SkeletonJoint)gestureData.joint, gestureData.screenPos))
+							{
+								ResetPlayerGestures(Player1ID);
+							}
+						}
+					}
+					else if(gestureData.cancelled)
+					{
+						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+						{
+							if(listener.GestureCancelled(Player1ID, 0, gestureData.gesture, 
+								(KinectWrapper.SkeletonJoint)gestureData.joint))
+							{
+								ResetGesture(Player1ID, gestureData.gesture);
+							}
+						}
+					}
+					else if(gestureData.progress >= 0.1f)
+					{
+						if((gestureData.gesture == KinectGestures.Gestures.RightHandCursor || 
+							gestureData.gesture == KinectGestures.Gestures.LeftHandCursor) && 
+							gestureData.progress >= 0.5f)
+						{
+							if(HandCursor1 != null)
+							{
+								HandCursor1.transform.position = Vector3.Lerp(HandCursor1.transform.position, gestureData.screenPos, 3 * Time.deltaTime);
+							}
+							
+							if(ControlMouseCursor)
+							{
+								MouseControl.MouseMove(gestureData.screenPos);
+							}
+						}
+			
+						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+						{
+							listener.GestureInProgress(Player1ID, 0, gestureData.gesture, gestureData.progress, 
+								(KinectWrapper.SkeletonJoint)gestureData.joint, gestureData.screenPos);
+						}
+					}
+				}
 			}
 			
-			// Update player 2's models if he/she is calibrated and the model is active.
+			// Update player 2's models
 			if(Player2Calibrated)
 			{
 				foreach (AvatarController controller in Player2Controllers)
@@ -382,7 +886,69 @@ public class KinectManager : MonoBehaviour
 						controller.UpdateAvatar(Player2ID, NearMode);
 					}
 				}
+				
+				// Check for player 2's gestures
+				CheckForGestures(Player2ID, ref player2Gestures, ref gestureTrackingAtTime2);
+
+				// Check for complete gestures
+				foreach(KinectGestures.GestureData gestureData in player2Gestures)
+				{
+					if(gestureData.complete)
+					{
+						if(gestureData.gesture == KinectGestures.Gestures.Click)
+						{
+							if(ControlMouseCursor)
+							{
+								MouseControl.MouseClick();
+							}
+						}
+						
+						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+						{
+							if(listener.GestureCompleted(Player2ID, 1, gestureData.gesture, 
+								(KinectWrapper.SkeletonJoint)gestureData.joint, gestureData.screenPos))
+							{
+								ResetPlayerGestures(Player2ID);
+							}
+						}
+					}
+					else if(gestureData.cancelled)
+					{
+						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+						{
+							if(listener.GestureCancelled(Player2ID, 1, gestureData.gesture, 
+								(KinectWrapper.SkeletonJoint)gestureData.joint))
+							{
+								ResetGesture(Player2ID, gestureData.gesture);
+							}
+						}
+					}
+					else if(gestureData.progress >= 0.1f)
+					{
+						if((gestureData.gesture == KinectGestures.Gestures.RightHandCursor || 
+							gestureData.gesture == KinectGestures.Gestures.LeftHandCursor) && 
+							gestureData.progress >= 0.5f)
+						{
+							if(HandCursor2 != null)
+							{
+								HandCursor2.transform.position = Vector3.Lerp(HandCursor2.transform.position, gestureData.screenPos, 3 * Time.deltaTime);
+							}
+
+							if(ControlMouseCursor)
+							{
+								MouseControl.MouseMove(gestureData.screenPos);
+							}
+						}
+						
+						foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+						{
+							listener.GestureInProgress(Player2ID, 1, gestureData.gesture, gestureData.progress, 
+								(KinectWrapper.SkeletonJoint)gestureData.joint, gestureData.screenPos);
+						}
+					}
+				}
 			}
+			
 		}
 		
 		// Kill the program with ESC.
@@ -408,12 +974,12 @@ public class KinectManager : MonoBehaviour
     {
 		if(KinectInitialized)
 		{
-	        if(ComputeUserMap && ((allUsers.Count == 0) || DisplayUserMap))
+	        if(ComputeUserMap && (/**(allUsers.Count == 0) ||*/ DisplayUserMap))
 	        {
 	            GUI.DrawTexture(usersMapRect, usersLblTex);
 	        }
 			
-	        if(ComputeColorMap && ((allUsers.Count == 0) || DisplayColorMap))
+	        if(ComputeColorMap && (/**(allUsers.Count == 0) ||*/ DisplayColorMap))
 	        {
 	            GUI.DrawTexture(usersClrRect, usersClrTex);
 	        }
@@ -543,7 +1109,7 @@ public class KinectManager : MonoBehaviour
 //	}
 	
 //	// Functions that let you recalibrate either player 1 or player 2.
-//	public void RecalibratePlayer1()
+//	void RecalibratePlayer1()
 //	{
 //		OnUserLost(Player1ID);
 //	}
@@ -567,7 +1133,7 @@ public class KinectManager : MonoBehaviour
 		
 		if(CalibrationText != null)
 		{
-			CalibrationText.guiText.text = "CALIBRATING...\nPLEASE HOLD STILL";
+			CalibrationText.guiText.text = "CALIBRATING...PLEASE HOLD STILL";
 		}
     }
 	
@@ -603,6 +1169,18 @@ public class KinectManager : MonoBehaviour
 					controller.SuccessfulCalibration(UserId);
 				}
 				
+				// add the gestures to detect, if any
+				foreach(KinectGestures.Gestures gesture in Player1Gestures)
+				{
+					DetectGesture(UserId, gesture);
+				}
+				
+				// notify the gesture listeners about the new user
+				foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+				{
+					listener.UserDetected(UserId, 0);
+				}
+				
 				// If we're not using 2 users, we're all calibrated.
 				//if(!TwoUsers)
 				{
@@ -622,6 +1200,18 @@ public class KinectManager : MonoBehaviour
 				foreach(AvatarController controller in Player2Controllers)
 				{
 					controller.SuccessfulCalibration(UserId);
+				}
+				
+				// add the gestures to detect, if any
+				foreach(KinectGestures.Gestures gesture in Player2Gestures)
+				{
+					DetectGesture(UserId, gesture);
+				}
+				
+				// notify the gesture listeners about the new user
+				foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+				{
+					listener.UserDetected(UserId, 1);
 				}
 				
 				// All users are calibrated!
@@ -659,11 +1249,17 @@ public class KinectManager : MonoBehaviour
 			{
 				controller.RotateToCalibrationPose(UserId, IsCalibrationNeeded());
 			}
-			//gen.pause (true);
+			
+			foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+			{
+				listener.UserLost(UserId, 0);
+			}
+			
 			// Try to replace that user!
 			Debug.Log("Starting looking for users");
-			KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);
-	
+			//KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);
+			KinectWrapper.StartLookingForUsers(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+			
 			if(CalibrationText != null)
 			{
 				CalibrationText.guiText.text = "WAITING FOR USERS";
@@ -682,9 +1278,15 @@ public class KinectManager : MonoBehaviour
 				controller.RotateToCalibrationPose(UserId, IsCalibrationNeeded());
 			}
 			
+			foreach(KinectGestures.GestureListenerInterface listener in gestureListeners)
+			{
+				listener.UserLost(UserId, 1);
+			}
+			
 			// Try to replace that user!
 			Debug.Log("Starting looking for users");
-			KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);
+			//KinectWrapper.StartLookingForUsers(NewUser, CalibrationStarted, CalibrationFailed, CalibrationSuccess, UserLost);
+			KinectWrapper.StartLookingForUsers(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 	
 			if(CalibrationText != null)
 			{
@@ -697,41 +1299,139 @@ public class KinectManager : MonoBehaviour
 		AllPlayersCalibrated = !TwoUsers ? allUsers.Count >= 1 : allUsers.Count >= 2; // false;
 	}
 	
-	// convert the matrix to quaternion, taking care of the mirroring
-	private Quaternion ConvertMatrixToQuat(KinectWrapper.SkeletonJointOrientation ori, int joint, bool flip)
+	
+	// Estimates the current state of the defined gestures
+	void CheckForGestures(uint UserId, ref List<KinectGestures.GestureData> playerGestures, ref float gestureTrackingAtTime)
 	{
-		Matrix4x4 mat = Matrix4x4.identity;
-
-		/*fix attempt:*/Vector4 oriVec = new Vector4(ori.x, ori.y, ori.z, ori.w);
-		oriVec.Normalize();
-		Quaternion q = new Quaternion(oriVec.x, oriVec.y, oriVec.z, oriVec.w);
-		mat.SetTRS(Vector3.zero, q, Vector3.one);/*end fix attempt*/
-		//Quaternion quat = new Quaternion(ori.x, ori.y, ori.z, ori.w);
-		//mat.SetTRS(Vector3.zero, quat, Vector3.one);/*error FLAG*/
-
-		Vector3 vZ = mat.GetColumn(2);
-		Vector3 vY = mat.GetColumn(1);
-		
-		if(!flip)
+		// check for gestures
+		if(Time.realtimeSinceStartup >= gestureTrackingAtTime)
 		{
-			vZ.y = -vZ.y;
-			vY.x = -vY.x;
-			vY.z = -vY.z;
-		}
-		else
-		{
-			vZ.x = -vZ.x;
-			vZ.y = -vZ.y;
-			vY.z = -vY.z;
-		}
+			int listGestureSize = playerGestures.Count;
+			float timestampNow = Time.realtimeSinceStartup;
+			
+			// get joint positions and tracking
+			int iAllJointsCount = (int)KinectWrapper.SkeletonJoint.COUNT;
+			bool[] playerJointsTracked = new bool[iAllJointsCount];
+			Vector3[] playerJointsPos = new Vector3[iAllJointsCount];
+			
+			int[] aiNeededJointIndexes = KinectGestures.GetNeededJointIndexes();
+			int iNeededJointsCount = aiNeededJointIndexes.Length;
+			
+			for(int i = 0; i < iNeededJointsCount; i++)
+			{
+				int joint = aiNeededJointIndexes[i];
+				
+				if(joint >= 0 && KinectWrapper.GetJointPositionConfidence(UserId, joint) >= 0.5f)
+				{
+					if(KinectWrapper.GetJointPosition(UserId, joint, ref jointPosition))
+					{
+						playerJointsTracked[joint] = true;
+						playerJointsPos[joint] = new Vector3(jointPosition.x * 0.001f, jointPosition.y * 0.001f + SensorHeight, jointPosition.z * 0.001f);
+					}
+				}
+			}
+			
+			// check for gestures
+			for(int g = 0; g < listGestureSize; g++)
+			{
+				KinectGestures.GestureData gestureData = playerGestures[g];
+				
+				if((timestampNow >= gestureData.startTrackingAtTime) && 
+					!IsConflictingGestureInProgress(gestureData))
+				{
+					KinectGestures.CheckForGesture(UserId, ref gestureData, Time.realtimeSinceStartup, 
+						ref playerJointsPos, ref playerJointsTracked);
+					player1Gestures[g] = gestureData;
 
-		if(vZ.x != 0.0f || vZ.y != 0.0f || vZ.z != 0.0f)
-		{
-			return Quaternion.LookRotation(vZ, vY);
+					if(gestureData.complete)
+					{
+						gestureTrackingAtTime = timestampNow + MinTimeBetweenGestures;
+					}
+				}
+			}
 		}
-
-		return Quaternion.identity;
 	}
+	
+	bool IsConflictingGestureInProgress(KinectGestures.GestureData gestureData)
+	{
+		foreach(KinectGestures.Gestures gesture in gestureData.checkForGestures)
+		{
+			int index = GetGestureIndex(gestureData.userId, gesture);
+			
+			if(index >= 0)
+			{
+				if(gestureData.userId == Player1ID)
+				{
+					if(player1Gestures[index].progress > 0f)
+						return true;
+				}
+				else if(gestureData.userId == Player2ID)
+				{
+					if(player2Gestures[index].progress > 0f)
+						return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	// return the index of gesture in the list, or -1 if not found
+	private int GetGestureIndex(uint UserId, KinectGestures.Gestures gesture)
+	{
+		if(UserId == Player1ID)
+		{
+			int listSize = player1Gestures.Count;
+			for(int i = 0; i < listSize; i++)
+			{
+				if(player1Gestures[i].gesture == gesture)
+					return i;
+			}
+		}
+		else if(UserId == Player2ID)
+		{
+			int listSize = player2Gestures.Count;
+			for(int i = 0; i < listSize; i++)
+			{
+				if(player2Gestures[i].gesture == gesture)
+					return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+//	// convert the matrix to quaternion, taking care of the mirroring
+//	private Quaternion ConvertMatrixToQuat(KinectWrapper.SkeletonJointOrientation ori, int joint, bool flip)
+//	{
+//		Matrix4x4 mat = Matrix4x4.identity;
+//		
+//		Quaternion quat = new Quaternion(ori.x, ori.y, ori.z, ori.w);
+//		mat.SetTRS(Vector3.zero, quat, Vector3.one);
+//
+//		Vector3 vZ = mat.GetColumn(2);
+//		Vector3 vY = mat.GetColumn(1);
+//		
+//		if(!flip)
+//		{
+//			vZ.y = -vZ.y;
+//			vY.x = -vY.x;
+//			vY.z = -vY.z;
+//		}
+//		else
+//		{
+//			vZ.x = -vZ.x;
+//			vZ.y = -vZ.y;
+//			vY.z = -vY.z;
+//		}
+//
+//		if(vZ.x != 0.0f || vZ.y != 0.0f || vZ.z != 0.0f)
+//		{
+//			return Quaternion.LookRotation(vZ, vY);
+//		}
+//
+//		return Quaternion.identity;
+//	}
 	
 }
 

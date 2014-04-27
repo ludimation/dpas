@@ -12,10 +12,9 @@ public class AvatarController : MonoBehaviour
 	// Bool that determines whether the avatar is active.
 	//public bool Active = true;
 	
-	// Bool that has the characters (facing the player) actions become mirrored. Default true.
-	public bool MirroredMovement = true;
+	// Bool that has the characters (facing the player) actions become mirrored. Default false.
+	public bool MirroredMovement = false;
 	
-
 	// Bool that determines whether the avatar will move or not in space.
 	// bool MovesInSpace = true;
 	
@@ -28,9 +27,6 @@ public class AvatarController : MonoBehaviour
 	
 	// Slerp smooth factor
 	public float SmoothFactor = 3.0f;
-	//whether to smooth at all or not
-	public bool smooth = true;
-
 	
 	// Public variables that will get matched to bones. If empty, the kinect will simply not track it.
 	// These bones can be set within the Unity interface.
@@ -261,13 +257,7 @@ public class AvatarController : MonoBehaviour
 		}
 		
 		// Smoothly transition to our new rotation.
-        if(smooth){
-			boneTransform.rotation = Quaternion.Slerp(boneTransform.rotation, newRotation, Time.deltaTime * SmoothFactor);
-	
-		}
-		else{
-			boneTransform.rotation = newRotation;
-		}
+        boneTransform.rotation = Quaternion.Slerp(boneTransform.rotation, newRotation, Time.deltaTime * SmoothFactor);
 	}
 	
 	// Moves the avatar in 3D space - pulls the tracked position of the spine and applies it to root.
@@ -287,7 +277,7 @@ public class AvatarController : MonoBehaviour
 		{
 			OffsetCalibrated = true;
 			
-			XOffset = MirroredMovement ? trans.x * MoveRate : -trans.x * MoveRate;
+			XOffset = !MirroredMovement ? trans.x * MoveRate : -trans.x * MoveRate;
 			YOffset = trans.y * MoveRate;
 			ZOffset = -trans.z * MoveRate;
 		}
@@ -297,8 +287,8 @@ public class AvatarController : MonoBehaviour
 		float zPos;
 		
 		// If movement is mirrored, reverse it.
-		if(MirroredMovement)
-			xPos = trans.x * MoveRate + XOffset;
+		if(!MirroredMovement)
+			xPos = trans.x * MoveRate - XOffset;
 		else
 			xPos = -trans.x * MoveRate - XOffset;
 		
@@ -307,12 +297,7 @@ public class AvatarController : MonoBehaviour
 		
 		// If we are tracking vertical movement, update the y. Otherwise leave it alone.
 		Vector3 targetPos = new Vector3(xPos, VerticalMovement ? yPos : 0f, zPos);
-		if(smooth){
-			Root.parent.localPosition = Vector3.Lerp(Root.parent.localPosition, targetPos, 3 * Time.deltaTime);
-		}
-		else{
-			Root.parent.localPosition = targetPos;
-		}
+		Root.parent.localPosition = Vector3.Lerp(Root.parent.localPosition, targetPos, 3 * Time.deltaTime);
 	}
 	
 	// If the bones to be mapped have been declared, map that bone to the model.
