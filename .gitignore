@@ -11,5 +11,11 @@
 
 *.DS_Store
 dpas_project/Assets/Electricity*
-     
+
+# Mac OS Files     
+##### Un-comment these local on Mac machines
+# dpas_project/NiTE.ini
+# dpas_project/OpenNI.ini
+
+# PC OS Files
 *Thumbs.db*
