@@ -252,7 +252,9 @@ public class Earth : MonoBehaviour {
 	void Smash(){
 		General.screenShake.NewImpact ();
 		deform(rad, smashDepth);
-		audSrc.PlayOneShot (smashSounds[Random.Range(0, smashSounds.Count)]);
+		if(smashSounds.Count>0){
+			audSrc.PlayOneShot (smashSounds[Random.Range(0, smashSounds.Count)]);
+		}
 		smashCharge = -smashCoolTime;
 		platformCharge = 0;
 	}
